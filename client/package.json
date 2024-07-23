@@ -4,8 +4,8 @@
 	"description": "Little man computer client",
 	"main": "index.js",
 	"scripts": {
-    "build": "pnpm tsc",
-		"test": "echo \"Error: no test specified\" && exit 1",    
+		"build": "pnpm tsc",
+		"test": "echo \"Error: no test specified\" && exit 1",
 		"prettier:check": "prettier --check .",
 		"prettier:write": "prettier --write ."
 	},
