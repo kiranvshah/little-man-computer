@@ -1,0 +1,39 @@
+name: Continuous integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  client:
+    runs_on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: client
+    
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+          cache: pnpm
+
+      - name: Install npm dependencies
+        run: pnpm install
+
+      - name: Prettier Formatting Check
+        run: pnpm prettier:check
+
+      - name: Build TypeScript Project
+        run: pnpm build
