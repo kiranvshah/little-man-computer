@@ -18,14 +18,40 @@
 			<div class="row">
 				<div class="col-5">
 					<div class="card">
-						<h2 class="text-center">Assembly</h2>
+						<h2 class="text-center">Assembly code</h2>
 						<div class="container">
 							<div class="row">
 								<div class="col">
-									<h3>Your code</h3>
+									<h3 class="mx-2">Your code</h3>
+									<textarea
+										id="uncompiledAssemblyTextarea"
+										class="form-control mb-3"
+										rows="15"
+									></textarea>
+									<div class="btn-group">
+										<button type="button" class="btn btn-secondary mb-3">
+											Check
+										</button>
+										<button type="button" class="btn btn-danger mb-3">
+											Clear
+										</button>
+									</div>
+									<button type="button" class="btn btn-primary mb-3 float-end">
+										Compile
+									</button>
 								</div>
 								<div class="col">
-									<h3>Compiled code</h3>
+									<h3 class="mx-2">Compiled code</h3>
+									<textarea
+										id="compiledAssemblyTextarea"
+										class="form-control mb-3"
+										rows="15"
+										readonly
+									>
+									</textarea>
+									<button type="button" class="btn btn-primary mb-3 float-end">
+										Run
+									</button>
 								</div>
 							</div>
 						</div>
