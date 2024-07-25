@@ -18,40 +18,42 @@
 			<div class="row">
 				<div class="col-5">
 					<div class="card">
-						<h2 class="text-center">Assembly code</h2>
-						<div class="container">
-							<div class="row">
-								<div class="col">
-									<h3 class="mx-2">Your code</h3>
-									<textarea
-										id="uncompiledAssemblyTextarea"
-										class="form-control mb-3"
-										rows="15"
-									></textarea>
-									<div class="btn-group">
-										<button type="button" class="btn btn-secondary mb-3">
-											Check
-										</button>
-										<button type="button" class="btn btn-danger mb-3">
-											Clear
+						<div class="card-body">
+							<h2 class="text-center">Assembly code</h2>
+							<div class="container">
+								<div class="row">
+									<div class="col">
+										<h3 class="mx-2">Your code</h3>
+										<textarea
+											id="uncompiledAssemblyTextarea"
+											class="form-control mb-3"
+											rows="15"
+										></textarea>
+										<div class="btn-group">
+											<button type="button" class="btn btn-secondary">
+												Check
+											</button>
+											<button type="button" class="btn btn-danger">
+												Clear
+											</button>
+										</div>
+										<button type="button" class="btn btn-primary float-end">
+											Compile
 										</button>
 									</div>
-									<button type="button" class="btn btn-primary mb-3 float-end">
-										Compile
-									</button>
-								</div>
-								<div class="col">
-									<h3 class="mx-2">Compiled code</h3>
-									<textarea
-										id="compiledAssemblyTextarea"
-										class="form-control mb-3"
-										rows="15"
-										readonly
-									>
-									</textarea>
-									<button type="button" class="btn btn-primary mb-3 float-end">
-										Run
-									</button>
+									<div class="col">
+										<h3 class="mx-2">Compiled code</h3>
+										<textarea
+											id="compiledAssemblyTextarea"
+											class="form-control mb-3"
+											rows="15"
+											readonly
+										>
+										</textarea>
+										<button type="button" class="btn btn-primary float-end">
+											Load into RAM
+										</button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -60,13 +62,46 @@
 
 				<div class="col-4">
 					<div class="card">
-						<h2 class="text-center">RAM</h2>
+						<div class="card-body">
+							<h2 class="text-center">RAM</h2>
+							<button type="button" class="btn btn-primary float-end">
+								Run program
+							</button>
+						</div>
 					</div>
 				</div>
 
 				<div class="col-3">
 					<div class="card">
-						<h2 class="text-center">CPU</h2>
+						<div class="card-body">
+							<h2 class="text-center">CPU</h2>
+							<ul class="list-group list-group-flush">
+								<li
+									class="list-group-item d-flex justify-content-between align-items-center"
+								>
+									Program counter
+									<span id="programCounterValueSpan">0</span>
+								</li>
+								<li
+									class="list-group-item d-flex justify-content-between align-items-center"
+								>
+									Accumulator
+									<span id="accumulatorValueSpan">0</span>
+								</li>
+								<li
+									class="list-group-item d-flex justify-content-between align-items-center"
+								>
+									Memory address register
+									<span id="marValueSpan">0</span>
+								</li>
+								<li
+									class="list-group-item d-flex justify-content-between align-items-center"
+								>
+									Memory data register
+									<span id="mdrValueSpan">0</span>
+								</li>
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
