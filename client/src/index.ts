@@ -9,8 +9,7 @@ for (let rowNumber = 0; rowNumber < 10; rowNumber++) {
 	for (let colNumber = 0; colNumber < 10; colNumber++) {
 		const memoryAddress = rowNumber * 10 + colNumber;
 		const cell = document.createElement("td");
-		cell.classList.add("text-center");
-		cell.classList.add("p-0");
+		cell.classList.add("text-center", "p-0", "font-monospace");
 
 		const memoryAddressLabel = document.createElement("span");
 		memoryAddressLabel.classList.add("memory-address");
