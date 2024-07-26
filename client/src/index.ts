@@ -1,3 +1,5 @@
+import { updateMemoryLocation } from "./addressDisplayUpdaters.js";
+
 // populate memoryTable
 const memoryTableBody = document.getElementById(
 	"memoryTbody",
