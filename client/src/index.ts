@@ -14,10 +14,10 @@ for (let rowNumber = 0; rowNumber < 10; rowNumber++) {
 
 		const memoryAddressLabel = document.createElement("span");
 		memoryAddressLabel.classList.add("memory-address");
-		memoryAddressLabel.innerText = memoryAddress.toString();
+		memoryAddressLabel.innerText = memoryAddress.toString().padStart(2, "0");
 
 		const memoryContentsSpan = document.createElement("span");
-		memoryContentsSpan.innerText = "0";
+		memoryContentsSpan.innerText = "000";
 		memoryContentsSpans.push(memoryContentsSpan);
 
 		cell.appendChild(memoryAddressLabel);
