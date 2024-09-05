@@ -1,12 +1,8 @@
 {
 	"folders": [
 		{
-			"name": ".github",
-			"path": ".github"
-		},
-		{
-			"name": "client",
-			"path": "client"
+			"name": "little-man-computer",
+			"path": "."
 		}
 	],
 	"settings": {}
