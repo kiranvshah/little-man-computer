@@ -1,7 +1,7 @@
 /**
  * Updates the value displayed in a given location in RAM.
  * @param {number} address The address of the RAM location to update (0-99).
- * @param {number} value The value to change the display to (0-999). 
+ * @param {number} value The value to change the display to (0-999).
  * @param {HTMLSpanElement[]} memoryContentsSpans The array of <span> elements that contain the memory contents.
  */
 export function updateMemoryLocation(
@@ -25,7 +25,7 @@ export function updateProgramCounter(value: number) {
 
 /**
  * Updates the value displayed in the accumulator.
- * @param {number} value The value to display (0-999). 
+ * @param {number} value The value to display (0-999).
  */
 export function updateAccumulator(value: number) {
 	const accSpan = document.getElementById(
