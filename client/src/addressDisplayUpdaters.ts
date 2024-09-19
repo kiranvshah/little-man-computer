@@ -1,53 +1,58 @@
 /**
  * Updates the value displayed in a given location in RAM.
- * @param {number} address The address of the RAM location to update (0-99).
- * @param {number} value The value to change the display to (0-999).
+ * @param {string} address The address of the RAM location to update (0-99).
+ * @param {string} value The value to change the display to (0-999).
  * @param {HTMLSpanElement[]} memoryContentsSpans The array of <span> elements that contain the memory contents.
  */
 export function updateMemoryLocation(
-	address: number,
-	value: number,
+	address: string,
+	value: string,
 	memoryContentsSpans: HTMLSpanElement[],
 ) {
-	memoryContentsSpans[address].innerText = value.toString().padStart(3, "0");
+	console.assert(value.length == 3)
+	memoryContentsSpans[Number(address)].innerText = value;
 }
 
 /**
  * Updates the value displayed in the program counter.
- * @param {number} value The value to display (0-99).
+ * @param {string} value The value to display (0-99).
  */
-export function updateProgramCounter(value: number) {
+export function updateProgramCounter(value: string) {
+	console.assert(value.length == 2)
 	const pcSpan = document.getElementById(
 		"programCounterValueSpan",
 	) as HTMLSpanElement;
-	pcSpan.innerText = value.toString().padStart(2, "0");
+	pcSpan.innerText = value;
 }
 
 /**
  * Updates the value displayed in the accumulator.
- * @param {number} value The value to display (0-999).
+ * @param {string} value The value to display (0-999).
  */
-export function updateAccumulator(value: number) {
+export function updateAccumulator(value: string) {
+	console.assert(value.length == 3)
 	const accSpan = document.getElementById(
 		"accumulatorValueSpan",
 	) as HTMLSpanElement;
-	accSpan.innerText = value.toString().padStart(3, "0");
+	accSpan.innerText = value;
 }
 
 /**
  * Updates the value displayed in the MAR.
- * @param {number} value The value to display (0-99).
+ * @param {string} value The value to display (0-99).
  */
-export function updateMar(value: number) {
+export function updateMar(value: string) {
+	console.assert(value.length == 2)
 	const marSpan = document.getElementById("marValueSpan") as HTMLSpanElement;
-	marSpan.innerText = value.toString().padStart(2, "0");
+	marSpan.innerText = value;
 }
 
 /**
  * Updates the value displayed in the MDR.
- * @param {number} value The value to display (0-999).
+ * @param {string} value The value to display (0-999).
  */
-export function updateMdr(value: number) {
+export function updateMdr(value: string) {
+	console.assert(value.length == 3)
 	const mdrSpan = document.getElementById("mdrValueSpan") as HTMLSpanElement;
-	mdrSpan.innerText = value.toString().padStart(3, "0");
+	mdrSpan.innerText = value;
 }
