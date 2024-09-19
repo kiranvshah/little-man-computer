@@ -56,3 +56,13 @@ export function updateMdr(value: string) {
 	const mdrSpan = document.getElementById("mdrValueSpan") as HTMLSpanElement;
 	mdrSpan.innerText = value;
 }
+
+/**
+ * Updates the value displayed in the instruction register.
+ * @param {string} value The value to display (0-999).
+ */
+export function updateIr(value: string) {
+	console.assert(value.length == 3)
+	const irSpan = document.getElementById("irValueSpan") as HTMLSpanElement;
+	irSpan.innerText = value;
+}
