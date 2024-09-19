@@ -20,7 +20,7 @@ export function updateProgramCounter(value: number) {
 	const pcSpan = document.getElementById(
 		"programCounterValueSpan",
 	) as HTMLSpanElement;
-	pcSpan.innerText = value.toString();
+	pcSpan.innerText = value.toString().padStart(2, "0");
 }
 
 /**
@@ -31,7 +31,7 @@ export function updateAccumulator(value: number) {
 	const accSpan = document.getElementById(
 		"accumulatorValueSpan",
 	) as HTMLSpanElement;
-	accSpan.innerText = value.toString();
+	accSpan.innerText = value.toString().padStart(3, "0");
 }
 
 /**
@@ -40,7 +40,7 @@ export function updateAccumulator(value: number) {
  */
 export function updateMar(value: number) {
 	const marSpan = document.getElementById("marValueSpan") as HTMLSpanElement;
-	marSpan.innerText = value.toString();
+	marSpan.innerText = value.toString().padStart(2, "0");
 }
 
 /**
@@ -49,5 +49,5 @@ export function updateMar(value: number) {
  */
 export function updateMdr(value: number) {
 	const mdrSpan = document.getElementById("mdrValueSpan") as HTMLSpanElement;
-	mdrSpan.innerText = value.toString();
+	mdrSpan.innerText = value.toString().padStart(3, "0");
 }
