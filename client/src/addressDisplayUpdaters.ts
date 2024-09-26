@@ -9,7 +9,7 @@ export function updateMemoryLocation(
 	value: string,
 	memoryContentsSpans: HTMLSpanElement[],
 ) {
-	console.assert(value.length == 3)
+	console.assert(value.length == 3);
 	memoryContentsSpans[Number(address)].innerText = value;
 }
 
@@ -18,7 +18,7 @@ export function updateMemoryLocation(
  * @param {string} value The value to display (0-99).
  */
 export function updateProgramCounter(value: string) {
-	console.assert(value.length == 2)
+	console.assert(value.length == 2);
 	const pcSpan = document.getElementById(
 		"programCounterValueSpan",
 	) as HTMLSpanElement;
@@ -30,7 +30,7 @@ export function updateProgramCounter(value: string) {
  * @param {string} value The value to display (0-999).
  */
 export function updateAccumulator(value: string) {
-	console.assert(value.length == 3)
+	console.assert(value.length == 3);
 	const accSpan = document.getElementById(
 		"accumulatorValueSpan",
 	) as HTMLSpanElement;
@@ -42,7 +42,7 @@ export function updateAccumulator(value: string) {
  * @param {string} value The value to display (0-99).
  */
 export function updateMar(value: string) {
-	console.assert(value.length == 2)
+	console.assert(value.length == 2);
 	const marSpan = document.getElementById("marValueSpan") as HTMLSpanElement;
 	marSpan.innerText = value;
 }
@@ -52,7 +52,7 @@ export function updateMar(value: string) {
  * @param {string} value The value to display (0-999).
  */
 export function updateMdr(value: string) {
-	console.assert(value.length == 3)
+	console.assert(value.length == 3);
 	const mdrSpan = document.getElementById("mdrValueSpan") as HTMLSpanElement;
 	mdrSpan.innerText = value;
 }
@@ -62,7 +62,7 @@ export function updateMdr(value: string) {
  * @param {string} value The value to display (0-999).
  */
 export function updateIr(value: string) {
-	console.assert(value.length == 3)
+	console.assert(value.length == 3);
 	const irSpan = document.getElementById("irValueSpan") as HTMLSpanElement;
 	irSpan.innerText = value;
 }
