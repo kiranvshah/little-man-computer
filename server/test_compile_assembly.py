@@ -1,5 +1,4 @@
-import pytest
-from compile_assembly import compile
+from compile_assembly import compile_assembly
 
 def test_user_written_program():
     user_written_code = """// store an input
@@ -18,11 +17,11 @@ SUB second
 // output the difference
 // and halt execution
 OUT
-COB
+HLT
 
 // use the DAT command to create to 'variables' called first and second, and set them both to 0
-first DAT 0
-second DAT 0"""
+first DAT 000
+second DAT 000"""
 
     expected_result = {
         "compiled_code": [ 
@@ -49,7 +48,7 @@ second DAT 0"""
                 "06": "902",
                 "07": "000", # note the code for HLT is 000
 
-                # variables:
+                # variables (created with DAT):
                 "08": "000", # this is the `first` variable
                 "09": "000", # this is the `second` variable
 
@@ -69,4 +68,4 @@ second DAT 0"""
             },
         },
     }
-    assert compile(user_written_code) == expected_result
+    assert compile_assembly(user_written_code) == expected_result
