@@ -60,8 +60,18 @@ def compile_assembly(user_written_code: str):
             else:
                 raise ValueError(original_line_number, f"Invalid instruction. Received {words[0]}")
     
-    # todo: process code from intermediate object to finished form
-    return lines
+    # process code from intermediate object to finished form
+
+    # get labels created by DAT
+    created_labels = {}
+    for line in lines:
+        if line["command"] == "DAT":
+            created_labels.append({
+                "name": line["create_label"],
+                "value": line["value"],
+            })
+    
+    # todo: ensure all used labels have been created
 
 if __name__ == "__main__":
     print(compile_assembly("""// store an input
