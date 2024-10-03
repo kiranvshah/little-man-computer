@@ -1,5 +1,5 @@
 instructions_1_word = {"INP", "OUT", "HLT", "DAT"} # command at words[0]
-instructions_2_words = {"ADD", "SUB", "LDA", "BRA", "BRZ", "BRP", "STA"} # command at words[0]
+instructions_2_words = {"ADD", "SUB", "STA", "LDA", "BRA", "BRZ", "BRP"} # command at words[0]
 instructions_3_words = {"DAT"} # command at words[1]
 instructions = instructions_1_word | instructions_2_words | instructions_3_words
 
@@ -8,7 +8,6 @@ def compile_assembly(user_written_code: str):
     lines = []
     for index, line in enumerate(user_written_code.split("\n")):
         original_line_number = index + 1
-        print(f"testing line {original_line_number}")
         line = line.split("//")[0] # remove comment from line
         line = line.strip().upper()
         words = line.split()
@@ -54,7 +53,7 @@ def compile_assembly(user_written_code: str):
             if words[0] in instructions_2_words:
                 # process command
                 lines.append({
-                    "uses_label": words[1],
+                    "uses_label": words[1], # todo: ensure label has valid chars (only alpha?)
                     "command": words[0],
                 })
             else:
@@ -63,15 +62,100 @@ def compile_assembly(user_written_code: str):
     # process code from intermediate object to finished form
 
     # get labels created by DAT
-    created_labels = {}
+    created_labels = {} # {<name>: <memory address>}
     for line in lines:
         if line["command"] == "DAT":
-            created_labels.append({
-                "name": line["create_label"],
-                "value": line["value"],
-            })
+            created_labels[line["create_label"]] = None
     
-    # todo: ensure all used labels have been created
+    print(f"Created labels {created_labels}")
+    
+    # ensure all used labels have been created
+    for line in lines:
+        if "uses_label" in line:
+            if line["uses_label"] not in created_labels.keys():
+                raise ValueError(
+                    f"Label \"{line["uses_label"]}\" used without being created. Create labels with DAT.",
+                )
+    
+    if len(lines) > 100:
+        raise ValueError("Too many lines to fit in memory.")
+    
+    result = {
+        "compiled_code": [],
+        "memory_and_registers": {
+            "memory": {},
+            "registers": {
+                # all registers start at 0
+                "PC": "00",
+                "ACC": "000",
+                "IR": "0",
+                "MAR": "00",
+                "MDR": "000",
+            },
+        },
+    }
+
+    # fill in every memory location as 0 to start
+    for i in range(100):
+        result["memory_and_registers"]["memory"][str(i).zfill(2)] = "000"
+
+    # assign memory address to every line
+    address = 0
+    for line in lines:
+        line["memory_address"] = str(address).zfill(2)
+        # if line creates label, store memory address in created_labels
+        if "create_label" in line:
+            created_labels[line["create_label"]] = line["memory_address"]
+        address += 1
+
+    print(lines)
+    
+    # loop through lines to populate result
+    for line in lines:
+        cleaned_up_line = f"{line["memory_address"]} {line["command"]}"
+        line_in_memory = ""
+
+        # add opcode to line_in_memory
+        match line["command"]:
+            case "ADD":
+                line_in_memory += "1"
+            case "SUB":
+                line_in_memory += "2"
+            case "STA":
+                line_in_memory += "3"
+            case "LDA":
+                line_in_memory += "5"
+            case "BRA":
+                line_in_memory += "6"
+            case "BRZ":
+                line_in_memory += "7"
+            case "BRP":
+                line_in_memory += "8"
+            case "INP":
+                line_in_memory += "901"
+            case "OUT":
+                line_in_memory += "902"
+            case "HLT":
+                line_in_memory += "000"
+            case "DAT":
+                line_in_memory += line["value"]
+            case _:
+                pass
+        
+        if "uses_label" in line:
+            used_label_loc = created_labels[line["uses_label"]]
+            cleaned_up_line += f" {used_label_loc}"
+            # add operand (label address) to line_in_memory
+            line_in_memory += used_label_loc
+
+        if "create_label" in line:
+            value = line["value"]
+            cleaned_up_line += f" {value}"
+        
+        result["compiled_code"].append(cleaned_up_line)
+        result["memory_and_registers"]["memory"][line["memory_address"]] = line_in_memory
+
+    return result 
 
 if __name__ == "__main__":
     print(compile_assembly("""// store an input
