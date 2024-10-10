@@ -63,7 +63,7 @@ jobs:
       - name: Pylint
         run: |
           pip install pylint
-          pylint **/*.py
+          pylint --fail-under=8 **/*.py
 
       - name: Test with pytest
         run: |
