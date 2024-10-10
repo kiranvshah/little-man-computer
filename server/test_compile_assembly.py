@@ -1,6 +1,9 @@
+"""Tests for compile_assembly.py"""
+
 from compile_assembly import compile_assembly
 
 def test_user_written_program():
+    """Test compile_assembly() with a program that subtracts two numbers."""
     user_written_code = """// store an input
 // at position first
 INP
