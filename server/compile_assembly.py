@@ -1,3 +1,6 @@
+"""Functions:
+    compile_assembly(user_written_code) -> result"""
+
 instructions_1_word = {"INP", "OUT", "HLT", "DAT"} # command at words[0]
 instructions_2_words = {"ADD", "SUB", "STA", "LDA", "BRA", "BRZ", "BRP"} # command at words[0]
 instructions_3_words = {"DAT"} # command at words[1]
@@ -12,7 +15,7 @@ def compile_assembly(user_written_code: str):
         line = line.strip().upper()
         words = line.split()
         if line == "":
-            # this is an empty line, we can ignore it but not raise an error
+            # this is an empty line, we can ignore it without raising an error
             continue
         if len(words) > 3:
             raise ValueError(original_line_number, "There cannot be more than 3 words on one line")
@@ -76,7 +79,7 @@ def compile_assembly(user_written_code: str):
     # ensure all used labels have been created
     for line in lines:
         if "uses_label" in line:
-            if line["uses_label"] not in created_labels.keys():
+            if line["uses_label"] not in created_labels:
                 raise ValueError(
                     f"""Label \"{
                         line["uses_label"]
