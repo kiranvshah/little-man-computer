@@ -33,7 +33,7 @@ jobs:
       - name: Install npm dependencies
         run: pnpm install
 
-      - name: Prettier Formatting Check
+      - name: Prettier
         run: pnpm prettier:check
 
       - name: Build TypeScript Project
@@ -65,7 +65,7 @@ jobs:
           pip install pylint
           pylint --fail-under=8 **/*.py
 
-      - name: Test with pytest
+      - name: Pytest
         run: |
           pip install pytest pytest-cov
           pytest .
