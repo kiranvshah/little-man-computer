@@ -4,7 +4,7 @@ instructions_3_words = {"DAT"} # command at words[1]
 instructions = instructions_1_word | instructions_2_words | instructions_3_words
 
 def compile_assembly(user_written_code: str):
-    """Return the compiled the user-written assembly code as cleaned-up code and memory and register contents."""
+    """Return the compiled user-written assembly as cleaned-up code and memory/register contents."""
     lines = []
     for index, line in enumerate(user_written_code.split("\n")):
         original_line_number = index + 1
@@ -38,16 +38,22 @@ def compile_assembly(user_written_code: str):
 
             # validate value
             if not value.isdigit():
-                raise ValueError(original_line_number, f"Expected number 0-999, received {value} (not a number)")
+                raise ValueError(
+                    original_line_number,
+                    f"Expected number 0-999, received {value} (not a number)"
+                )
             if not 0 <= int(value) <= 999:
-                raise ValueError(original_line_number, f"Expected number 0-999, received {value} (out of range)")
+                raise ValueError(
+                    original_line_number,
+                    f"Expected number 0-999, received {value} (out of range)"
+                )
 
             lines.append({
                 "create_label": label,
                 "command": words[1],
                 "value": value,
             })
-        
+
         else:
             # len(words) is 2
             if words[0] in instructions_2_words:
@@ -58,7 +64,7 @@ def compile_assembly(user_written_code: str):
                 })
             else:
                 raise ValueError(original_line_number, f"Invalid instruction. Received {words[0]}")
-    
+
     # process code from intermediate object to finished form
 
     # get labels created by DAT
@@ -66,18 +72,20 @@ def compile_assembly(user_written_code: str):
     for line in lines:
         if line["command"] == "DAT":
             created_labels[line["create_label"]] = None
-        
+
     # ensure all used labels have been created
     for line in lines:
         if "uses_label" in line:
             if line["uses_label"] not in created_labels.keys():
                 raise ValueError(
-                    f"Label \"{line["uses_label"]}\" used without being created. Create labels with DAT.",
+                    f"""Label \"{
+                        line["uses_label"]
+                    }\" used without being created. Create labels with DAT.""",
                 )
-    
+
     if len(lines) > 100:
         raise ValueError("Too many lines to fit in memory.")
-    
+
     result = {
         "compiled_code": [],
         "memory_and_registers": {
@@ -105,7 +113,7 @@ def compile_assembly(user_written_code: str):
         if "create_label" in line:
             created_labels[line["create_label"]] = line["memory_address"]
         address += 1
-    
+
     # loop through lines to populate result
     for line in lines:
         cleaned_up_line = f"{line["memory_address"]} {line["command"]}"
@@ -137,7 +145,7 @@ def compile_assembly(user_written_code: str):
                 line_in_memory += line["value"]
             case _:
                 pass
-        
+
         if "uses_label" in line:
             used_label_loc = created_labels[line["uses_label"]]
             cleaned_up_line += f" {used_label_loc}"
@@ -147,11 +155,11 @@ def compile_assembly(user_written_code: str):
         if "create_label" in line:
             value = line["value"]
             cleaned_up_line += f" {value}"
-        
+
         result["compiled_code"].append(cleaned_up_line)
         result["memory_and_registers"]["memory"][line["memory_address"]] = line_in_memory
 
-    return result 
+    return result
 
 if __name__ == "__main__":
     print(compile_assembly("""// store an input
