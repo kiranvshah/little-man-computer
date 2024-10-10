@@ -66,9 +66,7 @@ def compile_assembly(user_written_code: str):
     for line in lines:
         if line["command"] == "DAT":
             created_labels[line["create_label"]] = None
-    
-    print(f"Created labels {created_labels}")
-    
+        
     # ensure all used labels have been created
     for line in lines:
         if "uses_label" in line:
@@ -107,8 +105,6 @@ def compile_assembly(user_written_code: str):
         if "create_label" in line:
             created_labels[line["create_label"]] = line["memory_address"]
         address += 1
-
-    print(lines)
     
     # loop through lines to populate result
     for line in lines:
