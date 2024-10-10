@@ -163,26 +163,3 @@ def compile_assembly(user_written_code: str):
         result["memory_and_registers"]["memory"][line["memory_address"]] = line_in_memory
 
     return result
-
-if __name__ == "__main__":
-    print(compile_assembly("""// store an input
-// at position first
-INP
-STA first
-// store an input at
-// position second
-INP
-STA second
-// load the first value
-LDA first
-// subtract the
-// second
-SUB second
-// output the difference
-// and halt execution
-OUT
-HLT
-
-// use the DAT command to create to 'variables' called first and second, and set them both to 0
-first DAT 000
-second DAT 000"""))
