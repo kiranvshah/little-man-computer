@@ -7,7 +7,23 @@ instructions_3_words = {"DAT"} # command at words[1]
 instructions = instructions_1_word | instructions_2_words | instructions_3_words
 
 def compile_assembly(user_written_code: str):
-    """Return the compiled user-written assembly as cleaned-up code and memory/register contents."""
+    """Compile user-written assembly into cleaned-up code and memory/register contents.
+
+    Parameters
+    ----------
+    user_written_code : str
+        The original assembly code as written by user.
+
+    Returns
+    -------
+    dict
+        The result dictionary, containing cleaned-up code and memory/register contents.
+
+    Raises
+    ------
+    ValueError
+        Incorrect assembly code written by user.
+    """    
     lines = []
     for index, line in enumerate(user_written_code.split("\n")):
         original_line_number = index + 1
