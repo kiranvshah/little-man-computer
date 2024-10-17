@@ -4,7 +4,8 @@
 instructions_0_args = {"INP", "OUT", "HLT", "DAT"}
 instructions_1_arg_is_label = {"ADD", "SUB", "STA", "LDA", "BRA", "BRZ", "BRP"}
 instructions_1_arg_is_value = {"DAT"}
-instructions = instructions_0_args | instructions_1_arg_is_label | instructions_1_arg_is_value
+instructions_1_arg = instructions_1_arg_is_label | instructions_1_arg_is_value
+instructions = instructions_0_args | instructions_1_arg
 
 def compile_assembly(user_written_code: str):
     """Compile user-written assembly into cleaned-up code and memory/register contents.
@@ -46,10 +47,16 @@ def compile_assembly(user_written_code: str):
                 raise ValueError(original_line_number, "Invalid instruction")
 
         elif len(words) == 3:
-            if words[1] != "DAT":
+            # words[1] must be the command
+            if words[1] not in instructions_1_arg:
+                if words[1] in instructions_0_args:
+                    raise ValueError(
+                        original_line_number,
+                        "Instruction does not take arguments, received one."
+                    )
                 raise ValueError(
                     original_line_number,
-                    "Line with 3 words should have structure: <label>, DAT, <value>"
+                    "Line with 3 words should have structure: <label>, <command>, <value>."
                 )
             # process label in words[0] and value in words[2]
             label = words[0]
@@ -66,6 +73,10 @@ def compile_assembly(user_written_code: str):
                     original_line_number,
                     f"Expected number 0-999, received {value} (out of range)"
                 )
+         
+            # validate label
+            # todo: ensure label has valid chars (only alpha?)
+            # todo: ensure label is not a command word
 
             lines.append({
                 "create_label": label,
@@ -78,7 +89,7 @@ def compile_assembly(user_written_code: str):
             if words[0] in instructions_1_arg_is_label:
                 # process command
                 lines.append({
-                    "uses_label": words[1], # todo: ensure label has valid chars (only alpha?)
+                    "uses_label": words[1],
                     "command": words[0],
                 })
             else:
@@ -86,7 +97,7 @@ def compile_assembly(user_written_code: str):
 
     # process code from intermediate object to finished form
 
-    # get labels created by DAT
+    # get labels created
     created_labels = {} # {<name>: <memory address>}
     for line in lines:
         if line["command"] == "DAT":
