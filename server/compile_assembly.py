@@ -1,10 +1,10 @@
 """Functions:
     compile_assembly(user_written_code) -> result"""
 
-instructions_1_word = {"INP", "OUT", "HLT", "DAT"} # command at words[0]
-instructions_2_words = {"ADD", "SUB", "STA", "LDA", "BRA", "BRZ", "BRP"} # command at words[0]
-instructions_3_words = {"DAT"} # command at words[1]
-instructions = instructions_1_word | instructions_2_words | instructions_3_words
+instructions_0_args = {"INP", "OUT", "HLT", "DAT"}
+instructions_1_arg_is_label = {"ADD", "SUB", "STA", "LDA", "BRA", "BRZ", "BRP"}
+instructions_1_arg_is_value = {"DAT"}
+instructions = instructions_0_args | instructions_1_arg_is_label | instructions_1_arg_is_value
 
 def compile_assembly(user_written_code: str):
     """Compile user-written assembly into cleaned-up code and memory/register contents.
@@ -23,7 +23,7 @@ def compile_assembly(user_written_code: str):
     ------
     ValueError
         Incorrect assembly code written by user.
-    """    
+    """
     lines = []
     for index, line in enumerate(user_written_code.split("\n")):
         original_line_number = index + 1
@@ -37,7 +37,7 @@ def compile_assembly(user_written_code: str):
             raise ValueError(original_line_number, "There cannot be more than 3 words on one line")
 
         if len(words) == 1:
-            if line in instructions_1_word:
+            if line in instructions_0_args:
                 lines.append({ "command": line })
             else:
                 # received a line with only 1 word, but it is not an instruction that takes no args
@@ -75,7 +75,7 @@ def compile_assembly(user_written_code: str):
 
         else:
             # len(words) is 2
-            if words[0] in instructions_2_words:
+            if words[0] in instructions_1_arg_is_label:
                 # process command
                 lines.append({
                     "uses_label": words[1], # todo: ensure label has valid chars (only alpha?)
