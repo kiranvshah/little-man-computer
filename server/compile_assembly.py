@@ -73,10 +73,20 @@ def compile_assembly(user_written_code: str):
                     original_line_number,
                     f"Expected number 0-999, received {value} (out of range)"
                 )
-         
+
             # validate label
-            # todo: ensure label has valid chars (only alpha?)
-            # todo: ensure label is not a command word
+            # ensure label has valid chars (only alpha?)
+            if not (label.isalnum() and label[0].isalpha()):
+                raise ValueError(
+                    original_line_number,
+                    f"Label \"{label}\" must begin with a letter and be completely alphanumeric"
+                )
+            # ensure label is not a command word
+            if label in instructions:
+                raise ValueError(
+                    original_line_number,
+                    f"Label \"{label}\" cannot be an instruction"
+                )
 
             lines.append({
                 "create_label": label,
