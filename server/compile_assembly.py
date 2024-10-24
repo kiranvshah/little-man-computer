@@ -60,19 +60,8 @@ def compile_assembly(user_written_code: str):
                 )
             # process label in words[0] and value in words[2]
             label = words[0]
-            value = words[2]
-
-            # validate value
-            if not value.isdigit():
-                raise ValueError(
-                    original_line_number,
-                    f"Expected number 0-999, received {value} (not a number)"
-                )
-            if not 0 <= int(value) <= 999:
-                raise ValueError(
-                    original_line_number,
-                    f"Expected number 0-999, received {value} (out of range)"
-                )
+            instruction = words[1]
+            arg = words[2]
 
             # validate label
             # ensure label has valid chars (only alpha?)
@@ -88,11 +77,32 @@ def compile_assembly(user_written_code: str):
                     f"Label \"{label}\" cannot be an instruction"
                 )
 
-            lines.append({
-                "create_label": label,
-                "command": words[1],
-                "value": value,
-            })
+            if instruction == "DAT":
+                # validate value
+                if not arg.isdigit():
+                    raise ValueError(
+                        original_line_number,
+                        f"Expected number 0-999, received {arg} (not a number)"
+                    )
+                if not 0 <= int(arg) <= 999:
+                    raise ValueError(
+                        original_line_number,
+                        f"Expected number 0-999, received {arg} (out of range)"
+                    )
+
+                lines.append({
+                    "create_label": label,
+                    "command": words[1],
+                    "value": arg,
+                })
+            else:
+                # todo: validate arg as label
+                lines.append({
+                    "create_label": label,
+                    "command": words[1],
+                    "uses_label": arg,
+                })
+
 
         else:
             # len(words) is 2
@@ -193,10 +203,31 @@ def compile_assembly(user_written_code: str):
             line_in_memory += used_label_loc
 
         if "create_label" in line:
-            value = line["value"]
-            cleaned_up_line += f" {value}"
+            arg = line["value"]
+            cleaned_up_line += f" {arg}"
 
         result["compiled_code"].append(cleaned_up_line)
         result["memory_and_registers"]["memory"][line["memory_address"]] = line_in_memory
 
     return result
+
+
+if __name__ == "__main__":
+    print(compile_assembly("""        lda space
+        sta char
+loop    lda char
+        out
+        lda space
+        lda char
+        add one
+        sta char
+        sub max
+        brz end
+        bra loop
+end     hlt
+space   dat 32
+one     dat 1
+max     dat 97
+char    dat
+// start of ASCII character table
+"""))
