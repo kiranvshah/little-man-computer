@@ -112,8 +112,12 @@ def compile_assembly(user_written_code: str):
                     "uses_label": words[1],
                     "command": words[0],
                 })
+            elif words[1] in instructions_0_args:
+                # line has structure <label> <instruction>
+                # todo: process line
+                ...
             else:
-                raise ValueError(original_line_number, f"Invalid instruction. Received {words[0]}")
+                raise ValueError(original_line_number, "Invalid line")
 
     # process code from intermediate object to finished form
 
