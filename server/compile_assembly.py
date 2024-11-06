@@ -149,9 +149,8 @@ def compile_assembly(user_written_code: str):
             if line["uses_label"] not in created_labels:
                 # todo: consider passing original line numbers to intermediate obj so they can be displayed in this error message?
                 raise ValueError(
-                    f"""Label \"{
-                        line["uses_label"]
-                    }\" used without being created. Create labels with DAT.""",  # todo: not only DAT can create labels now (#12)
+                    f"Label \"{line["uses_label"]}\" used without being created.\
+ Create labels by putting a label name at start of line.",
                 )
 
     if len(lines) > 100:
@@ -252,3 +251,4 @@ max     dat 97
 char    dat
 // start of ASCII character table
 """))
+# todo: this still doesn't work as expected!!
