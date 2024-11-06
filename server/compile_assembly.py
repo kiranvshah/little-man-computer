@@ -7,6 +7,29 @@ instructions_1_arg_is_value = {"DAT"}
 instructions_1_arg = instructions_1_arg_is_label | instructions_1_arg_is_value
 instructions = instructions_0_args | instructions_1_arg
 
+def validate_label_name(label: str, line_number: int):
+    """Validate the name of a label to be created and raise error if invalid.
+
+    Parameters
+    ----------
+    label : str
+        The name of the label to validate.
+    line_number : int
+        The line number on which this label name was written in the user-written code.
+    """
+    # ensure label has valid chars (only alpha?)
+    if not (label.isalnum() and label[0].isalpha()):
+        raise ValueError(
+            line_number,
+            f"Label \"{label}\" must begin with a letter and be completely alphanumeric"
+        )
+    # ensure label is not a command word
+    if label in instructions:
+        raise ValueError(
+            line_number,
+            f"Label \"{label}\" cannot be an instruction"
+        )
+
 def compile_assembly(user_written_code: str):
     """Compile user-written assembly into cleaned-up code and memory/register contents.
 
@@ -64,18 +87,7 @@ def compile_assembly(user_written_code: str):
             arg = words[2]
 
             # validate label
-            # ensure label has valid chars (only alpha?)
-            if not (label.isalnum() and label[0].isalpha()):
-                raise ValueError(
-                    original_line_number,
-                    f"Label \"{label}\" must begin with a letter and be completely alphanumeric"
-                )
-            # ensure label is not a command word
-            if label in instructions:
-                raise ValueError(
-                    original_line_number,
-                    f"Label \"{label}\" cannot be an instruction"
-                )
+            validate_label_name(label, original_line_number)
 
             if instruction == "DAT":
                 # validate value
@@ -114,8 +126,13 @@ def compile_assembly(user_written_code: str):
                 })
             elif words[1] in instructions_0_args:
                 # line has structure <label> <instruction>
-                # todo: process line
-                ...
+                label = words[0]
+                instruction = words[1]
+                validate_label_name(label, original_line_number)
+                lines.append({
+                    "create_label": label,
+                    "command": instruction,
+                })
             else:
                 raise ValueError(original_line_number, "Invalid line")
 
