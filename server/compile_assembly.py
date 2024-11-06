@@ -106,7 +106,7 @@ def compile_assembly(user_written_code: str):
                 lines.append({
                     "create_label": label,
                     "command": words[1],
-                    "value": arg,
+                    "value": arg.zfill(3),
                 })
             else:
                 lines.append({
@@ -136,12 +136,13 @@ def compile_assembly(user_written_code: str):
             else:
                 raise ValueError(original_line_number, "Invalid line. Could not find instruction.")
 
+    print(lines)
     # process code from intermediate object to finished form
 
     # get labels created
     created_labels = {} # {<name>: <memory address>}
     for line in lines:
-        if line["command"] == "DAT":
+        if "create_label" in line:
             created_labels[line["create_label"]] = None
 
     # ensure all used labels have been created
@@ -213,7 +214,10 @@ def compile_assembly(user_written_code: str):
             case "HLT":
                 line_in_memory += "000"
             case "DAT":
-                line_in_memory += line["value"]
+                if "value" in line:
+                    line_in_memory += line["value"]
+                else:
+                    line_in_memory += "000"
             case _:
                 pass
 
@@ -223,9 +227,12 @@ def compile_assembly(user_written_code: str):
             # add operand (label address) to line_in_memory
             line_in_memory += used_label_loc
 
-        if "create_label" in line:
-            arg = line["value"]
-            cleaned_up_line += f" {arg}"
+        if line["command"] == "DAT":
+            if "value" in line:
+                cleaned_up_line += f" {line["value"]}"
+            else:
+                cleaned_up_line += " 000"
+            # todo: consider moving to match case? will this break if line also uses label?
 
         result["compiled_code"].append(cleaned_up_line)
         result["memory_and_registers"]["memory"][line["memory_address"]] = line_in_memory
@@ -252,4 +259,3 @@ max     dat 97
 char    dat
 // start of ASCII character table
 """))
-# todo: this still doesn't work as expected!!
