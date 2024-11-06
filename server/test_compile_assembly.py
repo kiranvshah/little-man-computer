@@ -1,8 +1,9 @@
 """Tests for compile_assembly.py"""
 
+import pytest
 from compile_assembly import compile_assembly
 
-def test_user_written_program():
+def test_subtraction_program():
     """Test compile_assembly() with a program that subtracts two numbers."""
     user_written_code = """// store an input
 // at position first
@@ -158,3 +159,8 @@ second DAT 000"""
         },
     }
     assert compile_assembly(user_written_code) == expected_result
+
+def test_invalid_label():
+    user_written_code = "1nvalidlabel HLT"
+    with pytest.raises(ValueError):
+        compile_assembly(user_written_code)

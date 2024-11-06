@@ -1,11 +1,36 @@
 """Functions:
     compile_assembly(user_written_code) -> result"""
 
-instructions_1_word = {"INP", "OUT", "HLT", "DAT"} # command at words[0]
-instructions_2_words = {"ADD", "SUB", "STA", "LDA", "BRA", "BRZ", "BRP"} # command at words[0]
-instructions_3_words = {"DAT"} # command at words[1]
-instructions = instructions_1_word | instructions_2_words | instructions_3_words
+instructions_0_args = {"INP", "OUT", "HLT", "DAT"}
+instructions_1_arg_is_label = {"ADD", "SUB", "STA", "LDA", "BRA", "BRZ", "BRP"}
+instructions_1_arg_is_value = {"DAT"}
+instructions_1_arg = instructions_1_arg_is_label | instructions_1_arg_is_value
+instructions = instructions_0_args | instructions_1_arg
 
+def validate_label_name(label: str, line_number: int):
+    """Validate the name of a label to be created and raise error if invalid.
+
+    Parameters
+    ----------
+    label : str
+        The name of the label to validate.
+    line_number : int
+        The line number on which this label name was written in the user-written code.
+    """
+    # ensure label has valid chars (only alpha?)
+    if not (label.isalnum() and label[0].isalpha()):
+        raise ValueError(
+            line_number,
+            f"Label \"{label}\" must begin with a letter and be completely alphanumeric"
+        )
+    # ensure label is not a command word
+    if label in instructions:
+        raise ValueError(
+            line_number,
+            f"Label \"{label}\" cannot be an instruction"
+        )
+
+# todo: could this function benefit from more decomposition?
 def compile_assembly(user_written_code: str):
     """Compile user-written assembly into cleaned-up code and memory/register contents.
 
@@ -23,7 +48,7 @@ def compile_assembly(user_written_code: str):
     ------
     ValueError
         Incorrect assembly code written by user.
-    """    
+    """
     lines = []
     for index, line in enumerate(user_written_code.split("\n")):
         original_line_number = index + 1
@@ -37,7 +62,7 @@ def compile_assembly(user_written_code: str):
             raise ValueError(original_line_number, "There cannot be more than 3 words on one line")
 
         if len(words) == 1:
-            if line in instructions_1_word:
+            if line in instructions_0_args:
                 lines.append({ "command": line })
             else:
                 # received a line with only 1 word, but it is not an instruction that takes no args
@@ -46,60 +71,88 @@ def compile_assembly(user_written_code: str):
                 raise ValueError(original_line_number, "Invalid instruction")
 
         elif len(words) == 3:
-            if words[1] != "DAT":
+            # words[1] must be the command
+            if words[1] not in instructions_1_arg:
+                if words[1] in instructions_0_args:
+                    raise ValueError(
+                        original_line_number,
+                        "Instruction does not take arguments, received one."
+                    )
                 raise ValueError(
                     original_line_number,
-                    "Line with 3 words should have structure: <label>, DAT, <value>"
+                    "Line with 3 words should have structure: <label>, <command>, <value>."
                 )
             # process label in words[0] and value in words[2]
             label = words[0]
-            value = words[2]
+            instruction = words[1]
+            arg = words[2]
 
-            # validate value
-            if not value.isdigit():
-                raise ValueError(
-                    original_line_number,
-                    f"Expected number 0-999, received {value} (not a number)"
-                )
-            if not 0 <= int(value) <= 999:
-                raise ValueError(
-                    original_line_number,
-                    f"Expected number 0-999, received {value} (out of range)"
-                )
+            # validate label
+            validate_label_name(label, original_line_number)
 
-            lines.append({
-                "create_label": label,
-                "command": words[1],
-                "value": value,
-            })
+            if instruction == "DAT":
+                # validate value
+                if not arg.isdigit():
+                    raise ValueError(
+                        original_line_number,
+                        f"Expected number 0-999, received {arg} (not a number)"
+                    )
+                if not 0 <= int(arg) <= 999:
+                    raise ValueError(
+                        original_line_number,
+                        f"Expected number 0-999, received {arg} (out of range)"
+                    )
+
+                lines.append({
+                    "create_label": label,
+                    "command": words[1],
+                    "value": arg.zfill(3),
+                })
+            else:
+                lines.append({
+                    "create_label": label,
+                    "command": words[1],
+                    "uses_label": arg,
+                })
+
 
         else:
             # len(words) is 2
-            if words[0] in instructions_2_words:
+            if words[0] in instructions_1_arg_is_label:
                 # process command
                 lines.append({
-                    "uses_label": words[1], # todo: ensure label has valid chars (only alpha?)
+                    "uses_label": words[1],
                     "command": words[0],
                 })
+            elif words[1] in instructions_0_args:
+                # line has structure <label> <instruction>
+                label = words[0]
+                instruction = words[1]
+                validate_label_name(label, original_line_number)
+                lines.append({
+                    "create_label": label,
+                    "command": instruction,
+                })
             else:
-                raise ValueError(original_line_number, f"Invalid instruction. Received {words[0]}")
+                raise ValueError(original_line_number, "Invalid line. Could not find instruction.")
 
+    print(lines)
     # process code from intermediate object to finished form
 
-    # get labels created by DAT
+    # get labels created
     created_labels = {} # {<name>: <memory address>}
     for line in lines:
-        if line["command"] == "DAT":
+        if "create_label" in line:
             created_labels[line["create_label"]] = None
 
     # ensure all used labels have been created
     for line in lines:
         if "uses_label" in line:
             if line["uses_label"] not in created_labels:
+                # todo: consider passing original line numbers to intermediate obj so they can be displayed in this error message?
                 raise ValueError(
-                    f"""Label \"{
-                        line["uses_label"]
-                    }\" used without being created. Create labels with DAT.""",
+                    f"Label \"{line["uses_label"]}\" used without being created.\
+ Create labels by putting a label name at start of line.",
                 )
 
     if len(lines) > 100:
@@ -161,7 +214,9 @@ def compile_assembly(user_written_code: str):
             case "HLT":
                 line_in_memory += "000"
             case "DAT":
-                line_in_memory += line["value"]
+                val = line["value"] if "value" in line else "000"
+                line_in_memory += val
+                cleaned_up_line += " " + val
             case _:
                 pass
 
@@ -170,10 +225,6 @@ def compile_assembly(user_written_code: str):
             cleaned_up_line += f" {used_label_loc}"
             # add operand (label address) to line_in_memory
             line_in_memory += used_label_loc
-
-        if "create_label" in line:
-            value = line["value"]
-            cleaned_up_line += f" {value}"
 
         result["compiled_code"].append(cleaned_up_line)
         result["memory_and_registers"]["memory"][line["memory_address"]] = line_in_memory
