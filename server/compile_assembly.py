@@ -30,6 +30,7 @@ def validate_label_name(label: str, line_number: int):
             f"Label \"{label}\" cannot be an instruction"
         )
 
+# todo: could this function benefit from more decomposition?
 def compile_assembly(user_written_code: str):
     """Compile user-written assembly into cleaned-up code and memory/register contents.
 
