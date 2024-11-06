@@ -214,10 +214,9 @@ def compile_assembly(user_written_code: str):
             case "HLT":
                 line_in_memory += "000"
             case "DAT":
-                if "value" in line:
-                    line_in_memory += line["value"]
-                else:
-                    line_in_memory += "000"
+                val = line["value"] if "value" in line else "000"
+                line_in_memory += val
+                cleaned_up_line += " " + val
             case _:
                 pass
 
@@ -226,13 +225,6 @@ def compile_assembly(user_written_code: str):
             cleaned_up_line += f" {used_label_loc}"
             # add operand (label address) to line_in_memory
             line_in_memory += used_label_loc
-
-        if line["command"] == "DAT":
-            if "value" in line:
-                cleaned_up_line += f" {line["value"]}"
-            else:
-                cleaned_up_line += " 000"
-            # todo: consider moving to match case? will this break if line also uses label?
 
         result["compiled_code"].append(cleaned_up_line)
         result["memory_and_registers"]["memory"][line["memory_address"]] = line_in_memory
