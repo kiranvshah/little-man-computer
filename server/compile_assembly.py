@@ -133,7 +133,7 @@ def compile_assembly(user_written_code: str):
                     "command": instruction,
                 })
             else:
-                raise ValueError(original_line_number, "Invalid line")
+                raise ValueError(original_line_number, "Invalid line. Could not find instruction.")
 
     # process code from intermediate object to finished form
 
@@ -147,10 +147,11 @@ def compile_assembly(user_written_code: str):
     for line in lines:
         if "uses_label" in line:
             if line["uses_label"] not in created_labels:
+                # todo: consider passing original line numbers to intermediate obj so they can be displayed in this error message?
                 raise ValueError(
                     f"""Label \"{
                         line["uses_label"]
-                    }\" used without being created. Create labels with DAT.""",
+                    }\" used without being created. Create labels with DAT.""",  # todo: not only DAT can create labels now (#12)
                 )
 
     if len(lines) > 100:
