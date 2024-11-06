@@ -230,24 +230,3 @@ def compile_assembly(user_written_code: str):
         result["memory_and_registers"]["memory"][line["memory_address"]] = line_in_memory
 
     return result
-
-
-if __name__ == "__main__":
-    print(compile_assembly("""        lda space
-        sta char
-loop    lda char
-        out
-        lda space
-        lda char
-        add one
-        sta char
-        sub max
-        brz end
-        bra loop
-end     hlt
-space   dat 32
-one     dat 1
-max     dat 97
-char    dat
-// start of ASCII character table
-"""))
