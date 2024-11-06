@@ -108,7 +108,6 @@ def compile_assembly(user_written_code: str):
                     "value": arg,
                 })
             else:
-                # todo: validate arg as label
                 lines.append({
                     "create_label": label,
                     "command": words[1],
