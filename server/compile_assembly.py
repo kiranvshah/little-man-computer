@@ -1,4 +1,5 @@
 """Functions:
+    validate_label_name(label: str, line_number: int) -> None
     compile_assembly(user_written_code) -> result"""
 
 instructions_0_args = {"INP", "OUT", "HLT", "DAT"}
