@@ -193,6 +193,7 @@ def compile_assembly(user_written_code: str):
         line_in_memory = ""
 
         # add opcode to line_in_memory
+        # todo: use dictionary of functions instead of match case? use functools.partial for all but DAT to have function with arg for num to put in memory.
         match line["instruction"]:
             case "ADD":
                 line_in_memory += "1"
