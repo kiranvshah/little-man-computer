@@ -71,7 +71,27 @@ def compile_assembly(user_written_code: str):
                     raise ValueError(original_line_number, "Missing an argument for instruction")
                 raise ValueError(original_line_number, "Invalid instruction")
 
-        elif len(words) == 3:
+        elif len(words) == 2:
+            if words[0] in instructions_1_arg_is_label:
+                # process instruction
+                lines.append({
+                    "uses_label": words[1],
+                    "instruction": words[0],
+                })
+            elif words[1] in instructions_0_args:
+                # line has structure <label> <instruction>
+                label = words[0]
+                instruction = words[1]
+                validate_label_name(label, original_line_number)
+                lines.append({
+                    "create_label": label,
+                    "instruction": instruction,
+                })
+            else:
+                raise ValueError(original_line_number, "Invalid line. Could not find instruction.")
+
+        else:
+            # len(words) is 3
             # words[1] must be the instruction
             if words[1] not in instructions_1_arg:
                 if words[1] in instructions_0_args:
@@ -116,26 +136,6 @@ def compile_assembly(user_written_code: str):
                     "uses_label": arg,
                 })
 
-
-        else:
-            # len(words) is 2
-            if words[0] in instructions_1_arg_is_label:
-                # process instruction
-                lines.append({
-                    "uses_label": words[1],
-                    "instruction": words[0],
-                })
-            elif words[1] in instructions_0_args:
-                # line has structure <label> <instruction>
-                label = words[0]
-                instruction = words[1]
-                validate_label_name(label, original_line_number)
-                lines.append({
-                    "create_label": label,
-                    "instruction": instruction,
-                })
-            else:
-                raise ValueError(original_line_number, "Invalid line. Could not find instruction.")
 
     print(lines)
     # process code from intermediate object to finished form
