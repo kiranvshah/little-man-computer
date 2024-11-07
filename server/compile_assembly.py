@@ -24,7 +24,7 @@ def validate_label_name(label: str, line_number: int):
             line_number,
             f"Label \"{label}\" must begin with a letter and be completely alphanumeric"
         )
-    # ensure label is not a command word
+    # ensure label is not an instruction
     if label in instructions:
         raise ValueError(
             line_number,
@@ -64,7 +64,7 @@ def compile_assembly(user_written_code: str):
 
         if len(words) == 1:
             if line in instructions_0_args:
-                lines.append({ "command": line })
+                lines.append({ "instruction": line })
             else:
                 # received a line with only 1 word, but it is not an instruction that takes no args
                 if line in instructions:
@@ -72,7 +72,7 @@ def compile_assembly(user_written_code: str):
                 raise ValueError(original_line_number, "Invalid instruction")
 
         elif len(words) == 3:
-            # words[1] must be the command
+            # words[1] must be the instruction
             if words[1] not in instructions_1_arg:
                 if words[1] in instructions_0_args:
                     raise ValueError(
@@ -81,7 +81,7 @@ def compile_assembly(user_written_code: str):
                     )
                 raise ValueError(
                     original_line_number,
-                    "Line with 3 words should have structure: <label>, <command>, <value>."
+                    "Line with 3 words should have structure: <label>, <instruction>, <value>."
                 )
             # process label in words[0] and value in words[2]
             label = words[0]
@@ -106,13 +106,13 @@ def compile_assembly(user_written_code: str):
 
                 lines.append({
                     "create_label": label,
-                    "command": words[1],
+                    "instruction": words[1],
                     "value": arg.zfill(3),
                 })
             else:
                 lines.append({
                     "create_label": label,
-                    "command": words[1],
+                    "instruction": words[1],
                     "uses_label": arg,
                 })
 
@@ -120,10 +120,10 @@ def compile_assembly(user_written_code: str):
         else:
             # len(words) is 2
             if words[0] in instructions_1_arg_is_label:
-                # process command
+                # process instruction
                 lines.append({
                     "uses_label": words[1],
-                    "command": words[0],
+                    "instruction": words[0],
                 })
             elif words[1] in instructions_0_args:
                 # line has structure <label> <instruction>
@@ -132,7 +132,7 @@ def compile_assembly(user_written_code: str):
                 validate_label_name(label, original_line_number)
                 lines.append({
                     "create_label": label,
-                    "command": instruction,
+                    "instruction": instruction,
                 })
             else:
                 raise ValueError(original_line_number, "Invalid line. Could not find instruction.")
@@ -189,11 +189,11 @@ def compile_assembly(user_written_code: str):
 
     # loop through lines to populate result
     for line in lines:
-        cleaned_up_line = f"{line["memory_address"]} {line["command"]}"
+        cleaned_up_line = f"{line["memory_address"]} {line["instruction"]}"
         line_in_memory = ""
 
         # add opcode to line_in_memory
-        match line["command"]:
+        match line["instruction"]:
             case "ADD":
                 line_in_memory += "1"
             case "SUB":

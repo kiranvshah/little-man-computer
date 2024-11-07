@@ -23,7 +23,7 @@ SUB second
 OUT
 HLT
 
-// use the DAT command to create to 'variables' called first and second, and set them both to 0
+// use the DAT instruction to create two 'variables' called first and second, and set them both to 0
 first DAT 000
 second DAT 000"""
 
