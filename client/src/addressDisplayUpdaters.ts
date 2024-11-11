@@ -66,3 +66,13 @@ export function updateIr(value: string) {
 	const irSpan = document.getElementById("irValueSpan") as HTMLSpanElement;
 	irSpan.innerText = value;
 }
+
+/**
+ * Updates the value displayed in the carry flag.
+ * @param {string} value The value to display (0 or 1).
+ */
+export function updateCarryFlag(value: string) {
+	console.assert(value == "0" || value == "1");
+	const carrySpan = document.getElementById("carryValueSpan") as HTMLSpanElement;
+	carrySpan.innerText = value;
+}
