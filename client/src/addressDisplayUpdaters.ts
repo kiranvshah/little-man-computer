@@ -73,6 +73,8 @@ export function updateIr(value: string) {
  */
 export function updateCarryFlag(value: string) {
 	console.assert(value == "0" || value == "1");
-	const carrySpan = document.getElementById("carryValueSpan") as HTMLSpanElement;
+	const carrySpan = document.getElementById(
+		"carryValueSpan",
+	) as HTMLSpanElement;
 	carrySpan.innerText = value;
 }
