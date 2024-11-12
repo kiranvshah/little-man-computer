@@ -1,9 +1,19 @@
 class Computer:
+    """A `Computer` object is instantiated with memory and register contents every time the client
+    asks to step."""
     def __init__(self, memory_and_registers):
         self.memory_and_registers = memory_and_registers
 
     def step(self):
-        pass
+        """This is called every time the client requests to steps
+
+        Returns:
+            _type_: _description_
+        """
+        return {
+            "memory_and_registers": self.memory_and_registers,
+            "transfers": [],
+        }
 
 
 if __name__ == "__main__":
