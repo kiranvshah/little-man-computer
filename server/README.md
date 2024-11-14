@@ -10,7 +10,12 @@ pip install -r requirements.txt
 
 ## Running
 
-The Flask server is not yet built.
+In a terminal in the `server` directory:
+```sh
+./run_server.sh
+```
+
+This will run the Flask server.
 
 ## Testing
 
