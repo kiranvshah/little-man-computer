@@ -31,7 +31,7 @@ for (let rowNumber = 0; rowNumber < 10; rowNumber++) {
 	memoryTableBody.appendChild(row);
 }
 
-function assembleCode() {
+async function assembleCode() {
 	const uncompiledCodeTextarea = document.getElementById(
 		"uncompiledAssemblyTextarea",
 	) as HTMLTextAreaElement;
@@ -40,4 +40,10 @@ function assembleCode() {
 	) as HTMLTextAreaElement;
 	const uncompiledCode = uncompiledCodeTextarea.value;
 	// todo: use Fetch API & SERVER_URL to run /api/compile
+	const response = await fetch(`${SERVER_URL}/api/compile`, {
+		method: "POST",
+		body: JSON.stringify({ uncompiledCode }),
+		headers: { "Content-Type": "application/json" },
+		mode: "cors",
+	  });
 }
