@@ -1,6 +1,7 @@
 import { updateMemoryLocation } from "./addressDisplayUpdaters.js";
 
-const SERVER_URL = "https://reimagined-garbanzo-x7jqqp496g5fp7gg-5000.app.github.dev"
+const SERVER_URL =
+	"https://reimagined-garbanzo-x7jqqp496g5fp7gg-5000.app.github.dev";
 
 // populate memoryTable
 const memoryTableBody = document.getElementById(
@@ -45,5 +46,5 @@ async function assembleCode() {
 		body: JSON.stringify({ uncompiledCode }),
 		headers: { "Content-Type": "application/json" },
 		mode: "cors",
-	  });
+	});
 }
