@@ -1,5 +1,7 @@
 import { updateMemoryLocation } from "./addressDisplayUpdaters.js";
 
+const SERVER_URL = "https://reimagined-garbanzo-x7jqqp496g5fp7gg-5000.app.github.dev"
+
 // populate memoryTable
 const memoryTableBody = document.getElementById(
 	"memoryTbody",
@@ -37,5 +39,5 @@ function assembleCode() {
 		"compiledAssemblyTextarea",
 	) as HTMLTextAreaElement;
 	const uncompiledCode = uncompiledCodeTextarea.value;
-	// todo: create env var of server URL so i can use Fetch API to run /api/compile
+	// todo: use Fetch API & SERVER_URL to run /api/compile
 }
