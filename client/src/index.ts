@@ -28,3 +28,14 @@ for (let rowNumber = 0; rowNumber < 10; rowNumber++) {
 	}
 	memoryTableBody.appendChild(row);
 }
+
+function assembleCode() {
+	const uncompiledCodeTextarea = document.getElementById(
+		"uncompiledAssemblyTextarea",
+	) as HTMLTextAreaElement;
+	const compiledCodeTextarea = document.getElementById(
+		"compiledAssemblyTextarea",
+	) as HTMLTextAreaElement;
+	const uncompiledCode = uncompiledCodeTextarea.value;
+	// todo: create env var of server URL so i can use Fetch API to run /api/compile
+}
