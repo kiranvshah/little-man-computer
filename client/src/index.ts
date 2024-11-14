@@ -48,3 +48,8 @@ async function assembleCode() {
 		mode: "cors",
 	});
 }
+document.addEventListener("DOMContentLoaded", () =>
+	(
+		document.getElementById("assembleButton") as HTMLButtonElement
+	).addEventListener("click", assembleCode),
+);
