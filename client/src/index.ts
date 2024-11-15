@@ -45,7 +45,7 @@ async function checkCode() {
 		mode: "cors",
 	});
 	console.log(response.body);
-	if (response.status != 200 || response.body)
+	if (response.status != 200 || !response.body)
 		alert("Bad response from server");
 }
 
