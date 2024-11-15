@@ -44,7 +44,9 @@ async function checkCode() {
 		headers: { "Content-Type": "application/json" },
 		mode: "cors",
 	});
-	console.log(response.body)
+	console.log(response.body);
+	if (response.status != 200 || response.body)
+		alert("Bad response from server");
 }
 
 async function assembleCode() {
