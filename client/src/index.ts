@@ -32,15 +32,27 @@ for (let rowNumber = 0; rowNumber < 10; rowNumber++) {
 	memoryTableBody.appendChild(row);
 }
 
+const getUncompiledCode = () =>
+	(document.getElementById("uncompiledAssemblyTextarea") as HTMLTextAreaElement)
+		.value;
+
+async function checkCode() {
+	const uncompiledCode = getUncompiledCode();
+	const response = await fetch(`${SERVER_URL}/api/check`, {
+		method: "POST",
+		body: JSON.stringify({ uncompiledCode }),
+		headers: { "Content-Type": "application/json" },
+		mode: "cors",
+	});
+	console.log(response)
+}
+
 async function assembleCode() {
-	const uncompiledCodeTextarea = document.getElementById(
-		"uncompiledAssemblyTextarea",
-	) as HTMLTextAreaElement;
 	const compiledCodeTextarea = document.getElementById(
 		"compiledAssemblyTextarea",
 	) as HTMLTextAreaElement;
-	const uncompiledCode = uncompiledCodeTextarea.value;
-	// todo: use Fetch API & SERVER_URL to run /api/compile
+	const uncompiledCode = getUncompiledCode();
+	// use Fetch API & SERVER_URL to run /api/compile
 	const response = await fetch(`${SERVER_URL}/api/compile`, {
 		method: "POST",
 		body: JSON.stringify({ uncompiledCode }),
