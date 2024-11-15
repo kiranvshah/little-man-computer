@@ -1,6 +1,7 @@
 """Functions:
     validate_label_name(label: str, line_number: int) -> None
-    compile_assembly(user_written_code) -> result"""
+    compile_assembly(user_written_code: str) -> result
+    check_assembly(user_written_code: str) -> bool"""
 
 instructions_0_args = {"INP", "OUT", "HLT", "DAT"}
 instructions_1_arg_is_label = {"ADD", "SUB", "STA", "LDA", "BRA", "BRZ", "BRP"}
@@ -232,3 +233,18 @@ def compile_assembly(user_written_code: str):
         result["memory_and_registers"]["memory"][line["memory_address"]] = line_in_memory
 
     return result
+
+def check_assembly(user_written_code: str):
+    """Check if user-written assembly code is valid (will get compiled) successfully.
+
+    Args:
+        user_written_code (str): The original assembly code as written by user.
+
+    Returns:
+        bool: True if the code is valid, False otherwise.
+    """
+    try:
+        compile_assembly(user_written_code)
+    except ValueError:
+        return False
+    return True
