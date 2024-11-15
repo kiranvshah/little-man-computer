@@ -44,7 +44,7 @@ async function checkCode() {
 		headers: { "Content-Type": "application/json" },
 		mode: "cors",
 	});
-	console.log(response)
+	console.log(response);
 }
 
 async function assembleCode() {
