@@ -60,8 +60,12 @@ async function assembleCode() {
 		mode: "cors",
 	});
 }
-document.addEventListener("DOMContentLoaded", () =>
+
+document.addEventListener("DOMContentLoaded", () => {
+	(
+		document.getElementById("checkButton") as HTMLButtonElement
+	).addEventListener("click", checkCode);
 	(
 		document.getElementById("assembleButton") as HTMLButtonElement
-	).addEventListener("click", assembleCode),
-);
+	).addEventListener("click", assembleCode);
+});
