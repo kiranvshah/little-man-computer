@@ -45,8 +45,9 @@ async function checkCode() {
 		mode: "cors",
 	});
 	console.log(response.body);
-	if (response.status != 200 || !response.body)
-		alert("Bad response from server");
+	if (!response.ok) alert("Bad response from server");
+	const resJson = await response.json();
+	// todo: process resJson
 }
 
 async function assembleCode() {
