@@ -4,6 +4,49 @@ class Computer:
     def __init__(self, memory_and_registers):
         self.memory_and_registers = memory_and_registers
 
+    def __fetch(self):
+        transfers = []
+
+        # copy value from program counter to MAR
+        pc_value = self.memory_and_registers["registers"]["PC"]
+        self.memory_and_registers["registers"]["MAR"] = pc_value
+        transfers.append({
+            "start_reg": "PC",
+            "end_reg": "MAR",
+            "value": pc_value,
+        })
+
+        # copy assembly instruction from memory (at address in MAR) to MDR
+        mar_value = self.memory_and_registers["registers"]["MAR"]
+        assembly_instruction = self.memory_and_registers["memory"][mar_value]
+        self.memory_and_registers["registers"]["MDR"] = assembly_instruction
+        transfers.append({
+            "start_mem": mar_value,
+            "end_reg": "MDR",
+            "value": assembly_instruction,
+        })
+
+        # increment program counter by 1
+        pc_value = self.memory_and_registers["registers"]["PC"]
+        self.memory_and_registers["registers"]["PC"] = str(int(pc_value) + 1)
+        # todo: should i have a transfer for this?
+
+        # copy assembly instruction from MDR to IR
+        mdr_value = self.memory_and_registers["registers"]["MDR"]
+        self.memory_and_registers["registers"]["IR"] = mdr_value
+        transfers.append({
+            "start_reg": "MDR",
+            "end_reg": "IR",
+            "value": mdr_value,
+        })
+        return transfers
+
+    def __decode(self):
+        ...
+
+    def __execute(self):
+        ...
+
     def step(self):
         """Runs one FDE cycle and returns new memory/registers and list of transfers (changes)
 
@@ -11,18 +54,14 @@ class Computer:
             _type_: _description_
         """
         # fetch
-        # todo: get value from program counter
-        # todo: copy value from program counter to MAR
-        # todo: copy assembly instruction from memory (at address in MAR) to MDR
-        # todo: increment program counter by 1
-        # todo: copy assembly instruction from MDR to IR
+        transfers = self.__fetch()
 
         # todo: decode
         # todo: execute
 
         return {
             "memory_and_registers": self.memory_and_registers,
-            "transfers": [],
+            "transfers": transfers,
         }
 
     def run_till_hlt(self):
@@ -58,4 +97,4 @@ HLT
 first DAT 000
 second DAT 000""")
     comp = Computer(compile_assembly_result["memory_and_registers"])
-    print(comp)
+    print(comp.step())
