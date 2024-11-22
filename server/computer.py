@@ -5,7 +5,7 @@ class Computer:
         self.memory_and_registers = memory_and_registers
 
     def step(self):
-        """This is called every time the client requests to steps
+        """Runs one FDE cycle and returns new memory/registers and list of transfers (changes)
 
         Returns:
             _type_: _description_
@@ -15,6 +15,13 @@ class Computer:
             "transfers": [],
         }
 
+    def run_till_hlt(self):
+        """Keeps running FDE cycles until a HLT instruction is reached
+
+        Returns:
+            _type_: _description_
+        """
+        return ...
 
 if __name__ == "__main__":
     from compile_assembly import compile_assembly
