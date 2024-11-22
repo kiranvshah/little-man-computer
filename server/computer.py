@@ -10,6 +10,16 @@ class Computer:
         Returns:
             _type_: _description_
         """
+        # fetch
+        # todo: get value from program counter
+        # todo: copy value from program counter to MAR
+        # todo: copy assembly instruction from memory (at address in MAR) to MDR
+        # todo: increment program counter by 1
+        # todo: copy assembly instruction from MDR to IR
+
+        # todo: decode
+        # todo: execute
+
         return {
             "memory_and_registers": self.memory_and_registers,
             "transfers": [],
@@ -21,6 +31,7 @@ class Computer:
         Returns:
             _type_: _description_
         """
+        # todo
         return ...
 
 if __name__ == "__main__":
