@@ -28,3 +28,12 @@ def post_compile():
         response = jsonify({'received': True})
         return response
     return "Expected JSON request", 415 # Unsupported Media Type
+
+@app.post("/api/step")
+def post_step():
+    if request.is_json:
+        req_body = request.get_json()
+        # todo: process request
+        response = jsonify({'received': True})
+        return response
+    return "Expected JSON request", 415
