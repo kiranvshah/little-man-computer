@@ -42,9 +42,11 @@ class Computer:
         return transfers
 
     def __decode(self):
+        # todo
         ...
 
     def __execute(self):
+        # todo
         ...
 
     def step(self):
@@ -64,13 +66,13 @@ class Computer:
             "transfers": transfers,
         }
 
-    def run_till_hlt(self):
-        """Keeps running FDE cycles until a HLT instruction is reached
+    def run(self):
+        """Keeps running FDE cycles until a HLT or INP instruction is reached
 
         Returns:
             _type_: _description_
         """
-        # todo
+        # todo: repeatedly call step
         return ...
 
 if __name__ == "__main__":
