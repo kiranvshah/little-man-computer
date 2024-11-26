@@ -52,8 +52,40 @@ class Computer:
         return transfers
 
     def __decode(self):
-        # todo
-        ...
+        transfers = []
+        reached_hlt = False
+        reached_inp = False
+
+        # opcode is in IR. operand is in MAR.
+        opcode = self.memory_and_registers["registers"]["IR"]
+        operand = self.memory_and_registers["registers"]["MAR"]
+        if opcode in ("9", "0"):
+            # INP, OUT, or HLT. opcode should not be treated as memory address.
+            if opcode == "0" and operand == "00":
+                # todo: HLT
+                reached_hlt = True
+                ...
+            elif opcode == "9" and operand == "01":
+                # todo: INP
+                reached_inp = True
+                ...
+            elif opcode == "9" and operand == "02":
+                # todo: OUT
+                ...
+            else:
+                raise ValueError("Invalid instruction beginning in 0 or 9")
+        else:
+            # fetch from memory location stored in MAR to MDR
+            # todo: should this be in execute?
+            loc = self.memory_and_registers["registers"]["MAR"]
+            argument = self.memory_and_registers["memory"][loc]
+            self.memory_and_registers["registers"]["MDR"] = argument
+            transfers.append({
+                "start_mem": "LOC",
+                "end_reg": "MDR",
+                "value": argument,
+            })
+        return reached_hlt, reached_inp, transfers
 
     def __execute(self):
         # todo
@@ -68,7 +100,11 @@ class Computer:
         # fetch
         transfers = self.__fetch()
 
-        # todo: decode
+        # decode
+        reached_hlt, reached_inp, new_transfers = self.__decode()
+        # todo: handle if reached hlt or inp (must tell client and stop run loop if run called)
+        transfers.extend(new_transfers)
+
         # todo: execute
 
         return {
