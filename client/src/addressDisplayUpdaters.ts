@@ -59,10 +59,10 @@ export function updateMdr(value: string) {
 
 /**
  * Updates the value displayed in the instruction register.
- * @param {string} value The value to display (0-999).
+ * @param {string} value The value to display (0-9).
  */
 export function updateIr(value: string) {
-	console.assert(value.length == 3);
+	console.assert(value.length == 1);
 	const irSpan = document.getElementById("irValueSpan") as HTMLSpanElement;
 	irSpan.innerText = value;
 }
