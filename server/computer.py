@@ -102,7 +102,7 @@ class Computer:
 
         # decode
         reached_hlt, reached_inp, new_transfers = self.__decode()
-        # todo: handle if reached hlt or inp (must tell client and stop run loop if run called)
+        # todo: handle if reached HLT or INP (must tell client and stop run loop if run called). although this may come from execute instead??
         transfers.extend(new_transfers)
 
         # todo: execute
@@ -118,7 +118,7 @@ class Computer:
         Returns:
             _type_: _description_
         """
-        # todo: repeatedly call step
+        # todo: repeatedly call step until HLT or INP
         return ...
 
 if __name__ == "__main__":
