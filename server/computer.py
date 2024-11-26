@@ -31,13 +31,23 @@ class Computer:
         self.memory_and_registers["registers"]["PC"] = str(int(pc_value) + 1)
         # todo: should i have a transfer for this?
 
-        # copy assembly instruction from MDR to IR
+        # copy assembly instruction from MDR to IR and MAR
         mdr_value = self.memory_and_registers["registers"]["MDR"]
-        self.memory_and_registers["registers"]["IR"] = mdr_value
+        # copy opcode from MDR to IR
+        opcode = mdr_value[0]
+        self.memory_and_registers["registers"]["IR"] = opcode
         transfers.append({
             "start_reg": "MDR",
             "end_reg": "IR",
-            "value": mdr_value,
+            "value": opcode,
+        })
+        # copy operand from MDR to MAR
+        operand = mdr_value[1:]
+        self.memory_and_registers["registers"]["MAR"] = operand
+        transfers.append({
+            "start_reg": "MDR",
+            "end_reg": "MAR",
+            "value": operand,
         })
         return transfers
 
