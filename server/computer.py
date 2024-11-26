@@ -60,6 +60,7 @@ class Computer:
         opcode = self.memory_and_registers["registers"]["IR"]
         operand = self.memory_and_registers["registers"]["MAR"]
         if opcode in ("9", "0"):
+            # todo: should this stuff be in execute?
             # INP, OUT, or HLT. opcode should not be treated as memory address.
             if opcode == "0" and operand == "00":
                 # todo: HLT
@@ -76,7 +77,6 @@ class Computer:
                 raise ValueError("Invalid instruction beginning in 0 or 9")
         else:
             # fetch from memory location stored in MAR to MDR
-            # todo: should this be in execute?
             loc = self.memory_and_registers["registers"]["MAR"]
             argument = self.memory_and_registers["memory"][loc]
             self.memory_and_registers["registers"]["MDR"] = argument
