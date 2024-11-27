@@ -53,14 +53,30 @@ class Computer:
 
     def __decode(self):
         transfers = []
+
+
+        opcode = self.memory_and_registers["registers"]["IR"]
+        operand = self.memory_and_registers["registers"]["MAR"]
+        if opcode not in ("9", "0"):
+            # direct addressing
+            # fetch required data (from memory location stored in MAR, i.e. the operand)
+            argument = self.memory_and_registers["memory"][operand]
+            self.memory_and_registers["registers"]["MDR"] = argument
+            transfers.append({
+                "start_mem": "LOC",
+                "end_reg": "MDR",
+                "value": argument,
+            })
+        return transfers
+
+    def __execute(self):
         reached_hlt = False
         reached_inp = False
+        transfers = []
 
-        # opcode is in IR. operand is in MAR.
         opcode = self.memory_and_registers["registers"]["IR"]
         operand = self.memory_and_registers["registers"]["MAR"]
         if opcode in ("9", "0"):
-            # todo: should this stuff be in execute?
             # INP, OUT, or HLT. opcode should not be treated as memory address.
             if opcode == "0" and operand == "00":
                 # todo: HLT
@@ -75,21 +91,8 @@ class Computer:
                 ...
             else:
                 raise ValueError("Invalid instruction beginning in 0 or 9")
-        else:
-            # fetch from memory location stored in MAR to MDR
-            loc = self.memory_and_registers["registers"]["MAR"]
-            argument = self.memory_and_registers["memory"][loc]
-            self.memory_and_registers["registers"]["MDR"] = argument
-            transfers.append({
-                "start_mem": "LOC",
-                "end_reg": "MDR",
-                "value": argument,
-            })
-        return reached_hlt, reached_inp, transfers
 
-    def __execute(self):
-        # todo
-        ...
+        return reached_hlt, reached_inp, transfers
 
     def step(self):
         """Runs one FDE cycle and returns new memory/registers and list of transfers (changes)
@@ -101,11 +104,18 @@ class Computer:
         transfers = self.__fetch()
 
         # decode
-        reached_hlt, reached_inp, new_transfers = self.__decode()
-        # todo: handle if reached HLT or INP (must tell client and stop run loop if run called). although this may come from execute instead??
+        transfers.extend(self.__decode())
+
+        # execute
+        reached_hlt, reached_inp, new_transfers = self.__execute()
         transfers.extend(new_transfers)
 
-        # todo: execute
+        if reached_hlt:
+            # todo: tell client that HLT was reached. stop run loop if run called
+            ...
+        elif reached_inp:
+            # todo: tell client that INP was reached, get input and handle it. stop run loop if run called
+            ...
 
         return {
             "memory_and_registers": self.memory_and_registers,
