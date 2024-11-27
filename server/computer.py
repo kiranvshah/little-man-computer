@@ -91,6 +91,14 @@ class Computer:
                 ...
             else:
                 raise ValueError("Invalid instruction beginning in 0 or 9")
+        else:
+            # direct addressing command
+            argument = self.memory_and_registers["registers"]["MDR"]
+            # todo: does this need a better name? it is the contents of the memory location referred
+            # to by the operand, and will be the argument passed to the instruction
+
+            # todo: execute instruction
+            ...
 
         return reached_hlt, reached_inp, transfers
 
@@ -111,11 +119,16 @@ class Computer:
         transfers.extend(new_transfers)
 
         if reached_hlt:
-            # todo: tell client that HLT was reached. stop run loop if run called
-            ...
+            # todo: still need to return memory and registers and transfers
+            return {
+                "reached_HLT": True
+            }
         elif reached_inp:
-            # todo: tell client that INP was reached, get input and handle it. stop run loop if run called
-            ...
+            # todo: still need to return memory and registers and transfers
+            # todo: get input and handle it
+            return {
+                "reached_INP": True
+            }
 
         return {
             "memory_and_registers": self.memory_and_registers,
@@ -128,7 +141,18 @@ class Computer:
         Returns:
             _type_: _description_
         """
-        # todo: repeatedly call step until HLT or INP
+        reached_hlt = False
+        reached_inp = False
+
+        while not any(reached_hlt, reached_inp):
+            result = self.step()
+            # todo: check if result tells us we have reached HLT or INP
+
+        if reached_inp:
+            # todo: tell client we need input by returning something useful
+            return ...
+        # reached HLT
+        # todo: tell client by returning something useful from this function
         return ...
 
 if __name__ == "__main__":
