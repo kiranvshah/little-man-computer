@@ -54,9 +54,9 @@ class Computer:
     def __decode(self):
         transfers = []
 
-
         opcode = self.memory_and_registers["registers"]["IR"]
         operand = self.memory_and_registers["registers"]["MAR"]
+
         if opcode not in ("9", "0"):
             # direct addressing
             # fetch required data (from memory location stored in MAR, i.e. the operand)
@@ -79,9 +79,7 @@ class Computer:
         if opcode in ("9", "0"):
             # INP, OUT, or HLT. opcode should not be treated as memory address.
             if opcode == "0" and operand == "00":
-                # todo: HLT
                 reached_hlt = True
-                ...
             elif opcode == "9" and operand == "01":
                 # todo: INP
                 reached_inp = True
@@ -108,32 +106,29 @@ class Computer:
         Returns:
             _type_: _description_
         """
+        return_obj = {
+            "memory_and_registers": None,
+            "transfers": None,
+            "reached_HLT": False,
+            "reached_INP": False,
+        }
+
         # fetch
-        transfers = self.__fetch()
+        return_obj["transfers"] = self.__fetch()
 
         # decode
-        transfers.extend(self.__decode())
+        return_obj["transfers"].extend(self.__decode())
 
         # execute
-        reached_hlt, reached_inp, new_transfers = self.__execute()
-        transfers.extend(new_transfers)
+        return_obj["reached_HLT"], reached_inp, new_transfers = self.__execute()
+        return_obj["transfers"].extend(new_transfers)
 
-        if reached_hlt:
-            # todo: still need to return memory and registers and transfers
-            return {
-                "reached_HLT": True
-            }
-        elif reached_inp:
-            # todo: still need to return memory and registers and transfers
+        if reached_inp:
             # todo: get input and handle it
-            return {
-                "reached_INP": True
-            }
+            return_obj["reached_INP"] = True
 
-        return {
-            "memory_and_registers": self.memory_and_registers,
-            "transfers": transfers,
-        }
+        return_obj["memory_and_registers"] = self.memory_and_registers
+        return return_obj
 
     def run(self):
         """Keeps running FDE cycles until a HLT or INP instruction is reached
@@ -144,9 +139,12 @@ class Computer:
         reached_hlt = False
         reached_inp = False
 
+        # todo: need to store list of results from every FDE cycle (step call) we do, and return all
+
         while not any(reached_hlt, reached_inp):
             result = self.step()
-            # todo: check if result tells us we have reached HLT or INP
+            reached_hlt = result["reached_HLT"]
+            reached_inp = result["reached_INP"]
 
         if reached_inp:
             # todo: tell client we need input by returning something useful
