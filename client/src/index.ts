@@ -2,6 +2,7 @@ import { updateMemoryLocation } from "./addressDisplayUpdaters.js";
 
 const SERVER_URL =
 	"https://reimagined-garbanzo-x7jqqp496g5fp7gg-5000.app.github.dev";
+// todo: is there some way this could be an environment variable? i shouldn't really have a fixed URL in the git
 
 // populate memoryTable
 const memoryTableBody = document.getElementById(
