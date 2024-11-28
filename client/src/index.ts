@@ -5,6 +5,7 @@ import {
 	updateMdr,
 	updateIr,
 	updateCarryFlag,
+	updateMemoryLocation,
 } from "./addressDisplayUpdaters.js";
 
 const SERVER_URL =
@@ -87,7 +88,10 @@ async function assembleCode() {
 	updateIr(resJson.memory_and_registers.registers.IR);
 	// todo: populate carry flag (but doesnt exist in backend yet)
 
-	// todo: populate memory
+	// populate memory
+	for (const [location, contents] of Object.entries(resJson.memory_and_registers.memory)) {
+		updateMemoryLocation(location, contents as string, memoryContentsSpans)
+	}
 }
 
 document.addEventListener("DOMContentLoaded", () => {
