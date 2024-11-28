@@ -37,3 +37,12 @@ def post_step():
         response = jsonify({'received': True})
         return response
     return "Expected JSON request", 415
+
+@app.post("/api/run")
+def post_run():
+    if request.is_json:
+        req_body = request.get_json()
+        # todo: process request
+        response = jsonify({'received': True})
+        return response
+    return "Expected JSON request", 415
