@@ -23,7 +23,6 @@ def post_check():
 def post_compile():
     if request.is_json:
         req_body = request.get_json()
-        print(req_body)
 
         if "uncompiledCode" not in req_body:
             return "Could not find uncompiledCode", 400
