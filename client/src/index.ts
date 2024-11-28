@@ -49,9 +49,9 @@ async function checkCode() {
 	if (!response.ok) alert("Bad response from server");
 	const resJson = await response.json();
 	if (resJson.valid) {
-		alert("Code was valid :)") // todo: is there a bootstrap way of making these alerts look nicer?
+		alert("Code was valid :)"); // todo: is there a bootstrap way of making these alerts look nicer?
 	} else {
-		alert("Code was not valid :(")
+		alert("Code was not valid :(");
 	}
 }
 
@@ -70,7 +70,9 @@ async function assembleCode() {
 	const resJson = await response.json();
 	// todo: catch errors
 	// put compiled code into text area
-	compiledCodeTextarea.innerText = (resJson.compiled_code as String[]).join("\n")
+	compiledCodeTextarea.innerText = (resJson.compiled_code as String[]).join(
+		"\n",
+	);
 	// todo: populate memory and registers
 }
 
