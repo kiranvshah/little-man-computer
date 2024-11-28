@@ -1,4 +1,4 @@
-import { updateMemoryLocation } from "./addressDisplayUpdaters.js";
+import { updateProgramCounter } from "./addressDisplayUpdaters.js";
 
 const SERVER_URL =
 	"https://reimagined-garbanzo-x7jqqp496g5fp7gg-5000.app.github.dev";
@@ -71,7 +71,9 @@ async function assembleCode() {
 	// todo: catch errors
 	// put compiled code into text area
 	compiledCodeTextarea.value = (resJson.compiled_code as String[]).join("\n");
-	// todo: populate memory and registers
+	// todo: populate registers
+	updateProgramCounter(resJson.memory_and_registers.registers.PC);
+	// todo: populate memory
 }
 
 document.addEventListener("DOMContentLoaded", () => {
