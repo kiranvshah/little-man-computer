@@ -70,9 +70,7 @@ async function assembleCode() {
 	const resJson = await response.json();
 	// todo: catch errors
 	// put compiled code into text area
-	compiledCodeTextarea.innerText = (resJson.compiled_code as String[]).join(
-		"\n",
-	);
+	compiledCodeTextarea.value = (resJson.compiled_code as String[]).join("\n");
 	// todo: populate memory and registers
 }
 
