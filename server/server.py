@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import flask_cors
-from compile_assembly import check_assembly
+import compile_assembly
 
 
 app = Flask(__name__)
@@ -14,7 +14,7 @@ def post_check():
             return "Could not find uncompiledCode", 400
         if not isinstance(req_body["uncompiledCode"], str):
             return "uncompiledCode was not string", 400
-        valid = check_assembly(req_body["uncompiledCode"])
+        valid = compile_assembly.check_assembly(req_body["uncompiledCode"])
         response = jsonify({'valid': valid})
         return response
     return "Expected JSON request", 415
@@ -24,8 +24,14 @@ def post_compile():
     if request.is_json:
         req_body = request.get_json()
         print(req_body)
-        # todo: process request
-        response = jsonify({'received': True})
+
+        if "uncompiledCode" not in req_body:
+            return "Could not find uncompiledCode", 400
+        if not isinstance(req_body["uncompiledCode"], str):
+            return "uncompiledCode was not string", 400
+
+        compiled_assembly = compile_assembly.compile_assembly(req_body["uncompiledCode"])
+        response = jsonify(compiled_assembly)
         return response
     return "Expected JSON request", 415 # Unsupported Media Type
 
