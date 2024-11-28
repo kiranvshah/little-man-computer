@@ -1,4 +1,11 @@
-import { updateProgramCounter, updateAccumulator, updateMar, updateMdr, updateIr, updateCarryFlag } from "./addressDisplayUpdaters.js";
+import {
+	updateProgramCounter,
+	updateAccumulator,
+	updateMar,
+	updateMdr,
+	updateIr,
+	updateCarryFlag,
+} from "./addressDisplayUpdaters.js";
 
 const SERVER_URL =
 	"https://reimagined-garbanzo-x7jqqp496g5fp7gg-5000.app.github.dev";
@@ -76,10 +83,10 @@ async function assembleCode() {
 	updateProgramCounter(resJson.memory_and_registers.registers.PC);
 	updateAccumulator(resJson.memory_and_registers.registers.ACC);
 	updateMar(resJson.memory_and_registers.registers.MAR);
-	updateMdr(resJson.memory_and_registers.registers.MDR)
-	updateIr(resJson.memory_and_registers.registers.IR)
+	updateMdr(resJson.memory_and_registers.registers.MDR);
+	updateIr(resJson.memory_and_registers.registers.IR);
 	// todo: populate carry flag (but doesnt exist in backend yet)
-	
+
 	// todo: populate memory
 }
 
