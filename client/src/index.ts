@@ -89,8 +89,10 @@ async function assembleCode() {
 	// todo: populate carry flag (but doesnt exist in backend yet)
 
 	// populate memory
-	for (const [location, contents] of Object.entries(resJson.memory_and_registers.memory)) {
-		updateMemoryLocation(location, contents as string, memoryContentsSpans)
+	for (const [location, contents] of Object.entries(
+		resJson.memory_and_registers.memory,
+	)) {
+		updateMemoryLocation(location, contents as string, memoryContentsSpans);
 	}
 }
 
