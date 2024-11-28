@@ -63,7 +63,7 @@ class Computer:
             argument = self.memory_and_registers["memory"][operand]
             self.memory_and_registers["registers"]["MDR"] = argument
             transfers.append({
-                "start_mem": "LOC",
+                "start_mem": operand,
                 "end_reg": "MDR",
                 "value": argument,
             })
@@ -120,15 +120,24 @@ class Computer:
         return_obj["transfers"].extend(self.__decode())
 
         # execute
-        return_obj["reached_HLT"], reached_inp, new_transfers = self.__execute()
+        return_obj["reached_HLT"], return_obj["reached_INP"], new_transfers = self.__execute()
         return_obj["transfers"].extend(new_transfers)
-
-        if reached_inp:
-            # todo: get input and handle it
-            return_obj["reached_INP"] = True
 
         return_obj["memory_and_registers"] = self.memory_and_registers
         return return_obj
+
+    def finish_step_after_input(self, input_value: str):
+        # todo: param/return detail in docstring
+        """Finishes one FDE cycle after an input value has been retrieved from the user."""
+        # todo: should input value be validated here? maybe think about this once more structure
+        # put input value into accumulator
+        self.memory_and_registers["registers"]["ACC"] = input_value
+        transfer = {
+            # todo: start location: from input?
+            "end_reg": "ACC",
+            "value": input_value,
+        }
+        return transfer
 
     def run(self):
         """Keeps running FDE cycles until a HLT or INP instruction is reached
@@ -139,19 +148,16 @@ class Computer:
         reached_hlt = False
         reached_inp = False
 
-        # todo: need to store list of results from every FDE cycle (step call) we do, and return all
+        # store list of results from every FDE cycle (step call) we do, and return all
+        all_results = []
 
         while not any(reached_hlt, reached_inp):
             result = self.step()
             reached_hlt = result["reached_HLT"]
             reached_inp = result["reached_INP"]
+            all_results.append(result)
 
-        if reached_inp:
-            # todo: tell client we need input by returning something useful
-            return ...
-        # reached HLT
-        # todo: tell client by returning something useful from this function
-        return ...
+        return all_results
 
 if __name__ == "__main__":
     from compile_assembly import compile_assembly
