@@ -14,9 +14,17 @@ def post_check():
             return "Could not find uncompiledCode", 400
         if not isinstance(req_body["uncompiledCode"], str):
             return "uncompiledCode was not string", 400
-        valid = compile_assembly.check_assembly(req_body["uncompiledCode"])
-        response = jsonify({'valid': valid})
-        return response
+
+        try:
+            compile_assembly.compile_assembly(req_body["uncompiledCode"])
+            return jsonify({"valid": True})
+
+        except ValueError as error:
+            return jsonify({
+                "valid": False,
+                "reason": error.args[1],
+                "line_number": error.args[0]
+            })
     return "Expected JSON request", 415
 
 @app.post("/api/compile")

@@ -45,6 +45,12 @@ const getUncompiledCode = () =>
 	(document.getElementById("uncompiledAssemblyTextarea") as HTMLTextAreaElement)
 		.value;
 
+const reportAssemblyCompilationError = (responseJson: { reason: string, line_number: string }) => {
+	alert(
+		`Code was not valid:\n${responseJson.reason}\nError occured on line ${responseJson.line_number} of assembly.`,
+	);
+}
+
 async function checkCode() {
 	const uncompiledCode = getUncompiledCode();
 	const response = await fetch(`${SERVER_URL}/api/check`, {
@@ -58,9 +64,7 @@ async function checkCode() {
 	const resJson = await response.json();
 	if (resJson.valid) {
 		alert("Code was valid :)"); // todo: is there a bootstrap way of making these alerts look nicer?
-	} else {
-		alert("Code was not valid :(");
-	}
+	} else reportAssemblyCompilationError(resJson);
 }
 
 async function assembleCode() {
@@ -95,11 +99,7 @@ async function assembleCode() {
 		)) {
 			updateMemoryLocation(location, contents as string, memoryContentsSpans);
 		}
-	} else {
-		alert(
-			`Code was not valid:\n${resJson.reason}\nError occured on line ${resJson.line_number} of assembly.`,
-		);
-	}
+	} else reportAssemblyCompilationError(resJson);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
