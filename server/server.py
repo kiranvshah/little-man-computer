@@ -38,7 +38,7 @@ def post_compile():
                 "valid": False,
                 "reason": error.args[1],
                 "line_number": error.args[0]
-            }), 400
+            })
     return "Expected JSON request", 415 # Unsupported Media Type
 
 @app.post("/api/step")
