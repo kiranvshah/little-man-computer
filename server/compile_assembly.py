@@ -171,6 +171,7 @@ def compile_assembly(user_written_code: str):
                 "IR": "0",
                 "MAR": "00",
                 "MDR": "000",
+                "CARRY": "0",
             },
         },
     }
