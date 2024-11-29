@@ -45,11 +45,14 @@ const getUncompiledCode = () =>
 	(document.getElementById("uncompiledAssemblyTextarea") as HTMLTextAreaElement)
 		.value;
 
-const reportAssemblyCompilationError = (responseJson: { reason: string, line_number: string }) => {
+const reportAssemblyCompilationError = (responseJson: {
+	reason: string;
+	line_number: string;
+}) => {
 	alert(
 		`Code was not valid:\n${responseJson.reason}\nError occured on line ${responseJson.line_number} of assembly.`,
 	);
-}
+};
 
 async function checkCode() {
 	const uncompiledCode = getUncompiledCode();
