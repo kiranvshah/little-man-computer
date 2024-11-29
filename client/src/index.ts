@@ -59,7 +59,6 @@ async function checkCode() {
 		headers: { "Content-Type": "application/json" },
 		mode: "cors",
 	});
-	console.log(response.body);
 	if (!response.ok) alert("Bad response from server");
 	const resJson = await response.json();
 	if (resJson.valid) {
