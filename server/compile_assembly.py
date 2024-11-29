@@ -70,7 +70,7 @@ def compile_assembly(user_written_code: str):
                 # received a line with only 1 word, but it is not an instruction that takes no args
                 if line in instructions:
                     raise ValueError(original_line_number, "Missing an argument for instruction")
-                raise ValueError(original_line_number, "Invalid instruction")
+                raise ValueError(original_line_number, f"Invalid instruction \"{line}\"")
 
         elif len(words) == 2:
             if words[0] in instructions_1_arg_is_label:
