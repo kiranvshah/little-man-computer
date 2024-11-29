@@ -86,7 +86,7 @@ async function assembleCode() {
 	updateMar(resJson.memory_and_registers.registers.MAR);
 	updateMdr(resJson.memory_and_registers.registers.MDR);
 	updateIr(resJson.memory_and_registers.registers.IR);
-	// todo: populate carry flag (but doesnt exist in backend yet)
+	updateCarryFlag(resJson.memory_and_registers.registers.CARRY);
 
 	// populate memory
 	for (const [location, contents] of Object.entries(
