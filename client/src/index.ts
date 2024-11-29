@@ -76,23 +76,29 @@ async function assembleCode() {
 		mode: "cors",
 	});
 	const resJson = await response.json();
-	// todo: catch errors
-	// put compiled code into text area
-	compiledCodeTextarea.value = (resJson.compiled_code as String[]).join("\n");
+	if (resJson.valid) {
+		const result = resJson.result;
+		// put compiled code into text area
+		compiledCodeTextarea.value = (result.compiled_code as String[]).join("\n");
 
-	// populate registers
-	updateProgramCounter(resJson.memory_and_registers.registers.PC);
-	updateAccumulator(resJson.memory_and_registers.registers.ACC);
-	updateMar(resJson.memory_and_registers.registers.MAR);
-	updateMdr(resJson.memory_and_registers.registers.MDR);
-	updateIr(resJson.memory_and_registers.registers.IR);
-	updateCarryFlag(resJson.memory_and_registers.registers.CARRY);
+		// populate registers
+		updateProgramCounter(result.memory_and_registers.registers.PC);
+		updateAccumulator(result.memory_and_registers.registers.ACC);
+		updateMar(result.memory_and_registers.registers.MAR);
+		updateMdr(result.memory_and_registers.registers.MDR);
+		updateIr(result.memory_and_registers.registers.IR);
+		updateCarryFlag(result.memory_and_registers.registers.CARRY);
 
-	// populate memory
-	for (const [location, contents] of Object.entries(
-		resJson.memory_and_registers.memory,
-	)) {
-		updateMemoryLocation(location, contents as string, memoryContentsSpans);
+		// populate memory
+		for (const [location, contents] of Object.entries(
+			result.memory_and_registers.memory,
+		)) {
+			updateMemoryLocation(location, contents as string, memoryContentsSpans);
+		}
+	} else {
+		alert(
+			`Code was not valid:\n${resJson.reason}\nError occured on line ${resJson.line_number} of assembly.`,
+		);
 	}
 }
 

@@ -23,15 +23,22 @@ def post_check():
 def post_compile():
     if request.is_json:
         req_body = request.get_json()
+        # todo: ALL RESPONSES SHOULD BE JSON
 
         if "uncompiledCode" not in req_body:
             return "Could not find uncompiledCode", 400
         if not isinstance(req_body["uncompiledCode"], str):
             return "uncompiledCode was not string", 400
 
-        compiled_assembly = compile_assembly.compile_assembly(req_body["uncompiledCode"])
-        response = jsonify(compiled_assembly)
-        return response
+        try:
+            compiled_assembly = compile_assembly.compile_assembly(req_body["uncompiledCode"])
+            return jsonify({"valid": True, "result": compiled_assembly})
+        except ValueError as error:
+            return jsonify({
+                "valid": False,
+                "reason": error.args[1],
+                "line_number": error.args[0]
+            }), 400
     return "Expected JSON request", 415 # Unsupported Media Type
 
 @app.post("/api/step")
