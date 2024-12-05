@@ -105,7 +105,17 @@ async function assembleCode() {
 }
 
 async function step() {
-	// todo
+	// todo: get contents of memory and registers as JSON
+	const memory = memoryContentsSpans.reduce(
+		(acc, span, index) => {
+			acc[index] = span.textContent as string;
+			return acc;
+		},
+		{} as { [key: number]: string },
+	);
+	console.log(memory);
+	// todo: call /api/step
+	// todo: process response
 }
 
 async function run() {
@@ -125,6 +135,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	);
 	(document.getElementById("runButton") as HTMLButtonElement).addEventListener(
 		"run",
-		step,
+		run,
 	);
 });
