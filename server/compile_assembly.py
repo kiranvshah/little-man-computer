@@ -138,7 +138,6 @@ def compile_assembly(user_written_code: str):
                 })
 
 
-    print(lines)
     # process code from intermediate object to finished form
 
     # get labels created
