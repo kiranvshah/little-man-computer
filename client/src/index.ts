@@ -104,8 +104,7 @@ async function assembleCode() {
 	} else reportAssemblyCompilationError(resJson);
 }
 
-async function step() {
-	// todo: get contents of memory and registers as JSON
+function getMemoryAndRegistersJson() {
 	const memory = memoryContentsSpans.reduce(
 		(res, span, index) => {
 			res[index.toString().padStart(2, "0")] = span.textContent as string;
@@ -113,7 +112,12 @@ async function step() {
 		},
 		{} as { [key: string]: string },
 	);
-	console.log(memory);
+	// todo: registers
+	// todo: combine and return
+}
+
+async function step() {
+	// todo: get contents of memory and registers as JSON
 	// todo: call /api/step
 	// todo: process response
 }
