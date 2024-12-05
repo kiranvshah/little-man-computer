@@ -122,21 +122,31 @@ class Computer:
                 case "3":
                     # sta
                     # copy from ACC to memory location stored in MAR
-                    self.memory_and_registers["memory"][operand] = \
-                        self.memory_and_registers["registers"]["ACC"]
-                    # todo: transfer
+                    acc_value = self.memory_and_registers["registers"]["ACC"]
+                    self.memory_and_registers["memory"][operand] = acc_value
+                    transfers.append({
+                        "start_mem": operand,
+                        "end_reg": "ACC",
+                        "value": acc_value,
+                    })
                 case "6":
                     # bra
                     # set IR to operand
                     self.memory_and_registers["registers"]["IR"] = operand
-                    # todo: transfer
+                    # todo: transfer? coming from actual operand
                 case "7":
                     # brz
+                    # set IR to operand if ACC is 0
                     if self.memory_and_registers["registers"]["ACC"] == 0:
-                        # todo: set IR to operand
+                        # set IR to operand
+                        self.memory_and_registers["registers"]["IR"] = operand
+                        # todo: transfer? coming from actual operand
                 case "8":
-                    # todo: brp
-                    ...
+                    # brp
+                    # set IR to operand if CARRY is 1
+                    if self.memory_and_registers["registers"]["CARRY"] == 1:
+                        self.memory_and_registers["registers"]["IR"] = operand
+                        # todo: transfer? coming from actual operand
 
         return reached_hlt, reached_inp, transfers
 
