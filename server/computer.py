@@ -30,6 +30,7 @@ class Computer:
         pc_value = self.memory_and_registers["registers"]["PC"]
         self.memory_and_registers["registers"]["PC"] = str(int(pc_value) + 1).zfill(2)
         # todo: should i have a transfer for this?
+        # todo: raise error if trying to increment to 100
 
         # copy assembly instruction from MDR to IR and MAR
         mdr_value = self.memory_and_registers["registers"]["MDR"]
@@ -119,15 +120,20 @@ class Computer:
         else:
             match opcode:
                 case "3":
-                    # todo: sta
+                    # sta
                     # copy from ACC to memory location stored in MAR
-                    ...
+                    self.memory_and_registers["memory"][operand] = \
+                        self.memory_and_registers["registers"]["ACC"]
+                    # todo: transfer
                 case "6":
-                    # todo: bra
-                    ...
+                    # bra
+                    # set IR to operand
+                    self.memory_and_registers["registers"]["IR"] = operand
+                    # todo: transfer
                 case "7":
-                    # todo: brz
-                    ...
+                    # brz
+                    if self.memory_and_registers["registers"]["ACC"] == 0:
+                        # todo: set IR to operand
                 case "8":
                     # todo: brp
                     ...
@@ -217,4 +223,8 @@ HLT
 first DAT 000
 second DAT 000""")
     comp = Computer(compile_assembly_result["memory_and_registers"])
+    print(comp.step())
+    print(comp.step())
+    print(comp.step())
+    print(comp.step())
     print(comp.step())
