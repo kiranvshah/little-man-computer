@@ -57,7 +57,7 @@ class Computer:
         opcode = self.memory_and_registers["registers"]["IR"]
         operand = self.memory_and_registers["registers"]["MAR"]
 
-        if opcode not in ("9", "0"):
+        if opcode in ("1", "2", "5"):
             # direct addressing
             # fetch required data (from memory location stored in MAR, i.e. the operand)
             argument = self.memory_and_registers["memory"][operand]
@@ -83,20 +83,54 @@ class Computer:
             elif opcode == "9" and operand == "01":
                 # todo: INP
                 reached_inp = True
-                ...
             elif opcode == "9" and operand == "02":
                 # todo: OUT
                 ...
             else:
                 raise ValueError("Invalid instruction beginning in 0 or 9")
-        else:
-            # direct addressing command
+        elif opcode in ("1", "2", "5"):
+            # we are using the value in the MDR to modify the value in the ACC
+
             argument = self.memory_and_registers["registers"]["MDR"]
             # todo: does this need a better name? it is the contents of the memory location referred
             # to by the operand, and will be the argument passed to the instruction
 
-            # todo: execute instruction
-            ...
+            # execute instruction
+            match opcode:
+                case "1":
+                    # add
+                    # add from MDR to ACC
+                    self.memory_and_registers["registers"]["ACC"] += argument
+                case "2":
+                    # sub
+                    # subtract MDR value from ACC
+                    self.memory_and_registers["registers"]["ACC"] -= argument
+                case "5":
+                    # lda
+                    # set ACC value to value stored in MDR
+                    self.memory_and_registers["registers"]["ACC"] = argument
+
+            transfers.append({
+                "start_reg": "MDR",
+                "end_reg": "ACC",
+                "value": argument,
+            })
+
+        else:
+            match opcode:
+                case "3":
+                    # todo: sta
+                    # copy from ACC to memory location stored in MAR
+                    ...
+                case "6":
+                    # todo: bra
+                    ...
+                case "7":
+                    # todo: brz
+                    ...
+                case "8":
+                    # todo: brp
+                    ...
 
         return reached_hlt, reached_inp, transfers
 
