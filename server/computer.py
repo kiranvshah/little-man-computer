@@ -28,7 +28,7 @@ class Computer:
 
         # increment program counter by 1
         pc_value = self.memory_and_registers["registers"]["PC"]
-        self.memory_and_registers["registers"]["PC"] = str(int(pc_value) + 1)
+        self.memory_and_registers["registers"]["PC"] = str(int(pc_value) + 1).zfill(2)
         # todo: should i have a transfer for this?
 
         # copy assembly instruction from MDR to IR and MAR
