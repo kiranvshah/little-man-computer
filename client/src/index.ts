@@ -107,11 +107,11 @@ async function assembleCode() {
 async function step() {
 	// todo: get contents of memory and registers as JSON
 	const memory = memoryContentsSpans.reduce(
-		(acc, span, index) => {
-			acc[index] = span.textContent as string;
-			return acc;
+		(res, span, index) => {
+			res[index.toString().padStart(2, "0")] = span.textContent as string;
+			return res;
 		},
-		{} as { [key: number]: string },
+		{} as { [key: string]: string },
 	);
 	console.log(memory);
 	// todo: call /api/step
