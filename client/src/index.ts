@@ -104,6 +104,14 @@ async function assembleCode() {
 	} else reportAssemblyCompilationError(resJson);
 }
 
+async function step() {
+	// todo
+}
+
+async function run() {
+	// todo
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 	(
 		document.getElementById("checkButton") as HTMLButtonElement
@@ -111,4 +119,12 @@ document.addEventListener("DOMContentLoaded", () => {
 	(
 		document.getElementById("assembleButton") as HTMLButtonElement
 	).addEventListener("click", assembleCode);
+	(document.getElementById("stepButton") as HTMLButtonElement).addEventListener(
+		"click",
+		step,
+	);
+	(document.getElementById("runButton") as HTMLButtonElement).addEventListener(
+		"run",
+		step,
+	);
 });
