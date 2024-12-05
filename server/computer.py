@@ -151,7 +151,7 @@ class Computer:
         # store list of results from every FDE cycle (step call) we do, and return all
         all_results = []
 
-        while not any(reached_hlt, reached_inp):
+        while not any((reached_hlt, reached_inp)):
             result = self.step()
             reached_hlt = result["reached_HLT"]
             reached_inp = result["reached_INP"]
