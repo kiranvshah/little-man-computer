@@ -144,7 +144,7 @@ async function step() {
 		mode: "cors",
 	});
 	const resJson = await response.json();
-	if (resJson.valid) {
+	if (response.ok) {
 		const result = resJson.result;
 		console.log(result);
 		// todo
