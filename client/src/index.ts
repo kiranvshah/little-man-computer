@@ -147,6 +147,7 @@ async function step() {
 	if (response.ok) {
 		const result = resJson.result;
 		console.log(result);
+		// todo: this is undefined!!
 		// todo
 	} else {
 		// todo
