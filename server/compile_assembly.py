@@ -153,7 +153,7 @@ def compile_assembly(user_written_code: str):
                 # todo: consider passing original line numbers to intermediate obj so they can be displayed in this error message?
                 raise ValueError(
                     f"Label \"{line["uses_label"]}\" used without being created.\
- Create labels by putting a label name at start of line.",
+ Create labels by putting a label name at start of line (normally with DAT).",
                 )
 
     if len(lines) > 100:
