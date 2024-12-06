@@ -125,19 +125,31 @@ function getMemoryAndRegistersJson() {
 	}).forEach(([pythonKey, htmlId]) => {
 		registerContents[pythonKey] = document.getElementById(htmlId)!.innerText;
 	});
-	
+
 	return {
 		memory,
-		registers: registerContents
-	}
+		registers: registerContents,
+	};
 }
 
 async function step() {
 	// get contents of memory and registers as JSON
 	const memoryAndRegistersContents = getMemoryAndRegistersJson();
-	console.log(memoryAndRegistersContents)
-	// todo: call /api/step
-	// todo: process response
+	console.log(memoryAndRegistersContents);
+
+	// call /api/step
+	const response = await fetch(`${SERVER_URL}/api/step`, {
+		method: "POST",
+		body: JSON.stringify(memoryAndRegistersContents),
+		headers: { "Content-Type": "application/json" },
+		mode: "cors",
+	});
+	const resJson = await response.json();
+	if (resJson.valid) {
+		// todo
+	} else {
+		// todo
+	}
 }
 
 async function run() {
