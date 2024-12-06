@@ -112,12 +112,30 @@ function getMemoryAndRegistersJson() {
 		},
 		{} as { [key: string]: string },
 	);
-	// todo: registers
-	// todo: combine and return
+
+	// todo: could the following register bit be done more succintly?
+	const registerContents = {} as { [key: string]: string };
+	Object.entries({
+		PC: "programCounterValueSpan",
+		ACC: "accumulatorValueSpan",
+		IR: "marValueSpan",
+		MAR: "mdrValueSpan",
+		MDR: "irValueSpan",
+		CARRY: "carryValueSpan",
+	}).forEach(([pythonKey, htmlId]) => {
+		registerContents[pythonKey] = document.getElementById(htmlId)!.innerText;
+	});
+	
+	return {
+		memory,
+		registers: registerContents
+	}
 }
 
 async function step() {
-	// todo: get contents of memory and registers as JSON
+	// get contents of memory and registers as JSON
+	const memoryAndRegistersContents = getMemoryAndRegistersJson();
+	console.log(memoryAndRegistersContents)
 	// todo: call /api/step
 	// todo: process response
 }
