@@ -135,7 +135,6 @@ function getMemoryAndRegistersJson() {
 async function step() {
 	// get contents of memory and registers as JSON
 	const memoryAndRegistersContents = getMemoryAndRegistersJson();
-	console.log(memoryAndRegistersContents);
 
 	// call /api/step
 	const response = await fetch(`${SERVER_URL}/api/step`, {

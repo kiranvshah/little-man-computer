@@ -53,6 +53,7 @@ def post_compile():
 def post_step():
     if request.is_json:
         req_body = request.get_json()
+        print(req_body)
         # todo: process request
         response = jsonify({'received': True})
         return response
