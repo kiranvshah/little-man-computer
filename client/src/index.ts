@@ -145,6 +145,8 @@ async function step() {
 	});
 	const resJson = await response.json();
 	if (resJson.valid) {
+		const result = resJson.result;
+		console.log(result);
 		// todo
 	} else {
 		// todo

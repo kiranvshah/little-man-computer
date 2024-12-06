@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import flask_cors
 import compile_assembly
+import computer as computer_module
 
 
 app = Flask(__name__)
@@ -54,8 +55,8 @@ def post_step():
     if request.is_json:
         req_body = request.get_json()
         print(req_body)
-        # todo: process request
-        response = jsonify({'received': True})
+        computer = computer_module.Computer(req_body)
+        response = jsonify(computer.step()) # todo: catch errors
         return response
     return "Expected JSON request", 415
 
