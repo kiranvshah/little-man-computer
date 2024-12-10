@@ -132,6 +132,21 @@ function getMemoryAndRegistersJson() {
 	};
 }
 
+interface Transfer {
+	start_mem?: string;
+	start_reg?: string;
+	end_mem?: string;
+	end_reg?: string;
+	value: string;
+}
+interface StepResult {
+	memory_and_registers: {
+		memory: { [key: string]: string };
+		registers: { [key: string]: string };
+	};
+	transfers: Transfer[];
+}
+
 async function step() {
 	// get contents of memory and registers as JSON
 	const memoryAndRegistersContents = getMemoryAndRegistersJson();
@@ -143,10 +158,33 @@ async function step() {
 		headers: { "Content-Type": "application/json" },
 		mode: "cors",
 	});
-	const resJson = await response.json();
+	const resJson = (await response.json()) as StepResult;
 	if (response.ok) {
-		console.log(resJson)
-		// todo
+		// update changed memory/register locations
+		for (const transfer of resJson.transfers) {
+			if (transfer.end_mem) {
+				updateMemoryLocation(
+					transfer.end_mem,
+					transfer.value,
+					memoryContentsSpans,
+				);
+			} else
+				switch (transfer.end_reg!) {
+					case "PC":
+						updateProgramCounter(transfer.value);
+					case "ACC":
+						updateAccumulator(transfer.value);
+					case "MAR":
+						updateMar(transfer.value);
+					case "MDR":
+						updateMdr(transfer.value);
+					case "IR":
+						updateIr(transfer.value);
+					case "CARRY":
+						updateCarryFlag(transfer.value);
+					// todo: is there a more succint way to write this block?
+				}
+		}
 	} else {
 		// todo
 	}
