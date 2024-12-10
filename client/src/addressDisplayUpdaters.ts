@@ -13,6 +13,20 @@ export function updateMemoryLocation(
 	memoryContentsSpans[Number(address)].innerText = value;
 }
 
+export function updateRegisterByCode(
+	code: "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY",
+	value: string,
+) {
+	({
+		PC: updateProgramCounter,
+		ACC: updateAccumulator,
+		MAR: updateMar,
+		MDR: updateMdr,
+		IR: updateIr,
+		CARRY: updateCarryFlag,
+	})[code](value);
+}
+
 /**
  * Updates the value displayed in the program counter.
  * @param {string} value The value to display (0-99).

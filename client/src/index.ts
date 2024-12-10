@@ -6,6 +6,7 @@ import {
 	updateIr,
 	updateCarryFlag,
 	updateMemoryLocation,
+	updateRegisterByCode,
 } from "./addressDisplayUpdaters.js";
 
 const SERVER_URL =
@@ -88,6 +89,7 @@ async function assembleCode() {
 		compiledCodeTextarea.value = (result.compiled_code as String[]).join("\n");
 
 		// populate registers
+		// todo: make more concise. then dont need to export specific register updaters
 		updateProgramCounter(result.memory_and_registers.registers.PC);
 		updateAccumulator(result.memory_and_registers.registers.ACC);
 		updateMar(result.memory_and_registers.registers.MAR);
@@ -113,17 +115,12 @@ function getMemoryAndRegistersJson() {
 		{} as { [key: string]: string },
 	);
 
-	// todo: could the following register bit be done more succintly?
 	const registerContents = {} as { [key: string]: string };
-	Object.entries({
-		PC: "programCounterValueSpan",
-		ACC: "accumulatorValueSpan",
-		IR: "marValueSpan",
-		MAR: "mdrValueSpan",
-		MDR: "irValueSpan",
-		CARRY: "carryValueSpan",
-	}).forEach(([pythonKey, htmlId]) => {
-		registerContents[pythonKey] = document.getElementById(htmlId)!.innerText;
+	["PC", "ACC", "IR", "MAR", "MDR", "CARRY"].forEach(code => {
+		updateRegisterByCode(
+			code as "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY",
+			registerContents[code],
+		);
 	});
 
 	return {
@@ -134,9 +131,9 @@ function getMemoryAndRegistersJson() {
 
 interface Transfer {
 	start_mem?: string;
-	start_reg?: string;
+	start_reg?: "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY";
 	end_mem?: string;
-	end_reg?: string;
+	end_reg?: "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY";
 	value: string;
 }
 interface StepResult {
@@ -172,15 +169,10 @@ async function step() {
 					memoryContentsSpans,
 				);
 			} else {
-				const codesToUpdaters = {
-					"PC": updateProgramCounter,
-					"ACC": updateAccumulator,
-					"MAR": updateMar,
-					"MDR": updateMdr,
-					"IR": updateIr,
-					"CARRY": updateCarryFlag,
-				};
-				codesToUpdaters[transfer.end_reg as keyof typeof codesToUpdaters](transfer.value);
+				updateRegisterByCode(
+					transfer.end_reg as "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY",
+					transfer.value,
+				);
 			}
 		}
 		// todo: consider reached_HLT and reached_INP
