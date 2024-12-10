@@ -164,6 +164,7 @@ async function step() {
 	if (response.ok) {
 		// update changed memory/register locations
 		for (const transfer of resJson.transfers) {
+			// todo: animations would go here
 			if (transfer.end_mem) {
 				updateMemoryLocation(
 					transfer.end_mem,
