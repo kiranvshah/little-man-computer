@@ -172,27 +172,15 @@ async function step() {
 				);
 			} else {
 				console.log(transfer);
-				switch (transfer.end_reg!) {
-					case "PC":
-						updateProgramCounter(transfer.value);
-						break;
-					case "ACC":
-						updateAccumulator(transfer.value);
-						break;
-					case "MAR":
-						updateMar(transfer.value);
-						break;
-					case "MDR":
-						updateMdr(transfer.value);
-						break;
-					case "IR":
-						updateIr(transfer.value);
-						break;
-					case "CARRY":
-						updateCarryFlag(transfer.value);
-						break;
-					// todo: is there a more succint way to write this block?
-				}
+				const codesToUpdaters = {
+					"PC": updateProgramCounter,
+					"ACC": updateAccumulator,
+					"MAR": updateMar,
+					"MDR": updateMdr,
+					"IR": updateIr,
+					"CARRY": updateCarryFlag,
+				};
+				codesToUpdaters[transfer.end_reg as keyof typeof codesToUpdaters](transfer.value);
 			}
 		}
 		// todo: consider reached_HLT and reached_INP
