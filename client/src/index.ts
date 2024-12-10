@@ -145,6 +145,8 @@ interface StepResult {
 		registers: { [key: string]: string };
 	};
 	transfers: Transfer[];
+	reached_HLT: boolean;
+	reached_INP: boolean;
 }
 
 async function step() {
