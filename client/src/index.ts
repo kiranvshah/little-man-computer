@@ -171,7 +171,6 @@ async function step() {
 					memoryContentsSpans,
 				);
 			} else {
-				console.log(transfer);
 				const codesToUpdaters = {
 					"PC": updateProgramCounter,
 					"ACC": updateAccumulator,
