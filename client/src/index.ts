@@ -168,7 +168,8 @@ async function step() {
 					transfer.value,
 					memoryContentsSpans,
 				);
-			} else
+			} else {
+				console.log(transfer)
 				switch (transfer.end_reg!) {
 					case "PC":
 						updateProgramCounter(transfer.value);
@@ -184,6 +185,7 @@ async function step() {
 						updateCarryFlag(transfer.value);
 					// todo: is there a more succint way to write this block?
 				}
+			}
 		}
 	} else {
 		// todo
