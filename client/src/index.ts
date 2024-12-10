@@ -189,6 +189,7 @@ async function step() {
 				}
 			}
 		}
+		// todo: consider reached_HLT and reached_INP
 	} else {
 		// todo
 	}
