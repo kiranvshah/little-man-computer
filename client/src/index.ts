@@ -171,20 +171,26 @@ async function step() {
 					memoryContentsSpans,
 				);
 			} else {
-				console.log(transfer)
+				console.log(transfer);
 				switch (transfer.end_reg!) {
 					case "PC":
 						updateProgramCounter(transfer.value);
+						break;
 					case "ACC":
 						updateAccumulator(transfer.value);
+						break;
 					case "MAR":
 						updateMar(transfer.value);
+						break;
 					case "MDR":
 						updateMdr(transfer.value);
+						break;
 					case "IR":
 						updateIr(transfer.value);
+						break;
 					case "CARRY":
 						updateCarryFlag(transfer.value);
+						break;
 					// todo: is there a more succint way to write this block?
 				}
 			}
