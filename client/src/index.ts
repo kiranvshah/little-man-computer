@@ -70,6 +70,12 @@ async function checkCode() {
 	} else reportAssemblyCompilationError(resJson);
 }
 
+function clearCode() {
+	(
+		document.getElementById("uncompiledAssemblyTextarea") as HTMLTextAreaElement
+	).value = "";
+}
+
 async function assembleCode() {
 	const compiledCodeTextarea = document.getElementById(
 		"compiledAssemblyTextarea",
@@ -193,6 +199,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	(
 		document.getElementById("checkButton") as HTMLButtonElement
 	).addEventListener("click", checkCode);
+	(
+		document.getElementById("clearButton") as HTMLButtonElement
+	).addEventListener("click", clearCode);
 	(
 		document.getElementById("assembleButton") as HTMLButtonElement
 	).addEventListener("click", assembleCode);
