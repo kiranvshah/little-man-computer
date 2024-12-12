@@ -116,11 +116,15 @@ function getMemoryAndRegistersJson() {
 	);
 
 	const registerContents = {} as { [key: string]: string };
-	["PC", "ACC", "IR", "MAR", "MDR", "CARRY"].forEach(code => {
-		updateRegisterByCode(
-			code as "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY",
-			registerContents[code],
-		);
+	Object.entries({
+		PC: "programCounterValueSpan",
+		ACC: "accumulatorValueSpan",
+		IR: "marValueSpan",
+		MAR: "mdrValueSpan",
+		MDR: "irValueSpan",
+		CARRY: "carryValueSpan",
+	}).forEach(([pythonKey, htmlId]) => {
+		registerContents[pythonKey] = document.getElementById(htmlId)!.innerText;
 	});
 
 	return {
