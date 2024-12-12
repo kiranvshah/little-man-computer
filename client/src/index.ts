@@ -100,11 +100,13 @@ interface StepResult {
 }
 
 function getUserInput() {
-	let input = prompt("INP reached. Please enter your input (a number 0-999) here:")
+	let input = prompt(
+		"INP reached. Please enter your input (a number 0-999) here:",
+	);
 	while (!(input && /^\d{1,3}$/.test(input))) {
-		input = prompt("Invalid input. Please enter a number 0-999:")
+		input = prompt("Invalid input. Please enter a number 0-999:");
 	}
-	return input
+	return input;
 }
 
 async function checkCode() {
@@ -195,9 +197,9 @@ async function step() {
 		}
 		// consider reached_HLT and reached_INP
 		if (resJson.reached_HLT) {
-			alert("Program reached HLT. Execution completed.")
+			alert("Program reached HLT. Execution completed.");
 		} else if (resJson.reached_INP) {
-			const input = getUserInput()
+			const input = getUserInput();
 			// todo: send input to server
 		}
 	} else {
