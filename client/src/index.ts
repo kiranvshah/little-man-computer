@@ -55,6 +55,58 @@ const reportAssemblyCompilationError = (responseJson: {
 	);
 };
 
+function getMemoryAndRegistersJson() {
+	const memory = memoryContentsSpans.reduce(
+		(res, span, index) => {
+			res[index.toString().padStart(2, "0")] = span.textContent as string;
+			return res;
+		},
+		{} as { [key: string]: string },
+	);
+
+	const registerContents = {} as { [key: string]: string };
+	Object.entries({
+		PC: "programCounterValueSpan",
+		ACC: "accumulatorValueSpan",
+		IR: "marValueSpan",
+		MAR: "mdrValueSpan",
+		MDR: "irValueSpan",
+		CARRY: "carryValueSpan",
+	}).forEach(([pythonKey, htmlId]) => {
+		registerContents[pythonKey] = document.getElementById(htmlId)!.innerText;
+	});
+
+	return {
+		memory,
+		registers: registerContents,
+	};
+}
+
+interface Transfer {
+	start_mem?: string;
+	start_reg?: "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY";
+	end_mem?: string;
+	end_reg?: "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY";
+	value: string;
+}
+interface StepResult {
+	memory_and_registers: {
+		memory: { [key: string]: string };
+		registers: { [key: string]: string };
+	};
+	transfers: Transfer[];
+	reached_HLT: boolean;
+	reached_INP: boolean;
+}
+
+function getUserInput() {
+	let input = prompt("INP reached. Please enter your input (a number 0-999) here:")
+	while (!(input && /^\d{1,3}$/.test(input))) {
+		input = prompt("Invalid input. Please enter a number 0-999:")
+	}
+	return input
+}
+
 async function checkCode() {
 	const uncompiledCode = getUncompiledCode();
 	const response = await fetch(`${SERVER_URL}/api/check`, {
@@ -112,50 +164,6 @@ async function assembleCode() {
 	} else reportAssemblyCompilationError(resJson);
 }
 
-function getMemoryAndRegistersJson() {
-	const memory = memoryContentsSpans.reduce(
-		(res, span, index) => {
-			res[index.toString().padStart(2, "0")] = span.textContent as string;
-			return res;
-		},
-		{} as { [key: string]: string },
-	);
-
-	const registerContents = {} as { [key: string]: string };
-	Object.entries({
-		PC: "programCounterValueSpan",
-		ACC: "accumulatorValueSpan",
-		IR: "marValueSpan",
-		MAR: "mdrValueSpan",
-		MDR: "irValueSpan",
-		CARRY: "carryValueSpan",
-	}).forEach(([pythonKey, htmlId]) => {
-		registerContents[pythonKey] = document.getElementById(htmlId)!.innerText;
-	});
-
-	return {
-		memory,
-		registers: registerContents,
-	};
-}
-
-interface Transfer {
-	start_mem?: string;
-	start_reg?: "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY";
-	end_mem?: string;
-	end_reg?: "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY";
-	value: string;
-}
-interface StepResult {
-	memory_and_registers: {
-		memory: { [key: string]: string };
-		registers: { [key: string]: string };
-	};
-	transfers: Transfer[];
-	reached_HLT: boolean;
-	reached_INP: boolean;
-}
-
 async function step() {
 	// get contents of memory and registers as JSON
 	const memoryAndRegistersContents = getMemoryAndRegistersJson();
@@ -185,7 +193,13 @@ async function step() {
 				);
 			}
 		}
-		// todo: consider reached_HLT and reached_INP
+		// consider reached_HLT and reached_INP
+		if (resJson.reached_HLT) {
+			alert("Program reached HLT. Execution completed.")
+		} else if (resJson.reached_INP) {
+			const input = getUserInput()
+			// todo: send input to server
+		}
 	} else {
 		// todo
 	}
