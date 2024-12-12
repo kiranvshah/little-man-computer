@@ -13,10 +13,16 @@ export function updateMemoryLocation(
 	memoryContentsSpans[Number(address)].innerText = value;
 }
 
+/**
+ * Updates the value displayed in a given register.
+ * @param {string} code The 2-5 character long code representing the register.
+ * @param {string} value The value to update the register to.
+ */
 export function updateRegisterByCode(
 	code: "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY",
 	value: string,
 ) {
+	console.table({ code, value });
 	({
 		PC: updateProgramCounter,
 		ACC: updateAccumulator,
