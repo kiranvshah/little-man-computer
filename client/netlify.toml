@@ -1,0 +1,2 @@
+[build]
+    command = "SERVER_URL = $SERVER_URL pnpm run build"

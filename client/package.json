@@ -4,8 +4,8 @@
 	"description": "Little man computer client",
 	"main": "index.js",
 	"scripts": {
-		"build": "pnpm rimraf dist && pnpm tsc",
-		"watch": "pnpm rimraf dist && pnpm tsc --watch",
+		"build": "node prebuild.js && pnpm rimraf dist && pnpm tsc",
+		"watch": "node prebuild.js && pnpm rimraf dist && pnpm tsc --watch",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"prettier:check": "prettier --check .",
 		"prettier:write": "prettier --write ."

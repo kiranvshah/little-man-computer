@@ -9,8 +9,7 @@ import {
 	updateRegisterByCode,
 } from "./addressDisplayUpdaters.js";
 
-const SERVER_URL =
-	"https://reimagined-garbanzo-x7jqqp496g5fp7gg-5000.app.github.dev";
+const SERVER_URL = "%%SERVER_URL%%"; // this will get replaced in prebuild.js
 
 // populate memoryTable
 const memoryTableBody = document.getElementById(
