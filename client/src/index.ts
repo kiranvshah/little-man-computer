@@ -199,7 +199,7 @@ async function step() {
 			alert("Program reached HLT. Execution completed.");
 		} else if (resJson.reached_INP) {
 			const input = getUserInput();
-			// todo: send input to server
+			// todo: send input to server (issue #31)
 		}
 	} else {
 		// todo
