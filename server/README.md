@@ -1,5 +1,7 @@
 # LMC Backend
- 
+
+The Little Man Computer has a backend written in Python. A Flask server is responsible for handling API requests from the frontend, to do tasks with more complex logic, such as assembling and running programs.
+
 ## Setup
 
 In a terminal in the `server` directory:
