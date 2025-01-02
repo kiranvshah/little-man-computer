@@ -135,11 +135,10 @@ class Computer:
                     acc_value = self.memory_and_registers["registers"]["ACC"]
                     self.memory_and_registers["memory"][operand] = acc_value
                     transfers.append({
-                        "start_mem": operand,
-                        "end_reg": "ACC",
+                        "start_reg": "ACC",
+                        "end_mem": operand,
                         "value": acc_value,
                     })
-                    # todo: is this transfer the wrong way round??
                 case "6":
                     # bra
                     # set IR to operand
