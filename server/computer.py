@@ -102,10 +102,20 @@ class Computer:
                     # add
                     # add from MDR to ACC
                     self.memory_and_registers["registers"]["ACC"] += argument
+                    if self.memory_and_registers["registers"]["ACC"] > 999:
+                        self.memory_and_registers["registers"]["CARRY"] = 1
+                    else:
+                        self.memory_and_registers["registers"]["CARRY"] = 0
+                    # todo: transfer
                 case "2":
                     # sub
                     # subtract MDR value from ACC
                     self.memory_and_registers["registers"]["ACC"] -= argument
+                    if self.memory_and_registers["registers"]["ACC"] < 0:
+                        self.memory_and_registers["registers"]["CARRY"] = 1
+                    else:
+                        self.memory_and_registers["registers"]["CARRY"] = 0
+                    # todo: transfer
                 case "5":
                     # lda
                     # set ACC value to value stored in MDR
@@ -129,6 +139,7 @@ class Computer:
                         "end_reg": "ACC",
                         "value": acc_value,
                     })
+                    # todo: is this transfer the wrong way round??
                 case "6":
                     # bra
                     # set IR to operand
