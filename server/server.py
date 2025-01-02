@@ -1,3 +1,5 @@
+"""This script is responsible for the running of the Flask server and handling of each request."""
+
 from flask import Flask, request, jsonify
 import flask_cors
 import compile_assembly

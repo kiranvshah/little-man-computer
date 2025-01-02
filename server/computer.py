@@ -1,6 +1,11 @@
+"""This file is responsible for the fetch-decode-execute cycle. The Computer class represents the
+entire LMC in a specific state, and has step and run methods which are triggered by the user.
+Classes:
+    Computer"""
+
 class Computer:
     """A `Computer` object is instantiated with memory and register contents every time the client
-    asks to step."""
+    asks to step or run."""
     def __init__(self, memory_and_registers):
         self.memory_and_registers = memory_and_registers
 
