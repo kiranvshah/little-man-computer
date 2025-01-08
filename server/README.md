@@ -27,6 +27,9 @@ In a terminal in the `server` directory:
 
 This will run the Flask server.
 
+> [!NOTE]
+> The port that the server runs on will need to be opened up to outside traffic (made public) if the requests are being made from a different machine, i.e. if the website is being accessed from a different machine.
+
 ## Testing
 
 In a terminal in the `server` directory, run `pytest .`.
