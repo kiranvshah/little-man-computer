@@ -10,6 +10,13 @@ class Computer:
         self.memory_and_registers = memory_and_registers
 
     def __fetch(self):
+        """Runs the fetch stage of the FDE cycle on the Computer object.
+
+        Returns
+        -------
+        _type_ # todo
+            A list of transfer dictionaries.
+        """
         transfers = []
 
         # copy value from program counter to MAR
@@ -58,6 +65,13 @@ class Computer:
         return transfers
 
     def __decode(self):
+        """Runs the decode stage of the FDE cycle on the Computer object.
+
+        Returns
+        -------
+        _type_ # todo
+            A list of transfer dictionaries.
+        """
         transfers = []
 
         opcode = self.memory_and_registers["registers"]["IR"]
@@ -76,6 +90,20 @@ class Computer:
         return transfers
 
     def __execute(self):
+        """Runs the execute stage of the FDE cycle on the Computer object.
+
+        Returns
+        -------
+        set(bool, bool, list[Transfer]) # todo: define Transfer
+            First boolean: whether HLT was called and program needs to stop execution.
+            Second boolean: whether INP was called and user input needs to be collected.
+            Finally: A list of transfer dictionaries
+
+        Raises
+        ------
+        ValueError
+            _description_
+        """
         reached_hlt = False
         reached_inp = False
         transfers = []
