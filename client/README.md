@@ -3,7 +3,7 @@
 ## Structure
 
 - `.vscode/` contains editor settings for VS Code
-- `assets/styles/` contains CSS 
+- `assets/styles/` contains CSS
 - `src/` contains TypeScript source code (entry point is `index.ts`)
 - `prebuild.js` runs before the TS build process, and is responsible for accessing an environment variable on host machine for the server API URL, and subtituting it into `index.ts`
 
@@ -26,5 +26,6 @@ In VS Code:
 ### Production
 
 I host the frontend on Netlify. Configuration:
-- Base directory set to `client` 
+
+- Base directory set to `client`
 - Build command set to `pnpm build`
