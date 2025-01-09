@@ -194,10 +194,12 @@ async function step() {
 				);
 			}
 		}
-		// consider output
+
+		// show output to user
 		if (resJson.output) {
-			alert(`Output: ${resJson.output}`)
+			alert(`Output: ${resJson.output}`);
 		}
+
 		// consider reached_HLT and reached_INP
 		if (resJson.reached_HLT) {
 			alert("Program reached HLT. Execution completed.");
