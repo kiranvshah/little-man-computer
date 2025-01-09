@@ -95,6 +95,7 @@ interface StepResult {
 	transfers: Transfer[];
 	reached_HLT: boolean;
 	reached_INP: boolean;
+	output: string;
 }
 
 function getUserInput() {
@@ -192,6 +193,10 @@ async function step() {
 					transfer.value,
 				);
 			}
+		}
+		// consider output
+		if (resJson.output) {
+			alert(`Output: ${resJson.output}`)
 		}
 		// consider reached_HLT and reached_INP
 		if (resJson.reached_HLT) {

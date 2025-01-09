@@ -106,20 +106,21 @@ class Computer:
         """
         reached_hlt = False
         reached_inp = False
+        output = ""
         transfers = []
 
         opcode = self.memory_and_registers["registers"]["IR"]
         operand = self.memory_and_registers["registers"]["MAR"]
         if opcode in ("9", "0"):
-            # INP, OUT, or HLT. opcode should not be treated as memory address.
+            # INP, OUT, or HLT. operand should not be treated as memory address.
             if opcode == "0" and operand == "00":
                 reached_hlt = True
             elif opcode == "9" and operand == "01":
                 # todo: INP
                 reached_inp = True
             elif opcode == "9" and operand == "02":
-                # todo: OUT
-                ...
+                # OUT
+                output = self.memory_and_registers["registers"]["ACC"]
             else:
                 raise ValueError("Invalid instruction beginning in 0 or 9")
         elif opcode in ("1", "2", "5"):
@@ -191,7 +192,7 @@ class Computer:
                         self.memory_and_registers["registers"]["IR"] = operand
                         # todo: transfer? coming from actual operand
 
-        return reached_hlt, reached_inp, transfers
+        return reached_hlt, reached_inp, output, transfers
 
     def step(self):
         """Runs one FDE cycle and returns new memory/registers and list of transfers (changes)
@@ -204,6 +205,7 @@ class Computer:
             "transfers": None,
             "reached_HLT": False,
             "reached_INP": False,
+            "output": "",
         }
 
         # fetch
@@ -213,7 +215,7 @@ class Computer:
         return_obj["transfers"].extend(self.__decode())
 
         # execute
-        return_obj["reached_HLT"], return_obj["reached_INP"], new_transfers = self.__execute()
+        return_obj["reached_HLT"], return_obj["reached_INP"], return_obj["output"], new_transfers = self.__execute()
         return_obj["transfers"].extend(new_transfers)
 
         return_obj["memory_and_registers"] = self.memory_and_registers
@@ -238,6 +240,7 @@ class Computer:
         Returns:
             _type_: _description_
         """
+        # todo: how to deal with outputs in run
         reached_hlt = False
         reached_inp = False
 
