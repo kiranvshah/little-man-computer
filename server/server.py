@@ -62,6 +62,19 @@ def post_step():
         return response
     return "Expected JSON request", 415
 
+@app.post("/api/after-input")
+def post_after_input():
+    if request.is_json:
+        req_body = request.get_json()
+        if not (req_body["input"] and req_body["state"]):
+            return "Invalid request body. Need input and state.", 400
+        # todo: process request
+        computer = computer_module.Computer(req_body["state"])
+        response = jsonify(computer.finish_after_input(req_body["input"]))
+        return response
+    return "Expected JSON request", 415
+
+
 @app.post("/api/run")
 def post_run():
     if request.is_json:
