@@ -136,7 +136,7 @@ class Computer:
                     # add
                     # add from MDR to ACC
                     self.memory_and_registers["registers"]["ACC"] += argument
-                    if self.memory_and_registers["registers"]["ACC"] > 999:
+                    if int(self.memory_and_registers["registers"]["ACC"]) > 999:
                         self.memory_and_registers["registers"]["CARRY"] = 1
                     else:
                         self.memory_and_registers["registers"]["CARRY"] = 0
@@ -145,7 +145,7 @@ class Computer:
                     # sub
                     # subtract MDR value from ACC
                     self.memory_and_registers["registers"]["ACC"] -= argument
-                    if self.memory_and_registers["registers"]["ACC"] < 0:
+                    if int(self.memory_and_registers["registers"]["ACC"]) < 0:
                         self.memory_and_registers["registers"]["CARRY"] = 1
                     else:
                         self.memory_and_registers["registers"]["CARRY"] = 0
