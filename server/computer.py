@@ -41,7 +41,11 @@ class Computer:
         # increment program counter by 1
         pc_value = self.memory_and_registers["registers"]["PC"]
         self.memory_and_registers["registers"]["PC"] = str(int(pc_value) + 1).zfill(2)
-        # todo: should i have a transfer for this?
+        transfers.append({
+            "start_reg": "PC",
+            "end_reg": "PC",
+            "value": self.memory_and_registers["registers"]["PC"],
+        })
         # todo: raise error if trying to increment to 100
 
         # copy assembly instruction from MDR to IR and MAR
@@ -140,7 +144,11 @@ class Computer:
                         self.memory_and_registers["registers"]["CARRY"] = 1
                     else:
                         self.memory_and_registers["registers"]["CARRY"] = 0
-                    # todo: transfer
+                    transfers.append({
+                        "start_reg": "ACC",
+                        "end_reg": "CARRY",
+                        "value": self.memory_and_registers["registers"]["CARRY"],
+                    })
                 case "2":
                     # sub
                     # subtract MDR value from ACC
@@ -149,7 +157,11 @@ class Computer:
                         self.memory_and_registers["registers"]["CARRY"] = 1
                     else:
                         self.memory_and_registers["registers"]["CARRY"] = 0
-                    # todo: transfer
+                    transfers.append({
+                        "start_reg": "ACC",
+                        "end_reg": "CARRY",
+                        "value": self.memory_and_registers["registers"]["CARRY"],
+                    })
                 case "5":
                     # lda
                     # set ACC value to value stored in MDR
@@ -177,20 +189,32 @@ class Computer:
                     # bra
                     # set IR to operand
                     self.memory_and_registers["registers"]["IR"] = operand
-                    # todo: transfer? coming from actual operand
+                    transfers.append({
+                        # todo: transfer coming from actual operand
+                        "end_reg": "IR",
+                        "value": self.memory_and_registers["registers"]["IR"],
+                    })
                 case "7":
                     # brz
                     # set IR to operand if ACC is 0
                     if self.memory_and_registers["registers"]["ACC"] == 0:
                         # set IR to operand
                         self.memory_and_registers["registers"]["IR"] = operand
-                        # todo: transfer? coming from actual operand
+                        transfers.append({
+                            # todo: transfer coming from actual operand
+                            "end_reg": "IR",
+                            "value": self.memory_and_registers["registers"]["IR"],
+                        })
                 case "8":
                     # brp
                     # set IR to operand if CARRY is 1
                     if self.memory_and_registers["registers"]["CARRY"] == 1:
                         self.memory_and_registers["registers"]["IR"] = operand
-                        # todo: transfer? coming from actual operand
+                        transfers.append({
+                            # todo: transfer coming from actual operand
+                            "end_reg": "IR",
+                            "value": self.memory_and_registers["registers"]["IR"],
+                        })
 
         return reached_hlt, reached_inp, output, transfers
 
