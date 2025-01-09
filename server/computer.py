@@ -255,7 +255,7 @@ class Computer:
         return_obj["memory_and_registers"] = self.memory_and_registers
         return return_obj
 
-    def finish_step_after_input(self, input_value: str):
+    def finish_after_input(self, input_value: str):
         # todo: param/return detail in docstring
         """Finishes one FDE cycle after an input value has been retrieved from the user."""
         # todo: should input value be validated here? maybe think about this once more structure
