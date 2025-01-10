@@ -139,7 +139,9 @@ class Computer:
                 case "1":
                     # add
                     # add from MDR to ACC
-                    self.memory_and_registers["registers"]["ACC"] = str(int(self.memory_and_registers["registers"]["ACC"]) - int(argument))
+                    print(int(self.memory_and_registers["registers"]["ACC"]), int(argument))
+                    self.memory_and_registers["registers"]["ACC"] = str(int(self.memory_and_registers["registers"]["ACC"]) + int(argument))
+                    print(self.memory_and_registers["registers"]["ACC"])
                     transfers.append({
                         "start_mem": operand,
                         "end_reg": "ACC",
@@ -176,12 +178,11 @@ class Computer:
                     # lda
                     # set ACC value to value stored in MDR
                     self.memory_and_registers["registers"]["ACC"] = argument
-
-            transfers.append({
-                "start_reg": "MDR",
-                "end_reg": "ACC",
-                "value": argument,
-            })
+                    transfers.append({
+                        "start_reg": "MDR",
+                        "end_reg": "ACC",
+                        "value": argument,
+                    })
 
         else:
             match opcode:

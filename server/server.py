@@ -56,7 +56,6 @@ def post_compile():
 def post_step():
     if request.is_json:
         req_body = request.get_json()
-        print(req_body)
         computer = computer_module.Computer(req_body)
         response = jsonify(computer.step()) # todo: catch errors
         return response
