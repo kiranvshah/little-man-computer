@@ -49,7 +49,10 @@ const reportAssemblyCompilationError = (responseJson: {
 	line_number: string;
 }) => {
 	alert(
-		`Code was not valid:\n${responseJson.reason}` + responseJson.line_number === "unknown" ? "" : `\nError occured on line ${responseJson.line_number} of assembly.`,
+		`Code was not valid:\n${responseJson.reason}` + responseJson.line_number ===
+			"unknown"
+			? ""
+			: `\nError occured on line ${responseJson.line_number} of assembly.`,
 	);
 };
 
@@ -218,7 +221,7 @@ async function step() {
 			if (response.ok) {
 				// update changed register location
 				console.assert(resJson.end_reg === "ACC");
-				updateRegisterByCode("ACC", resJson.value)	
+				updateRegisterByCode("ACC", resJson.value);
 			}
 		}
 	} else {
@@ -227,7 +230,8 @@ async function step() {
 }
 
 async function run() {
-	// todo
+	// todo: call API run endpoint
+	// should have very similar frontend logic to step, just with more iteration
 }
 
 document.addEventListener("DOMContentLoaded", () => {
