@@ -139,9 +139,8 @@ class Computer:
                 case "1":
                     # add
                     # add from MDR to ACC
-                    print(int(self.memory_and_registers["registers"]["ACC"]), int(argument))
-                    self.memory_and_registers["registers"]["ACC"] = str(int(self.memory_and_registers["registers"]["ACC"]) + int(argument))
-                    print(self.memory_and_registers["registers"]["ACC"])
+                    arithmetic_result = int(self.memory_and_registers["registers"]["ACC"]) + int(argument)
+                    self.memory_and_registers["registers"]["ACC"] = str(arithmetic_result % 1000)
                     transfers.append({
                         "start_mem": operand,
                         "end_reg": "ACC",
@@ -159,7 +158,8 @@ class Computer:
                 case "2":
                     # sub
                     # subtract MDR value from ACC
-                    self.memory_and_registers["registers"]["ACC"] = str(int(self.memory_and_registers["registers"]["ACC"]) - int(argument))
+                    arithmetic_result = int(self.memory_and_registers["registers"]["ACC"]) - int(argument)
+                    self.memory_and_registers["registers"]["ACC"] = str(arithmetic_result % 1000)
                     transfers.append({
                         "start_mem": operand,
                         "end_reg": "ACC",
