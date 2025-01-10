@@ -214,7 +214,12 @@ async function step() {
 				headers: { "Content-Type": "application/json" },
 				mode: "cors",
 			});
-			// todo: process response
+			const resJson = (await response.json()) as Transfer;
+			if (response.ok) {
+				// update changed register location
+				console.assert(resJson.end_reg === "ACC");
+				updateRegisterByCode("ACC", resJson.value)	
+			}
 		}
 	} else {
 		// todo
