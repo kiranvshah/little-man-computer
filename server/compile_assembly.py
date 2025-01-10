@@ -22,14 +22,14 @@ def validate_label_name(label: str, line_number: int):
     # ensure label has valid chars (only alpha?)
     if not (label.isalnum() and label[0].isalpha()):
         raise ValueError(
+            f"Label \"{label}\" must begin with a letter and be completely alphanumeric",
             line_number,
-            f"Label \"{label}\" must begin with a letter and be completely alphanumeric"
         )
     # ensure label is not an instruction
     if label in instructions:
         raise ValueError(
+            f"Label \"{label}\" cannot be an instruction",
             line_number,
-            f"Label \"{label}\" cannot be an instruction"
         )
 
 # todo: could this function benefit from more decomposition?
@@ -61,7 +61,7 @@ def compile_assembly(user_written_code: str):
             # this is an empty line, we can ignore it without raising an error
             continue
         if len(words) > 3:
-            raise ValueError(original_line_number, "There cannot be more than 3 words on one line")
+            raise ValueError("There cannot be more than 3 words on one line", original_line_number)
 
         if len(words) == 1:
             if line in instructions_0_args:
@@ -69,8 +69,8 @@ def compile_assembly(user_written_code: str):
             else:
                 # received a line with only 1 word, but it is not an instruction that takes no args
                 if line in instructions:
-                    raise ValueError(original_line_number, "Missing an argument for instruction")
-                raise ValueError(original_line_number, f"Invalid instruction \"{line}\"")
+                    raise ValueError("Missing an argument for instruction", original_line_number)
+                raise ValueError(f"Invalid instruction \"{line}\"", original_line_number)
 
         elif len(words) == 2:
             if words[0] in instructions_1_arg_is_label:
@@ -89,7 +89,7 @@ def compile_assembly(user_written_code: str):
                     "instruction": instruction,
                 })
             else:
-                raise ValueError(original_line_number, "Invalid line. Could not find instruction.")
+                raise ValueError("Invalid line. Could not find instruction.", original_line_number)
 
         else:
             # len(words) is 3
@@ -97,12 +97,12 @@ def compile_assembly(user_written_code: str):
             if words[1] not in instructions_1_arg:
                 if words[1] in instructions_0_args:
                     raise ValueError(
-                        original_line_number,
-                        "Instruction does not take arguments, received one."
+                        "Instruction does not take arguments, received one.",
+                        original_line_number
                     )
                 raise ValueError(
-                    original_line_number,
-                    "Line with 3 words should have structure: <label>, <instruction>, <value>."
+                    "Line with 3 words should have structure: <label>, <instruction>, <value>.",
+                    original_line_number
                 )
             # process label in words[0] and value in words[2]
             label = words[0]
@@ -116,13 +116,13 @@ def compile_assembly(user_written_code: str):
                 # validate value
                 if not arg.isdigit():
                     raise ValueError(
+                        f"Expected number 0-999, received {arg} (not a number)",
                         original_line_number,
-                        f"Expected number 0-999, received {arg} (not a number)"
                     )
                 if not 0 <= int(arg) <= 999:
                     raise ValueError(
+                        f"Expected number 0-999, received {arg} (out of range)",
                         original_line_number,
-                        f"Expected number 0-999, received {arg} (out of range)"
                     )
 
                 lines.append({

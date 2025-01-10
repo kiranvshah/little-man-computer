@@ -25,8 +25,8 @@ def post_check():
         except ValueError as error:
             return jsonify({
                 "valid": False,
-                "reason": error.args[1],
-                "line_number": error.args[0] or "unknown"
+                "reason": error.args[0],
+                "line_number": error.args[1] if len(error.args) > 1 else "unknown"
             })
     return "Expected JSON request", 415
 
