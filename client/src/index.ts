@@ -205,7 +205,16 @@ async function step() {
 			alert("Program reached HLT. Execution completed.");
 		} else if (resJson.reached_INP) {
 			const input = getUserInput();
-			// todo: send input to server (issue #31)
+			const response = await fetch(`${SERVER_URL}/api/after-input`, {
+				method: "POST",
+				body: JSON.stringify({
+					state: memoryAndRegistersContents,
+					input,
+				}),
+				headers: { "Content-Type": "application/json" },
+				mode: "cors",
+			});
+			// todo: process response
 		}
 	} else {
 		// todo
