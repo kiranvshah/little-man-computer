@@ -1,6 +1,6 @@
 /**
- * Updates the value displayed in a given location in RAM.
- * @param {string} address The address of the RAM location to update (0-99).
+ * Updates the value displayed in a given location in memory.
+ * @param {string} address The address of the memory location to update (0-99).
  * @param {string} value The value to change the display to (0-999).
  * @param {HTMLSpanElement[]} memoryContentsSpans The array of <span> elements that contain the memory contents.
  */
