@@ -243,7 +243,7 @@ async function run() {
 		for (const stepResJson of resJson) {
 			await processStepResult(stepResJson);
 		}
-		if (resJson[-1].reached_INP) {
+		if (resJson[resJson.length - 1].reached_INP) {
 			// continue running by calling /api/run again
 			await run();
 		}
