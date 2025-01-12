@@ -168,6 +168,51 @@ async function assembleCode() {
 	} else reportAssemblyCompilationError(resJson);
 }
 
+async function processStepResult(resJson: StepResult) {
+	for (const transfer of resJson.transfers) {
+		// todo: animations would go here
+		if (transfer.end_mem) {
+			updateMemoryLocation(
+				transfer.end_mem,
+				transfer.value,
+				memoryContentsSpans,
+			);
+		} else {
+			updateRegisterByCode(
+				transfer.end_reg as "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY",
+				transfer.value,
+			);
+		}
+	}
+
+	// show output to user
+	if (resJson.output) {
+		alert(`Output: ${resJson.output}`);
+	}
+
+	// consider reached_HLT and reached_INP
+	if (resJson.reached_HLT) {
+		alert("Program reached HLT. Execution completed.");
+	} else if (resJson.reached_INP) {
+		const input = getUserInput();
+		const response = await fetch(`${SERVER_URL}/api/after-input`, {
+			method: "POST",
+			body: JSON.stringify({
+				state: getMemoryAndRegistersJson(),
+				input,
+			}),
+			headers: { "Content-Type": "application/json" },
+			mode: "cors",
+		});
+		const resJson = (await response.json()) as Transfer;
+		if (response.ok) {
+			// update changed register location
+			console.assert(resJson.end_reg === "ACC");
+			updateRegisterByCode("ACC", resJson.value);
+		}
+	}
+}
+
 async function step() {
 	// get contents of memory and registers as JSON
 	const memoryAndRegistersContents = getMemoryAndRegistersJson();
@@ -182,48 +227,7 @@ async function step() {
 	const resJson = (await response.json()) as StepResult;
 	if (response.ok) {
 		// update changed memory/register locations
-		for (const transfer of resJson.transfers) {
-			// todo: animations would go here
-			if (transfer.end_mem) {
-				updateMemoryLocation(
-					transfer.end_mem,
-					transfer.value,
-					memoryContentsSpans,
-				);
-			} else {
-				updateRegisterByCode(
-					transfer.end_reg as "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY",
-					transfer.value,
-				);
-			}
-		}
-
-		// show output to user
-		if (resJson.output) {
-			alert(`Output: ${resJson.output}`);
-		}
-
-		// consider reached_HLT and reached_INP
-		if (resJson.reached_HLT) {
-			alert("Program reached HLT. Execution completed.");
-		} else if (resJson.reached_INP) {
-			const input = getUserInput();
-			const response = await fetch(`${SERVER_URL}/api/after-input`, {
-				method: "POST",
-				body: JSON.stringify({
-					state: memoryAndRegistersContents,
-					input,
-				}),
-				headers: { "Content-Type": "application/json" },
-				mode: "cors",
-			});
-			const resJson = (await response.json()) as Transfer;
-			if (response.ok) {
-				// update changed register location
-				console.assert(resJson.end_reg === "ACC");
-				updateRegisterByCode("ACC", resJson.value);
-			}
-		}
+		await processStepResult(resJson);
 	} else {
 		// todo
 	}
@@ -232,6 +236,24 @@ async function step() {
 async function run() {
 	// todo: call API run endpoint
 	// should have very similar frontend logic to step, just with more iteration
+
+	// get contents of memory and registers as JSON
+	const memoryAndRegistersContents = getMemoryAndRegistersJson();
+	// call /api/run
+	const response = await fetch(`${SERVER_URL}/api/run`, {
+		method: "POST",
+		body: JSON.stringify(memoryAndRegistersContents),
+		headers: { "Content-Type": "application/json" },
+		mode: "cors",
+	});
+	const resJson = (await response.json()) as StepResult[];
+	if (response.ok) {
+		for (const stepResJson of resJson) {
+			await processStepResult(stepResJson);
+		}
+	} else {
+		// todo
+	}
 }
 
 document.addEventListener("DOMContentLoaded", () => {

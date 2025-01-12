@@ -275,7 +275,6 @@ class Computer:
         Returns:
             _type_: _description_
         """
-        # todo: how to deal with outputs in run
         reached_hlt = False
         reached_inp = False
 

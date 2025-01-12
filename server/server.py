@@ -78,7 +78,7 @@ def post_after_input():
 def post_run():
     if request.is_json:
         req_body = request.get_json()
-        # todo: process request
-        response = jsonify({'received': True})
+        computer = computer_module.Computer(req_body)
+        response = jsonify(computer.run()) # todo: catch errors
         return response
     return "Expected JSON request", 415
