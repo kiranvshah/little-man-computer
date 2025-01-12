@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		step,
 	);
 	(document.getElementById("runButton") as HTMLButtonElement).addEventListener(
-		"run",
+		"click",
 		run,
 	);
 });

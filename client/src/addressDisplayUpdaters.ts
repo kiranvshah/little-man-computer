@@ -22,7 +22,6 @@ export function updateRegisterByCode(
 	code: "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY",
 	value: string,
 ) {
-	console.table({ code, value });
 	({
 		PC: updateProgramCounter,
 		ACC: updateAccumulator,
