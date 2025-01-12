@@ -120,7 +120,6 @@ class Computer:
             if opcode == "0" and operand == "00":
                 reached_hlt = True
             elif opcode == "9" and operand == "01":
-                # todo: INP
                 reached_inp = True
             elif opcode == "9" and operand == "02":
                 # OUT
@@ -140,7 +139,7 @@ class Computer:
                     # add
                     # add from MDR to ACC
                     arithmetic_result = int(self.memory_and_registers["registers"]["ACC"]) + int(argument)
-                    self.memory_and_registers["registers"]["ACC"] = str(arithmetic_result % 1000)
+                    self.memory_and_registers["registers"]["ACC"] = str(arithmetic_result % 1000).zfill(3)
                     transfers.append({
                         "start_mem": operand,
                         "end_reg": "ACC",
@@ -159,7 +158,7 @@ class Computer:
                     # sub
                     # subtract MDR value from ACC
                     arithmetic_result = int(self.memory_and_registers["registers"]["ACC"]) - int(argument)
-                    self.memory_and_registers["registers"]["ACC"] = str(arithmetic_result % 1000)
+                    self.memory_and_registers["registers"]["ACC"] = str(arithmetic_result % 1000).zfill(3)
                     transfers.append({
                         "start_mem": operand,
                         "end_reg": "ACC",
@@ -261,7 +260,7 @@ class Computer:
         """Finishes one FDE cycle after an input value has been retrieved from the user."""
         # todo: should input value be validated here? maybe think about this once more structure
         # put input value into accumulator
-        self.memory_and_registers["registers"]["ACC"] = input_value
+        self.memory_and_registers["registers"]["ACC"] = input_value.zfill(3)
         transfer = {
             # todo: start location: from input?
             "end_reg": "ACC",
