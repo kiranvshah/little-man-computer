@@ -214,13 +214,10 @@ async function processStepResult(resJson: StepResult) {
 }
 
 async function step() {
-	// get contents of memory and registers as JSON
-	const memoryAndRegistersContents = getMemoryAndRegistersJson();
-
 	// call /api/step
 	const response = await fetch(`${SERVER_URL}/api/step`, {
 		method: "POST",
-		body: JSON.stringify(memoryAndRegistersContents),
+		body: JSON.stringify(getMemoryAndRegistersJson()),
 		headers: { "Content-Type": "application/json" },
 		mode: "cors",
 	});
@@ -234,15 +231,10 @@ async function step() {
 }
 
 async function run() {
-	// todo: call API run endpoint
-	// should have very similar frontend logic to step, just with more iteration
-
-	// get contents of memory and registers as JSON
-	const memoryAndRegistersContents = getMemoryAndRegistersJson();
 	// call /api/run
 	const response = await fetch(`${SERVER_URL}/api/run`, {
 		method: "POST",
-		body: JSON.stringify(memoryAndRegistersContents),
+		body: JSON.stringify(getMemoryAndRegistersJson()),
 		headers: { "Content-Type": "application/json" },
 		mode: "cors",
 	});
