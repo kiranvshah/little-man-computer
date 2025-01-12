@@ -198,33 +198,33 @@ class Computer:
                     })
                 case "6":
                     # bra
-                    # set IR to operand
-                    self.memory_and_registers["registers"]["IR"] = operand
+                    # set PC to operand
+                    self.memory_and_registers["registers"]["PC"] = operand
                     transfers.append({
                         # todo: transfer coming from actual operand
-                        "end_reg": "IR",
-                        "value": self.memory_and_registers["registers"]["IR"],
+                        "end_reg": "PC",
+                        "value": self.memory_and_registers["registers"]["PC"],
                     })
                 case "7":
                     # brz
-                    # set IR to operand if ACC is 0
-                    if self.memory_and_registers["registers"]["ACC"] == 0:
+                    # set PC to operand if ACC is 0
+                    if self.memory_and_registers["registers"]["ACC"] == "0":
                         # set IR to operand
-                        self.memory_and_registers["registers"]["IR"] = operand
+                        self.memory_and_registers["registers"]["PC"] = operand
                         transfers.append({
                             # todo: transfer coming from actual operand
-                            "end_reg": "IR",
-                            "value": self.memory_and_registers["registers"]["IR"],
+                            "end_reg": "PC",
+                            "value": self.memory_and_registers["registers"]["PC"],
                         })
                 case "8":
                     # brp
-                    # set IR to operand if CARRY is 1
-                    if self.memory_and_registers["registers"]["CARRY"] == 1:
-                        self.memory_and_registers["registers"]["IR"] = operand
+                    # set PC to operand if CARRY is 1
+                    if self.memory_and_registers["registers"]["CARRY"] == "1":
+                        self.memory_and_registers["registers"]["PC"] = operand
                         transfers.append({
                             # todo: transfer coming from actual operand
-                            "end_reg": "IR",
-                            "value": self.memory_and_registers["registers"]["IR"],
+                            "end_reg": "PC",
+                            "value": self.memory_and_registers["registers"]["PC"],
                         })
 
         return reached_hlt, reached_inp, output, transfers
