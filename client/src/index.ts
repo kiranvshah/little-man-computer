@@ -148,11 +148,17 @@ async function saveCode() {
 		`?code=${encodeURIComponent(codeToSave)}`,
 	);
 	try {
-		await navigator.permissions.query({ name: "clipboard-write" as PermissionName });
+		await navigator.permissions.query({
+			name: "clipboard-write" as PermissionName,
+		});
 		navigator.clipboard.writeText(window.location.href);
-		alert("URL copied to clipboard. Just go to this URL again to automatically load your code into the editor.")
+		alert(
+			"URL copied to clipboard. Just go to this URL again to automatically load your code into the editor.",
+		);
 	} catch {
-		alert("Go to this URL again to automatically load your code into the editor.")
+		alert(
+			"Go to this URL again to automatically load your code into the editor.",
+		);
 	}
 }
 
