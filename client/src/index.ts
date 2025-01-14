@@ -49,10 +49,10 @@ const reportAssemblyCompilationError = (responseJson: {
 	line_number: string;
 }) => {
 	alert(
-		`Code was not valid:\n${responseJson.reason}` + responseJson.line_number ===
-			"unknown"
-			? ""
-			: `\nError occured on line ${responseJson.line_number} of assembly.`,
+		`Code was not valid:\n${responseJson.reason}` +
+			(responseJson.line_number === "unknown"
+				? ""
+				: `\nError occured on line ${responseJson.line_number} of assembly.`),
 	);
 };
 
