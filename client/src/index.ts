@@ -8,15 +8,23 @@ import {
 	updateMemoryLocation,
 	updateRegisterByCode,
 } from "./addressDisplayUpdaters.js";
+import * as bootstrap from 'bootstrap';
 
 const SERVER_URL = "%%SERVER_URL%%"; // this will get replaced in prebuild.js
+
+// initialise tooltips
+const tooltipTriggerList = document.querySelectorAll(
+	'[data-bs-toggle="tooltip"]',
+);
+const tooltipList = [...tooltipTriggerList].map(
+	tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl),
+);
 
 // populate memoryTable
 const memoryTableBody = document.getElementById(
 	"memoryTbody",
 ) as HTMLTableElement;
 const memoryContentsSpans: HTMLSpanElement[] = [];
-
 for (let rowNumber = 0; rowNumber < 10; rowNumber++) {
 	const row = document.createElement("tr");
 	for (let colNumber = 0; colNumber < 10; colNumber++) {
