@@ -146,9 +146,9 @@ class Computer:
                         "value": self.memory_and_registers["registers"]["ACC"],
                     })
                     if int(arithmetic_result) > 999:
-                        self.memory_and_registers["registers"]["CARRY"] = 1
+                        self.memory_and_registers["registers"]["CARRY"] = "1"
                     else:
-                        self.memory_and_registers["registers"]["CARRY"] = 0
+                        self.memory_and_registers["registers"]["CARRY"] = "0"
                     transfers.append({
                         "start_reg": "ACC",
                         "end_reg": "CARRY",
@@ -165,9 +165,9 @@ class Computer:
                         "value": self.memory_and_registers["registers"]["ACC"],
                     })
                     if int(arithmetic_result) < 0:
-                        self.memory_and_registers["registers"]["CARRY"] = 1
+                        self.memory_and_registers["registers"]["CARRY"] = "1"
                     else:
-                        self.memory_and_registers["registers"]["CARRY"] = 0
+                        self.memory_and_registers["registers"]["CARRY"] = "0"
                     transfers.append({
                         "start_reg": "ACC",
                         "end_reg": "CARRY",
