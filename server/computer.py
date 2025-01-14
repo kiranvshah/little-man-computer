@@ -207,7 +207,7 @@ class Computer:
                 case "7":
                     # brz
                     # set PC to operand if ACC is 0
-                    if self.memory_and_registers["registers"]["ACC"] == "0":
+                    if self.memory_and_registers["registers"]["ACC"] == "000":
                         # set IR to operand
                         self.memory_and_registers["registers"]["PC"] = operand
                         transfers.append({
