@@ -144,28 +144,34 @@ async function assembleCode() {
 		headers: { "Content-Type": "application/json" },
 		mode: "cors",
 	});
-	const resJson = await response.json();
-	if (resJson.valid) {
-		const result = resJson.result;
-		// put compiled code into text area
-		compiledCodeTextarea.value = (result.compiled_code as String[]).join("\n");
+	if (response.ok) {
+		const resJson = await response.json();
+		if (resJson.valid) {
+			const result = resJson.result;
+			// put compiled code into text area
+			compiledCodeTextarea.value = (result.compiled_code as String[]).join(
+				"\n",
+			);
 
-		// populate registers
-		// todo: make more concise. then dont need to export specific register updaters
-		updateProgramCounter(result.memory_and_registers.registers.PC);
-		updateAccumulator(result.memory_and_registers.registers.ACC);
-		updateMar(result.memory_and_registers.registers.MAR);
-		updateMdr(result.memory_and_registers.registers.MDR);
-		updateIr(result.memory_and_registers.registers.IR);
-		updateCarryFlag(result.memory_and_registers.registers.CARRY);
+			// populate registers
+			// todo: make more concise. then dont need to export specific register updaters
+			updateProgramCounter(result.memory_and_registers.registers.PC);
+			updateAccumulator(result.memory_and_registers.registers.ACC);
+			updateMar(result.memory_and_registers.registers.MAR);
+			updateMdr(result.memory_and_registers.registers.MDR);
+			updateIr(result.memory_and_registers.registers.IR);
+			updateCarryFlag(result.memory_and_registers.registers.CARRY);
 
-		// populate memory
-		for (const [location, contents] of Object.entries(
-			result.memory_and_registers.memory,
-		)) {
-			updateMemoryLocation(location, contents as string, memoryContentsSpans);
-		}
-	} else reportAssemblyCompilationError(resJson);
+			// populate memory
+			for (const [location, contents] of Object.entries(
+				result.memory_and_registers.memory,
+			)) {
+				updateMemoryLocation(location, contents as string, memoryContentsSpans);
+			}
+		} else reportAssemblyCompilationError(resJson);
+	} else {
+		alert("Bad response from server");
+	}
 }
 
 async function processStepResult(resJson: StepResult) {
@@ -226,7 +232,7 @@ async function step() {
 		// update changed memory/register locations
 		await processStepResult(resJson);
 	} else {
-		// todo
+		alert("Bad response from server");
 	}
 }
 
@@ -248,7 +254,7 @@ async function run() {
 			await run();
 		}
 	} else {
-		// todo
+		alert("Bad response from server");
 	}
 }
 
