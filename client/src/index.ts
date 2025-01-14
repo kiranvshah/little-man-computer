@@ -10,7 +10,7 @@ import {
 } from "./addressDisplayUpdaters.js";
 import * as bootstrap from "bootstrap";
 
-const SERVER_URL = "%%SERVER_URL%%"; // this will get replaced in prebuild.js
+const SERVER_URL = "http://localhost:5000"; // this will get replaced in prebuild.js
 
 // initialise tooltips
 const tooltipTriggerList = document.querySelectorAll(
@@ -140,6 +140,22 @@ function clearCode() {
 	).value = "";
 }
 
+async function saveCode() {
+	const codeToSave = getUncompiledCode();
+	window.history.replaceState(
+		null,
+		"",
+		`?code=${encodeURIComponent(codeToSave)}`,
+	);
+	try {
+		await navigator.permissions.query({ name: "clipboard-write" as PermissionName });
+		navigator.clipboard.writeText(window.location.href);
+		alert("URL copied to clipboard. Just go to this URL again to automatically load your code into the editor.")
+	} catch {
+		alert("Go to this URL again to automatically load your code into the editor.")
+	}
+}
+
 async function assembleCode() {
 	const compiledCodeTextarea = document.getElementById(
 		"compiledAssemblyTextarea",
@@ -267,6 +283,21 @@ async function run() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+	// load code if saved in URL query string
+	const savedCode = new URLSearchParams(window.location.search).get("code");
+	if (savedCode) {
+		(
+			document.getElementById(
+				"uncompiledAssemblyTextarea",
+			) as HTMLTextAreaElement
+		).value = savedCode;
+	}
+
+	// add event listeners to buttons
+	(document.getElementById("saveButton") as HTMLButtonElement).addEventListener(
+		"click",
+		saveCode,
+	);
 	(
 		document.getElementById("checkButton") as HTMLButtonElement
 	).addEventListener("click", checkCode);
