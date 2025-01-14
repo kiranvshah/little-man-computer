@@ -8,7 +8,7 @@ import {
 	updateMemoryLocation,
 	updateRegisterByCode,
 } from "./addressDisplayUpdaters.js";
-import * as bootstrap from 'bootstrap';
+import * as bootstrap from "bootstrap";
 
 const SERVER_URL = "%%SERVER_URL%%"; // this will get replaced in prebuild.js
 
