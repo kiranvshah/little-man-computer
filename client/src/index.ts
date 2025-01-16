@@ -9,6 +9,7 @@ import {
 	updateRegisterByCode,
 } from "./addressDisplayUpdaters.js";
 import * as bootstrap from "bootstrap";
+import { animateFromIRToPC } from "./animations.js";
 
 const SERVER_URL = "%%SERVER_URL%%"; // this will get replaced in prebuild.js
 
@@ -303,7 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	);
 	(
 		document.getElementById("checkButton") as HTMLButtonElement
-	).addEventListener("click", checkCode);
+	).addEventListener("click", animateFromIRToPC);
 	(
 		document.getElementById("clearButton") as HTMLButtonElement
 	).addEventListener("click", clearCode);
