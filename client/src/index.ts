@@ -10,15 +10,13 @@ import {
 } from "./addressDisplayUpdaters.js";
 import * as bootstrap from "bootstrap";
 
-const SERVER_URL = "https://reimagined-garbanzo-x7jqqp496g5fp7gg-5000.app.github.dev"; // this will get replaced in prebuild.js
+const SERVER_URL =
+	"https://reimagined-garbanzo-x7jqqp496g5fp7gg-5000.app.github.dev"; // this will get replaced in prebuild.js
 
 // initialise tooltips
-const tooltipTriggerList = document.querySelectorAll(
-	'[data-bs-toggle="tooltip"]',
-);
-const tooltipList = [...tooltipTriggerList].map(
-	tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl),
-);
+document
+	.querySelectorAll('[data-bs-toggle="tooltip"]')
+	.forEach(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
 // populate memoryTable
 const memoryTableBody = document.getElementById(
