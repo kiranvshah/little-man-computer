@@ -13,9 +13,9 @@ export function animateTranslation(endId: string) {
 
 	dot.style.setProperty("--dx", dx);
 	dot.style.setProperty("--dy", dy);
-	dot.classList.add("mover");
+	dot.classList.add("moving");
 	dot.addEventListener("animationend", () => {
 		destinationParent.appendChild(dot);
-		dot.classList.remove("mover");
+		dot.classList.remove("moving");
 	});
 }

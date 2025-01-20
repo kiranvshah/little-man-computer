@@ -3,7 +3,7 @@
 	color: #767676;
 }
 
-.mover {
+.moving {
 	animation-name: mover-animation;
 	animation-duration: 3s;
 	animation-timing-function: linear;
