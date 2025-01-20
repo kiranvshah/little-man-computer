@@ -3,6 +3,26 @@
 	color: #767676;
 }
 
+.transfer-dot-parent {
+	position: relative;
+}
+
+.transfer-dot {
+	--size: 3rem;
+	width: var(--size);
+	height: var(--size);
+	line-height: var(--size);
+	border-radius: 50%;
+	text-align: center;
+	background-color: dodgerblue;
+	color: white;
+	position: absolute;
+	z-index: 999;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
 .moving {
 	animation-name: mover-animation;
 	animation-duration: 3s;
@@ -12,9 +32,12 @@
 
 @keyframes mover-animation {
 	0% {
-		transform: translateX(0) translateY(0);
+		transform: translate(-50%, -50%);
 	}
 	100% {
-		transform: translateX(var(--dx)) translateY(var(--dy));
+		transform: translate(
+			calc(var(--dx) - 50%), 
+			calc(var(--dy) - 50%)
+		);
 	}
 }
