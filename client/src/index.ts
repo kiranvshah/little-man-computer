@@ -35,6 +35,7 @@ for (let rowNumber = 0; rowNumber < 10; rowNumber++) {
 		memoryAddressLabel.innerText = memoryAddress.toString().padStart(2, "0");
 
 		const memoryContentsSpan = document.createElement("span");
+		memoryContentsSpan.classList.add("transfer-dot-parent");
 		memoryContentsSpan.innerText = "000";
 		memoryContentsSpans.push(memoryContentsSpan);
 
@@ -305,7 +306,11 @@ document.addEventListener("DOMContentLoaded", () => {
 	(
 		document.getElementById("checkButton") as HTMLButtonElement
 	).addEventListener("click", () =>
-		createDotAndAnimateFromAToB("123", "dotStart", "dotDestination"),
+		createDotAndAnimateFromAToB(
+			"123",
+			document.getElementById("irValueSpan")!,
+			memoryContentsSpans[75],
+		),
 	);
 	(
 		document.getElementById("clearButton") as HTMLButtonElement

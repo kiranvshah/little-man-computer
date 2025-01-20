@@ -1,12 +1,14 @@
-async function animateTranslation(elementToTranslateId: string, endId: string) {
-	const dot = document.getElementById(elementToTranslateId)!;
-	const originParent = dot.parentElement!;
-	const destinationParent = document.getElementById(endId)!;
+async function animateTranslation(
+	elementToTranslate: HTMLElement,
+	destination: HTMLElement,
+) {
+	const dot = elementToTranslate;
+	const origin = dot.parentElement!;
 
 	const startRect = dot.getBoundingClientRect();
-	destinationParent.appendChild(dot); // move dot to destination in order to get final coords
+	destination.appendChild(dot); // move dot to destination in order to get final coords
 	const endRect = dot.getBoundingClientRect();
-	originParent.appendChild(dot); // move dot back to origin before animation begins
+	origin.appendChild(dot); // move dot back to origin before animation begins
 
 	const dx = endRect.left - startRect.left + "px";
 	const dy = endRect.top - startRect.top + "px";
@@ -15,7 +17,7 @@ async function animateTranslation(elementToTranslateId: string, endId: string) {
 	dot.style.setProperty("--dy", dy);
 	dot.classList.add("moving");
 	dot.addEventListener("animationend", () => {
-		destinationParent.appendChild(dot);
+		destination.appendChild(dot);
 		dot.classList.remove("moving");
 	});
 
@@ -24,18 +26,16 @@ async function animateTranslation(elementToTranslateId: string, endId: string) {
 
 export async function createDotAndAnimateFromAToB(
 	dotInnerText: string,
-	startElementId: string,
-	endElementId: string,
+	origin: HTMLElement,
+	destination: HTMLElement,
 ) {
 	// create dot
-	const startParent = document.getElementById(startElementId)!;
 	const dot = document.createElement("div");
 	dot.classList.add("transfer-dot");
 	dot.innerText = dotInnerText;
-	dot.id = performance.now().toString(); // unique id in case multiple dots exist at once
-	startParent.appendChild(dot);
+	origin.appendChild(dot);
 
-	await animateTranslation(dot.id, endElementId);
+	await animateTranslation(dot, destination);
 
 	// destroy dot after 1s
 	setTimeout(() => dot.remove(), 1000);
