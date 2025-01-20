@@ -32,7 +32,7 @@ for (let rowNumber = 0; rowNumber < 10; rowNumber++) {
 		cell.classList.add("text-center", "p-0", "font-monospace");
 
 		const memoryAddressLabel = document.createElement("span");
-		memoryAddressLabel.classList.add("memory-address");
+		memoryAddressLabel.classList.add("small", "text-secondary");
 		memoryAddressLabel.innerText = memoryAddress.toString().padStart(2, "0");
 
 		const memoryContentsSpan = document.createElement("span");
