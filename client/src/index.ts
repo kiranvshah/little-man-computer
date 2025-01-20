@@ -9,7 +9,7 @@ import {
 	updateRegisterByCode,
 } from "./addressDisplayUpdaters.js";
 import * as bootstrap from "bootstrap";
-import { animateTranslation } from "./animations.js";
+import { createDotAndAnimateFromAToB } from "./animations.js";
 
 const SERVER_URL = "%%SERVER_URL%%"; // this will get replaced in prebuild.js
 
@@ -304,7 +304,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	);
 	(
 		document.getElementById("checkButton") as HTMLButtonElement
-	).addEventListener("click", () => animateTranslation("dotDestination"));
+	).addEventListener("click", () =>
+		createDotAndAnimateFromAToB("123", "dotStart", "dotDestination"),
+	);
 	(
 		document.getElementById("clearButton") as HTMLButtonElement
 	).addEventListener("click", clearCode);

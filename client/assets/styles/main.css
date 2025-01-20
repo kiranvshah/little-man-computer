@@ -16,6 +16,8 @@
 	text-align: center;
 	background-color: dodgerblue;
 	color: white;
+
+	/* positioning */
 	position: absolute;
 	z-index: 999;
 	top: 50%;
@@ -35,9 +37,6 @@
 		transform: translate(-50%, -50%);
 	}
 	100% {
-		transform: translate(
-			calc(var(--dx) - 50%), 
-			calc(var(--dy) - 50%)
-		);
+		transform: translate(calc(var(--dx) - 50%), calc(var(--dy) - 50%));
 	}
 }
