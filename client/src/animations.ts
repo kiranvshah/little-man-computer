@@ -1,7 +1,7 @@
 export function animateTranslation(endId: string) {
-	const dot = document.getElementById("dot") as HTMLDivElement;
+	const dot = document.getElementById("dot")!;
 	const originParent = dot.parentElement!;
-	const destinationParent = document.getElementById(endId) as HTMLDivElement;
+	const destinationParent = document.getElementById(endId)!;
 
 	const startRect = dot.getBoundingClientRect();
 	destinationParent.appendChild(dot); // move dot to destination in order to get final coords
