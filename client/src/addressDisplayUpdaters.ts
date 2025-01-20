@@ -1,3 +1,25 @@
+export function getMemoryLocationValueSpan(
+	address: string,
+	memoryContentsSpans: HTMLSpanElement[],
+) {
+	return memoryContentsSpans[Number(address)];
+}
+
+export function getRegisterValueSpan(
+	code: "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY",
+) {
+	return document.getElementById(
+		{
+			PC: "programCounterValueSpan",
+			ACC: "accumulatorValueSpan",
+			MAR: "marValueSpan",
+			MDR: "mdrValueSpan",
+			IR: "irValueSpan",
+			CARRY: "carryValueSpan",
+		}[code],
+	) as HTMLSpanElement;
+}
+
 /**
  * Updates the value displayed in a given location in memory.
  * @param {string} address The address of the memory location to update (0-99).
@@ -10,7 +32,7 @@ export function updateMemoryLocation(
 	memoryContentsSpans: HTMLSpanElement[],
 ) {
 	console.assert(value.length == 3);
-	memoryContentsSpans[Number(address)].innerText = value;
+	getMemoryLocationValueSpan(address, memoryContentsSpans).innerText = value;
 }
 
 /**
@@ -30,6 +52,7 @@ export function updateRegisterByCode(
 		IR: updateIr,
 		CARRY: updateCarryFlag,
 	})[code](value);
+	// todo: use getRegisterValueSpan
 }
 
 /**

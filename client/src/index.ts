@@ -9,16 +9,15 @@ import {
 	updateRegisterByCode,
 } from "./addressDisplayUpdaters.js";
 import * as bootstrap from "bootstrap";
+import { animateTransfer } from "./animations.js";
+import { Transfer } from "./transferInterface.js";
 
-const SERVER_URL = "https://reimagined-garbanzo-x7jqqp496g5fp7gg-5000.app.github.dev"; // this will get replaced in prebuild.js
+const SERVER_URL = "%%SERVER_URL%%"; // this will get replaced in prebuild.js
 
 // initialise tooltips
-const tooltipTriggerList = document.querySelectorAll(
-	'[data-bs-toggle="tooltip"]',
-);
-const tooltipList = [...tooltipTriggerList].map(
-	tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl),
-);
+document
+	.querySelectorAll('[data-bs-toggle="tooltip"]')
+	.forEach(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
 // populate memoryTable
 const memoryTableBody = document.getElementById(
@@ -37,6 +36,7 @@ for (let rowNumber = 0; rowNumber < 10; rowNumber++) {
 		memoryAddressLabel.innerText = memoryAddress.toString().padStart(2, "0");
 
 		const memoryContentsSpan = document.createElement("span");
+		memoryContentsSpan.classList.add("transfer-dot-parent");
 		memoryContentsSpan.innerText = "000";
 		memoryContentsSpans.push(memoryContentsSpan);
 
@@ -91,13 +91,6 @@ function getMemoryAndRegistersJson() {
 	};
 }
 
-interface Transfer {
-	start_mem?: string;
-	start_reg?: "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY";
-	end_mem?: string;
-	end_reg?: "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY";
-	value: string;
-}
 interface StepResult {
 	memory_and_registers: {
 		memory: { [key: string]: string };
@@ -206,7 +199,7 @@ async function assembleCode() {
 
 async function processStepResult(resJson: StepResult) {
 	for (const transfer of resJson.transfers) {
-		// todo: animations would go here
+		await animateTransfer(transfer, memoryContentsSpans);
 		if (transfer.end_mem) {
 			updateMemoryLocation(
 				transfer.end_mem,
