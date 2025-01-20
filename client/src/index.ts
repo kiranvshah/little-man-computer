@@ -9,7 +9,8 @@ import {
 	updateRegisterByCode,
 } from "./addressDisplayUpdaters.js";
 import * as bootstrap from "bootstrap";
-import { createDotAndAnimateFromAToB } from "./animations.js";
+import { animateTransfer } from "./animations.js";
+import { Transfer } from "./transferInterface.js";
 
 const SERVER_URL = "%%SERVER_URL%%"; // this will get replaced in prebuild.js
 
@@ -90,13 +91,6 @@ function getMemoryAndRegistersJson() {
 	};
 }
 
-interface Transfer {
-	start_mem?: string;
-	start_reg?: "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY";
-	end_mem?: string;
-	end_reg?: "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY";
-	value: string;
-}
 interface StepResult {
 	memory_and_registers: {
 		memory: { [key: string]: string };
@@ -205,7 +199,7 @@ async function assembleCode() {
 
 async function processStepResult(resJson: StepResult) {
 	for (const transfer of resJson.transfers) {
-		// todo: animations would go here
+		await animateTransfer(transfer, memoryContentsSpans);
 		if (transfer.end_mem) {
 			updateMemoryLocation(
 				transfer.end_mem,
@@ -305,13 +299,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	);
 	(
 		document.getElementById("checkButton") as HTMLButtonElement
-	).addEventListener("click", () =>
-		createDotAndAnimateFromAToB(
-			"123",
-			document.getElementById("irValueSpan")!,
-			memoryContentsSpans[75],
-		),
-	);
+	).addEventListener("click", checkCode);
 	(
 		document.getElementById("clearButton") as HTMLButtonElement
 	).addEventListener("click", clearCode);

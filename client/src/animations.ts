@@ -1,3 +1,9 @@
+import {
+	getMemoryLocationValueSpan,
+	getRegisterValueSpan,
+} from "./addressDisplayUpdaters.js";
+import { Transfer } from "./transferInterface.js";
+
 async function animateTranslation(
 	elementToTranslate: HTMLElement,
 	destination: HTMLElement,
@@ -24,7 +30,7 @@ async function animateTranslation(
 	return new Promise(resolve => setTimeout(resolve, 3000)); // only return once animation complete
 }
 
-export async function createDotAndAnimateFromAToB(
+async function createDotAndAnimateFromAToB(
 	dotInnerText: string,
 	origin: HTMLElement,
 	destination: HTMLElement,
@@ -37,6 +43,33 @@ export async function createDotAndAnimateFromAToB(
 
 	await animateTranslation(dot, destination);
 
-	// destroy dot after 1s
-	setTimeout(() => dot.remove(), 1000);
+	// destroy dot after 1 sec, then return
+	return new Promise<void>(resolve => {
+		setTimeout(() => {
+			dot.remove();
+			resolve();
+		}, 1000);
+	});
+}
+
+export async function animateTransfer(
+	transfer: Transfer,
+	memoryContentsSpans: HTMLSpanElement[],
+) {
+	if (
+		!(transfer.start_mem || transfer.start_reg) ||
+		!(transfer.end_mem || transfer.end_reg)
+	) {
+		console.warn("Not animating transfer due to no start or no end");
+		return;
+	}
+
+	const start = transfer.start_mem
+		? getMemoryLocationValueSpan(transfer.start_mem, memoryContentsSpans)
+		: getRegisterValueSpan(transfer.start_reg!);
+	const end = transfer.end_mem
+		? getMemoryLocationValueSpan(transfer.end_mem, memoryContentsSpans)
+		: getRegisterValueSpan(transfer.end_reg!);
+
+	await createDotAndAnimateFromAToB(transfer.value, start, end);
 }
