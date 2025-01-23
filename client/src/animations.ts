@@ -21,7 +21,7 @@ async function animateTranslation(
 
 	// work out distance to find duration
 	const distance = Math.sqrt(dx ** 2 + dy ** 2);
-	const duration = distance / 100;
+	const duration = 0.5 + distance / 150;
 	dot.style.animationDuration = duration + "s";
 
 	dot.style.setProperty("--dx", dx + "px");
@@ -33,7 +33,7 @@ async function animateTranslation(
 			destination.appendChild(dot);
 			dot.classList.remove("moving");
 			dot.style.removeProperty("animation-duration");
-			setTimeout(resolve, 1000);
+			resolve();
 		});
 	});
 }
@@ -41,9 +41,6 @@ async function animateTranslation(
 async function animateStationary(elementToTranslate: HTMLElement) {
 	const dot = elementToTranslate;
 	dot.classList.add("stationary-animating");
-	dot.addEventListener("animationend", () => {
-		dot.classList.remove("stationary-animating");
-	});
 
 	return new Promise<void>(resolve => {
 		dot.addEventListener("animationend", () => {
@@ -70,7 +67,12 @@ async function createDotAndAnimate(
 		await animateTranslation(dot, end);
 	}
 
-	dot.remove();
+	return new Promise<void>(resolve => {
+		setTimeout(() => {
+			dot.remove();
+			resolve();
+		}, 1000);
+	});
 }
 
 export async function animateTransfer(
