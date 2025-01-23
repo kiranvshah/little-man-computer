@@ -59,7 +59,6 @@ async function createDotAndAnimate(
 	start.appendChild(dot);
 
 	if (start === end) {
-		console.log("animating in place");
 		await animateStationary(dot);
 	} else {
 		await animateTranslation(dot, end);
