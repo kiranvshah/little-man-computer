@@ -21,17 +21,29 @@
 }
 
 .moving {
-	animation-name: mover-animation;
+	animation-name: translate-a-to-b;
 	animation-duration: 3s;
 	animation-timing-function: linear;
 	animation-iteration-count: 1;
 }
 
-@keyframes mover-animation {
+.stationary-animating {
+	animation-name: animate-on-spot;
+	animation-duration: 1s;
+	animation-timing-function: linear;
+}
+
+@keyframes translate-a-to-b {
 	0% {
 		transform: translate(-50%, -50%);
 	}
 	100% {
 		transform: translate(calc(var(--dx) - 50%), calc(var(--dy) - 50%));
+	}
+}
+
+@keyframes animate-on-spot {
+	50% {
+		transform: translate(-50%, -50%) scale(1.25);
 	}
 }

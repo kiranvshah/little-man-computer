@@ -22,34 +22,50 @@ async function animateTranslation(
 	dot.style.setProperty("--dx", dx);
 	dot.style.setProperty("--dy", dy);
 	dot.classList.add("moving");
-	dot.addEventListener("animationend", () => {
-		destination.appendChild(dot);
-		dot.classList.remove("moving");
-	});
 
-	return new Promise(resolve => setTimeout(resolve, 3000)); // only return once animation complete
+	return new Promise<void>(resolve => {
+		dot.addEventListener("animationend", () => {
+			destination.appendChild(dot);
+			dot.classList.remove("moving");
+			setTimeout(resolve, 1000);
+		});
+	});
 }
 
-async function createDotAndAnimateFromAToB(
+async function animateStationary(elementToTranslate: HTMLElement) {
+	const dot = elementToTranslate;
+	dot.classList.add("stationary-animating");
+	dot.addEventListener("animationend", () => {
+		dot.classList.remove("stationary-animating");
+	});
+
+	return new Promise<void>(resolve => {
+		dot.addEventListener("animationend", () => {
+			dot.classList.remove("stationary-animating");
+			resolve();
+		});
+	});
+}
+
+async function createDotAndAnimate(
 	dotInnerText: string,
-	origin: HTMLElement,
-	destination: HTMLElement,
+	start: HTMLElement,
+	end: HTMLElement,
 ) {
 	// create dot
 	const dot = document.createElement("div");
 	dot.classList.add("transfer-dot");
 	dot.innerText = dotInnerText;
-	origin.appendChild(dot);
+	start.appendChild(dot);
 
-	await animateTranslation(dot, destination);
+	if (start === end) {
+		console.log("animating in place");
+		await animateStationary(dot);
+	} else {
+		await animateTranslation(dot, end);
+	}
 
-	// destroy dot after 1 sec, then return
-	return new Promise<void>(resolve => {
-		setTimeout(() => {
-			dot.remove();
-			resolve();
-		}, 1000);
-	});
+	dot.remove();
 }
 
 export async function animateTransfer(
@@ -71,5 +87,5 @@ export async function animateTransfer(
 		? getMemoryLocationValueSpan(transfer.end_mem, memoryContentsSpans)
 		: getRegisterValueSpan(transfer.end_reg!);
 
-	await createDotAndAnimateFromAToB(transfer.value, start, end);
+	await createDotAndAnimate(transfer.value, start, end);
 }
