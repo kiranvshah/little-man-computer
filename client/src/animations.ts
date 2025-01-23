@@ -16,17 +16,23 @@ async function animateTranslation(
 	const endRect = dot.getBoundingClientRect();
 	origin.appendChild(dot); // move dot back to origin before animation begins
 
-	const dx = endRect.left - startRect.left + "px";
-	const dy = endRect.top - startRect.top + "px";
+	const dx = endRect.left - startRect.left;
+	const dy = endRect.top - startRect.top;
 
-	dot.style.setProperty("--dx", dx);
-	dot.style.setProperty("--dy", dy);
+	// work out distance to find duration
+	const distance = Math.sqrt(dx ** 2 + dy ** 2);
+	const duration = distance / 100;
+	dot.style.animationDuration = duration + "s";
+
+	dot.style.setProperty("--dx", dx + "px");
+	dot.style.setProperty("--dy", dy + "px");
 	dot.classList.add("moving");
 
 	return new Promise<void>(resolve => {
 		dot.addEventListener("animationend", () => {
 			destination.appendChild(dot);
 			dot.classList.remove("moving");
+			dot.style.removeProperty("animation-duration");
 			setTimeout(resolve, 1000);
 		});
 	});
