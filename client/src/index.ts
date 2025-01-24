@@ -314,4 +314,17 @@ document.addEventListener("DOMContentLoaded", () => {
 		"click",
 		run,
 	);
+
+	// add event listeners to animations switch
+	const animationsSwitch = document.getElementById("animationsSwitch") as HTMLInputElement;
+	(animationsSwitch).addEventListener("change", () => {
+		if (animationsSwitch.checked) {
+			console.log("animations turned on")
+			// todo
+		} else {
+			console.log("animations turned off")
+			// todo
+		}
+	})
+
 });
