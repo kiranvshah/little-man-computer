@@ -96,3 +96,13 @@ export async function animateTransfer(
 
 	await createDotAndAnimate(transfer.value, start, end);
 }
+
+export function turnOnAnimations() {
+	console.log("animations turned on");
+	// todo
+}
+
+export function turnOffAnimations() {
+	console.log("animations turned off");
+	// todo
+}
