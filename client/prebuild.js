@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const indexTsPath = path.join(__dirname, "src", "index.ts");
+const indexTsPath = path.join(__dirname, "src", "buttonResponders.ts");
 const serverUrl = process.env.SERVER_URL || "http://localhost:5000";
 
 let contents = fs.readFileSync(indexTsPath, "utf-8");
