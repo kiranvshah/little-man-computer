@@ -7,10 +7,10 @@ import {
 	updateCarryFlag,
 	updateMemoryLocation,
 	updateRegisterByCode,
-} from "./addressDisplayUpdaters";
-import { animateTransfer } from "./animations";
-import { memoryContentsSpans } from "./memoryPopulation";
-import { Transfer } from "./transferInterface";
+} from "./addressDisplayUpdaters.js";
+import { animateTransfer } from "./animations.js";
+import { memoryContentsSpans } from "./memoryPopulation.js";
+import { Transfer } from "./transferInterface.js";
 
 const SERVER_URL = "%%SERVER_URL%%"; // this will get replaced in prebuild.js
 
