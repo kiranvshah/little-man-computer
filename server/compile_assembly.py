@@ -3,11 +3,11 @@
     compile_assembly(user_written_code: str) -> result
     check_assembly(user_written_code: str) -> bool"""
 
-instructions_0_args = {"INP", "OUT", "HLT", "DAT"}
-instructions_1_arg_is_label = {"ADD", "SUB", "STA", "LDA", "BRA", "BRZ", "BRP"}
-instructions_1_arg_is_value = {"DAT"}
-instructions_1_arg = instructions_1_arg_is_label | instructions_1_arg_is_value
-instructions = instructions_0_args | instructions_1_arg
+mnemonic_operations_0_args = {"INP", "OUT", "HLT", "DAT"}
+mnemonic_operations_1_arg_is_label = {"ADD", "SUB", "STA", "LDA", "BRA", "BRZ", "BRP"}
+mnemonic_operations_1_arg_is_value = {"DAT"}
+mnemonic_operations_1_arg = mnemonic_operations_1_arg_is_label | mnemonic_operations_1_arg_is_value
+mnemonic_operations = mnemonic_operations_0_args | mnemonic_operations_1_arg
 
 def validate_label_name(label: str, line_number: int):
     """Validate the name of a label to be created and raise error if invalid.
@@ -25,10 +25,10 @@ def validate_label_name(label: str, line_number: int):
             f"Label \"{label}\" must begin with a letter and be completely alphanumeric",
             line_number,
         )
-    # ensure label is not an instruction
-    if label in instructions:
+    # ensure label is not an mnemonic operation
+    if label in mnemonic_operations:
         raise ValueError(
-            f"Label \"{label}\" cannot be an instruction",
+            f"Label \"{label}\" cannot be an operation",
             line_number,
         )
 
@@ -64,55 +64,54 @@ def compile_assembly(user_written_code: str):
             raise ValueError("There cannot be more than 3 words on one line", original_line_number)
 
         if len(words) == 1:
-            if line in instructions_0_args:
-                lines.append({ "instruction": line })
+            if line in mnemonic_operations_0_args:
+                lines.append({ "operation": line })
             else:
-                # received a line with only 1 word, but it is not an instruction that takes no args
-                if line in instructions:
-                    raise ValueError("Missing an argument for instruction", original_line_number)
-                raise ValueError(f"Invalid instruction \"{line}\"", original_line_number)
+                # received a line with only 1 word, but it is not an operation that takes no args
+                if line in mnemonic_operations:
+                    raise ValueError("Missing an argument for operation", original_line_number)
+                raise ValueError(f"Invalid operation \"{line}\"", original_line_number)
 
         elif len(words) == 2:
-            if words[0] in instructions_1_arg_is_label:
-                # process instruction
+            if words[0] in mnemonic_operations_1_arg_is_label:
                 lines.append({
                     "uses_label": words[1],
-                    "instruction": words[0],
+                    "operation": words[0],
                 })
-            elif words[1] in instructions_0_args:
-                # line has structure <label> <instruction>
+            elif words[1] in mnemonic_operations_0_args:
+                # line has structure <label> <operation>
                 label = words[0]
-                instruction = words[1]
+                operation = words[1]
                 validate_label_name(label, original_line_number)
                 lines.append({
                     "create_label": label,
-                    "instruction": instruction,
+                    "operation": operation,
                 })
             else:
-                raise ValueError("Invalid line. Could not find instruction.", original_line_number)
+                raise ValueError("Invalid line. Could not find operation.", original_line_number)
 
         else:
             # len(words) is 3
-            # words[1] must be the instruction
-            if words[1] not in instructions_1_arg:
-                if words[1] in instructions_0_args:
+            # words[1] must be the operation
+            if words[1] not in mnemonic_operations_1_arg:
+                if words[1] in mnemonic_operations_0_args:
                     raise ValueError(
-                        "Instruction does not take arguments, received one.",
+                        "Operation does not take arguments, received one.",
                         original_line_number
                     )
                 raise ValueError(
-                    "Line with 3 words should have structure: <label>, <instruction>, <value>.",
+                    "Line with 3 words should have structure: <label>, <operation>, <value>.",
                     original_line_number
                 )
             # process label in words[0] and value in words[2]
             label = words[0]
-            instruction = words[1]
+            operation = words[1]
             arg = words[2]
 
             # validate label
             validate_label_name(label, original_line_number)
 
-            if instruction == "DAT":
+            if operation == "DAT":
                 # validate value
                 if not arg.isdigit():
                     raise ValueError(
@@ -127,13 +126,13 @@ def compile_assembly(user_written_code: str):
 
                 lines.append({
                     "create_label": label,
-                    "instruction": words[1],
+                    "operation": words[1],
                     "value": arg.zfill(3),
                 })
             else:
                 lines.append({
                     "create_label": label,
-                    "instruction": words[1],
+                    "operation": words[1],
                     "uses_label": arg,
                 })
 
@@ -190,12 +189,12 @@ def compile_assembly(user_written_code: str):
 
     # loop through lines to populate result
     for line in lines:
-        cleaned_up_line = f"{line["memory_address"]} {line["instruction"]}"
+        cleaned_up_line = f"{line["memory_address"]} {line["operation"]}"
         line_in_memory = ""
 
         # add opcode to line_in_memory
         # todo: use dictionary of functions instead of match case? use functools.partial for all but DAT to have function with arg for num to put in memory.
-        match line["instruction"]:
+        match line["operation"]:
             case "ADD":
                 line_in_memory += "1"
             case "SUB":
