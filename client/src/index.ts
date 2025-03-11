@@ -49,10 +49,16 @@ document.addEventListener("DOMContentLoaded", () => {
 		run,
 	);
 
-	// add event listeners to animations switch
 	const animationsSwitch = document.getElementById(
 		"animationsSwitch",
 	) as HTMLInputElement;
+	// turn animation switch on/off as appropriate
+	if (localStorage.getItem("animationsToggle") == "off") {
+		animationsSwitch.checked = false
+	} else {
+		animationsSwitch.checked = true
+	}
+	// add event listeners to animations switch
 	animationsSwitch.addEventListener("change", () => {
 		if (animationsSwitch.checked) {
 			turnOnAnimations();

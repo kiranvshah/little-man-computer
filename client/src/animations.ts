@@ -79,6 +79,11 @@ export async function animateTransfer(
 	transfer: Transfer,
 	memoryContentsSpans: HTMLSpanElement[],
 ) {
+	if (localStorage.getItem("animationsToggle") == "off") {
+		// animations are switched off
+		return
+	}
+
 	if (
 		!(transfer.start_mem || transfer.start_reg) ||
 		!(transfer.end_mem || transfer.end_reg)
@@ -99,10 +104,10 @@ export async function animateTransfer(
 
 export function turnOnAnimations() {
 	console.log("animations turned on");
-	// todo
+	localStorage.setItem("animationsToggle", "on")
 }
 
 export function turnOffAnimations() {
 	console.log("animations turned off");
-	// todo
+	localStorage.setItem("animationsToggle", "off")
 }
