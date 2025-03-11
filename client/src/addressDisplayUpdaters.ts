@@ -52,7 +52,6 @@ export function updateRegisterByCode(
 		IR: updateIr,
 		CARRY: updateCarryFlag,
 	})[code](value);
-	// todo: use getRegisterValueSpan
 }
 
 /**
