@@ -80,7 +80,9 @@ export async function animateTransfer(
 	memoryContentsSpans: HTMLSpanElement[],
 ) {
 	if (!animationsAreSwitchedOn()) {
-		return;
+		return new Promise<void>(resolve => {
+			setTimeout(resolve, 300);
+		});
 	}
 
 	if (
