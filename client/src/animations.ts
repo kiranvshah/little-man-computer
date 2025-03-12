@@ -79,9 +79,8 @@ export async function animateTransfer(
 	transfer: Transfer,
 	memoryContentsSpans: HTMLSpanElement[],
 ) {
-	if (localStorage.getItem("animationsToggle") == "off") {
-		// animations are switched off
-		return
+	if (!animationsAreSwitchedOn()) {
+		return;
 	}
 
 	if (
@@ -102,12 +101,16 @@ export async function animateTransfer(
 	await createDotAndAnimate(transfer.value, start, end);
 }
 
+export function animationsAreSwitchedOn() {
+	return localStorage.getItem("animationsToggle") != "off";
+}
+
 export function turnOnAnimations() {
 	console.log("animations turned on");
-	localStorage.setItem("animationsToggle", "on")
+	localStorage.setItem("animationsToggle", "on");
 }
 
 export function turnOffAnimations() {
 	console.log("animations turned off");
-	localStorage.setItem("animationsToggle", "off")
+	localStorage.setItem("animationsToggle", "off");
 }

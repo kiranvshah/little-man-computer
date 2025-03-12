@@ -7,7 +7,11 @@ import {
 	step,
 	run,
 } from "./buttonResponders.js";
-import { turnOffAnimations, turnOnAnimations } from "./animations.js";
+import {
+	animationsAreSwitchedOn,
+	turnOffAnimations,
+	turnOnAnimations,
+} from "./animations.js";
 
 // initialise tooltips
 document
@@ -53,11 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		"animationsSwitch",
 	) as HTMLInputElement;
 	// turn animation switch on/off as appropriate
-	if (localStorage.getItem("animationsToggle") == "off") {
-		animationsSwitch.checked = false
-	} else {
-		animationsSwitch.checked = true
-	}
+	animationsSwitch.checked = animationsAreSwitchedOn();
 	// add event listeners to animations switch
 	animationsSwitch.addEventListener("change", () => {
 		if (animationsSwitch.checked) {
