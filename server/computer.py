@@ -138,8 +138,12 @@ class Computer:
                 case "1":
                     # add
                     # add from MDR to ACC
-                    arithmetic_result = int(self.memory_and_registers["registers"]["ACC"]) + int(argument)
-                    self.memory_and_registers["registers"]["ACC"] = str(arithmetic_result % 1000).zfill(3)
+                    arithmetic_result = int(
+                        self.memory_and_registers["registers"]["ACC"]
+                    ) + int(argument)
+                    self.memory_and_registers["registers"]["ACC"] = str(
+                        arithmetic_result % 1000
+                    ).zfill(3)
                     transfers.append({
                         "start_mem": operand,
                         "end_reg": "ACC",
@@ -157,8 +161,12 @@ class Computer:
                 case "2":
                     # sub
                     # subtract MDR value from ACC
-                    arithmetic_result = int(self.memory_and_registers["registers"]["ACC"]) - int(argument)
-                    self.memory_and_registers["registers"]["ACC"] = str(arithmetic_result % 1000).zfill(3)
+                    arithmetic_result = int(
+                        self.memory_and_registers["registers"]["ACC"]
+                    ) - int(argument)
+                    self.memory_and_registers["registers"]["ACC"] = str(
+                        arithmetic_result % 1000
+                    ).zfill(3)
                     transfers.append({
                         "start_mem": operand,
                         "end_reg": "ACC",
@@ -249,7 +257,11 @@ class Computer:
         return_obj["transfers"].extend(self.__decode())
 
         # execute
-        return_obj["reached_HLT"], return_obj["reached_INP"], return_obj["output"], new_transfers = self.__execute()
+        (   return_obj["reached_HLT"],
+            return_obj["reached_INP"],
+            return_obj["output"],
+            new_transfers
+        ) = self.__execute()
         return_obj["transfers"].extend(new_transfers)
 
         return_obj["memory_and_registers"] = self.memory_and_registers
