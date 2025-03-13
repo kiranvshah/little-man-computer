@@ -108,8 +108,6 @@ class Computer:
         ValueError
             _description_
         """
-        raise ValueError("meow")
-
         reached_hlt = False
         reached_inp = False
         output = ""

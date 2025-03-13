@@ -212,8 +212,7 @@ export async function step() {
 		// update changed memory/register locations
 		await processStepResult(resJson);
 	} else {
-		console.log(response)
-		alert("Bad response from server");
+		alert(`Bad response from server: ${await response.text()}`);
 	}
 }
 export async function run() {
