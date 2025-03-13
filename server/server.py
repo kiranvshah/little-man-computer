@@ -62,8 +62,8 @@ def post_step():
     fetch-decode-execute cycle. Returns list of transfers."""
     if request.is_json:
         req_body = request.get_json()
-        computer = computer_module.Computer(req_body)
         try:
+            computer = computer_module.Computer(req_body)
             response = jsonify(computer.step())
             return response
         except ValueError as err:
@@ -78,12 +78,9 @@ def post_after_input():
         req_body = request.get_json()
         if not (req_body["input"] and req_body["state"]):
             return "Invalid request body. Need input and state.", 400
-        try:
-            computer = computer_module.Computer(req_body["state"])
-            response = jsonify(computer.finish_after_input(req_body["input"]))
-            return response
-        except ValueError as err:
-            return f"Error when trying to run: {err.args[0]}", 500
+        computer = computer_module.Computer(req_body["state"])
+        response = jsonify(computer.finish_after_input(req_body["input"]))
+        return response
     return "Expected JSON request", 415
 
 
@@ -93,7 +90,10 @@ def post_run():
     cycles until HLT or INP reached. Returns list of transfers."""
     if request.is_json:
         req_body = request.get_json()
-        computer = computer_module.Computer(req_body)
-        response = jsonify(computer.run())
+        try:
+            computer = computer_module.Computer(req_body)
+            response = jsonify(computer.run())
+        except ValueError as err:
+            return f"Error when trying to run: {err.args[0]}", 500
         return response
     return "Expected JSON request", 415
