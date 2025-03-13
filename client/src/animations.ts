@@ -1,7 +1,7 @@
 import {
 	getMemoryLocationValueSpan,
 	getRegisterValueSpan,
-} from "./addressDisplayUpdaters.js";
+} from "./registerAndMemoryUtilities.js";
 import { Transfer } from "./transferInterface.js";
 
 async function animateTranslation(

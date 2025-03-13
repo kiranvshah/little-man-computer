@@ -7,7 +7,7 @@ import {
 	updateCarryFlag,
 	updateMemoryLocation,
 	updateRegisterByCode,
-} from "./addressDisplayUpdaters.js";
+} from "./registerAndMemoryUtilities.js";
 import { animateTransfer } from "./animations.js";
 import { memoryContentsSpans } from "./memoryPopulation.js";
 import { Transfer } from "./transferInterface.js";
