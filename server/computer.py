@@ -73,7 +73,7 @@ class Computer:
 
         Returns
         -------
-        _type_ # todo
+        list[Transfer] # todo: define Transfer
             A list of transfer dictionaries.
         """
         transfers = []
@@ -108,6 +108,8 @@ class Computer:
         ValueError
             _description_
         """
+        raise ValueError("meow")
+
         reached_hlt = False
         reached_inp = False
         output = ""

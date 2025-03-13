@@ -191,8 +191,8 @@ async function processStepResult(resJson: StepResult) {
 			headers: { "Content-Type": "application/json" },
 			mode: "cors",
 		});
-		const resJson = (await response.json()) as Transfer;
 		if (response.ok) {
+			const resJson = (await response.json()) as Transfer;
 			// update changed register location
 			console.assert(resJson.end_reg === "ACC");
 			updateRegisterByCode("ACC", resJson.value);
@@ -207,11 +207,12 @@ export async function step() {
 		headers: { "Content-Type": "application/json" },
 		mode: "cors",
 	});
-	const resJson = (await response.json()) as StepResult;
 	if (response.ok) {
+		const resJson = (await response.json()) as StepResult;
 		// update changed memory/register locations
 		await processStepResult(resJson);
 	} else {
+		console.log(response)
 		alert("Bad response from server");
 	}
 }
@@ -223,8 +224,8 @@ export async function run() {
 		headers: { "Content-Type": "application/json" },
 		mode: "cors",
 	});
-	const resJson = (await response.json()) as StepResult[];
 	if (response.ok) {
+		const resJson = (await response.json()) as StepResult[];
 		for (const stepResJson of resJson) {
 			await processStepResult(stepResJson);
 		}

@@ -59,12 +59,16 @@ def post_compile():
 @app.post("/api/step")
 def post_step():
     """Handles the POST /api/step endpoint. Receives state of LMC and runs one
-    fetch-decode-execute cycle. Returns new state of LMC and list of transfers."""
+    fetch-decode-execute cycle. Returns list of transfers."""
     if request.is_json:
         req_body = request.get_json()
         computer = computer_module.Computer(req_body)
-        response = jsonify(computer.step()) # todo: catch errors
-        return response
+        try:
+            response = jsonify(computer.step()) # todo: catch errors
+            return response
+        except ValueError as err:
+            print(err.args)
+            return f"Error when trying to run FDE cycle: {err.args[0]}", 500
     return "Expected JSON request", 415
 
 @app.post("/api/after-input")
@@ -84,7 +88,7 @@ def post_after_input():
 @app.post("/api/run")
 def post_run():
     """Handles the POST /api/run endpoint. Receives state of LMC and runs fetch-decode-execute
-    cycles until HLT or INP reached. Returns new state of LMC and list of transfers."""
+    cycles until HLT or INP reached. Returns list of transfers."""
     if request.is_json:
         req_body = request.get_json()
         computer = computer_module.Computer(req_body)
