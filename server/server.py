@@ -11,6 +11,8 @@ flask_cors.CORS(app)
 
 @app.post("/api/check")
 def post_check():
+    """Handles the POST /api/check endpoint.
+    Receives user-written assembly code and checks if it is valid."""
     if request.is_json:
         req_body = request.get_json()
         if "uncompiledCode" not in req_body:
@@ -32,6 +34,8 @@ def post_check():
 
 @app.post("/api/compile")
 def post_compile():
+    """Handles the POST /api/compile endpoint.
+    Receives user-written assembly and compiles it to object code and machine code."""
     if request.is_json:
         req_body = request.get_json()
         # todo: ALL RESPONSES SHOULD BE JSON
@@ -54,6 +58,8 @@ def post_compile():
 
 @app.post("/api/step")
 def post_step():
+    """Handles the POST /api/step endpoint. Receives state of LMC and runs one
+    fetch-decode-execute cycle. Returns new state of LMC and list of transfers."""
     if request.is_json:
         req_body = request.get_json()
         computer = computer_module.Computer(req_body)
@@ -63,11 +69,12 @@ def post_step():
 
 @app.post("/api/after-input")
 def post_after_input():
+    """Handles the POST /api/after-input endpoint. This is called after frontend has been
+    collected from user, and updates the LMC accordingly. Returns one transfer."""
     if request.is_json:
         req_body = request.get_json()
         if not (req_body["input"] and req_body["state"]):
             return "Invalid request body. Need input and state.", 400
-        # todo: process request
         computer = computer_module.Computer(req_body["state"])
         response = jsonify(computer.finish_after_input(req_body["input"]))
         return response
@@ -76,6 +83,8 @@ def post_after_input():
 
 @app.post("/api/run")
 def post_run():
+    """Handles the POST /api/run endpoint. Receives state of LMC and runs fetch-decode-execute
+    cycles until HLT or INP reached. Returns new state of LMC and list of transfers."""
     if request.is_json:
         req_body = request.get_json()
         computer = computer_module.Computer(req_body)
