@@ -64,7 +64,7 @@ def post_step():
         req_body = request.get_json()
         computer = computer_module.Computer(req_body)
         try:
-            response = jsonify(computer.step()) # todo: catch errors
+            response = jsonify(computer.step())
             return response
         except ValueError as err:
             return f"Error when trying to step: {err.args[0]}", 500
@@ -94,6 +94,6 @@ def post_run():
     if request.is_json:
         req_body = request.get_json()
         computer = computer_module.Computer(req_body)
-        response = jsonify(computer.run()) # todo: catch errors
+        response = jsonify(computer.run())
         return response
     return "Expected JSON request", 415
