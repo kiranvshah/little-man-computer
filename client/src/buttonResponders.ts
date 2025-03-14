@@ -130,9 +130,7 @@ export async function assembleCode() {
 		if (resJson.valid) {
 			const result = resJson.result;
 			// put compiled code into text area
-			compiledCodeTextarea.value = (result.compiled_code as String[]).join(
-				"\n",
-			);
+			compiledCodeTextarea.value = (result.object_code as String[]).join("\n");
 
 			// populate registers
 			// todo: make more concise. then dont need to export specific register updaters

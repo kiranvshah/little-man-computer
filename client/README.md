@@ -4,7 +4,7 @@
 
 - `.vscode/` contains editor settings for VS Code
 - `assets/` contains static files (that are served "as is")
-    - `assets/styles/` contains CSS
+  - `assets/styles/` contains CSS
 - `src/` contains TypeScript source code (entry point is `index.ts`). See below for descriptions of each file.
 - `index.html` is the main HTML file for the web page.
 - `prebuild.js` runs before the TS build process, and is responsible for accessing an environment variable on host machine for the server API URL, and subtituting it into `index.ts`

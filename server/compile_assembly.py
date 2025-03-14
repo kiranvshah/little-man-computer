@@ -37,7 +37,7 @@ def validate_label_name(label: str, line_number: int):
 
 # todo: could this function benefit from more decomposition?
 def compile_assembly(user_written_code: str):
-    """Compile user-written assembly into cleaned-up code and memory/register contents.
+    """Compile user-written assembly into object code and machine code (memory/register contents).
 
     Parameters
     ----------
@@ -47,7 +47,7 @@ def compile_assembly(user_written_code: str):
     Returns
     -------
     dict
-        The result dictionary, containing cleaned-up code and memory/register contents.
+        The result dictionary, containing object and machine code.
 
     Raises
     ------
@@ -162,7 +162,7 @@ def compile_assembly(user_written_code: str):
         raise ValueError("Too many lines to fit in memory.")
 
     result = {
-        "compiled_code": [],
+        "object_code": [],
         "memory_and_registers": {
             "memory": {},
             "registers": {
@@ -231,7 +231,7 @@ def compile_assembly(user_written_code: str):
             # add operand (label address) to line_in_memory
             line_in_memory += used_label_loc
 
-        result["compiled_code"].append(cleaned_up_line)
+        result["object_code"].append(cleaned_up_line)
         result["memory_and_registers"]["memory"][line["memory_address"]] = line_in_memory
 
     return result

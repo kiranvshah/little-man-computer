@@ -28,7 +28,7 @@ first DAT 000
 second DAT 000"""
 
     expected_result = {
-        "compiled_code": [ 
+        "object_code": [ 
             "00 INP",
             "01 STA 08",
             "02 INP",
