@@ -4,11 +4,11 @@ The Little Man Computer has a backend written in Python. A Flask server is respo
 
 ## Structure
 
-- `compile_assembly.py` contains the logic for processing user-written assembly code into cleaned-up assembly code, and also the contents of the LMC's memory and registers before running.
+- `compile_assembly.py` contains the logic for processing user-written assembly code into cleaned-up assembly code (known as object code), and also the contents of the LMC's memory and registers before running (machine code).
 - `test_compile_assembly.py` contains unit tests for `compile_assembly.py`.
 - `computer.py` contains the logic for running programs, including the fetch-decode-execute cycle.
-- `run_server.sh` is a script that runs the Flask server.
 - `server.py` contains the code for the Flask server.
+- `run_server.sh` is a script that runs the Flask server.
 
 ## Setup
 
@@ -27,7 +27,7 @@ In a terminal in the `server` directory:
 
 This will run the Flask server.
 
-> [!NOTE]
+> [!NOTE]  
 > The port that the server runs on will need to be opened up to outside traffic (made public) if the requests are being made from a different machine, i.e. if the website is being accessed from a different machine.
 
 ## Testing

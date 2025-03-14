@@ -1,4 +1,7 @@
-"""Functions:
+"""This script contains the logic to compile user-written assembly code into object code (labels
+made numerical and comments removed) and machine code (instructions become three-digit numbers in
+base 10).
+Functions:
     validate_label_name(label: str, line_number: int) -> None
     compile_assembly(user_written_code: str) -> result
     check_assembly(user_written_code: str) -> bool"""
