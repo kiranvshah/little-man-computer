@@ -1,12 +1,15 @@
 """Tests for compile_assembly.py"""
 
 import pytest
-from compile_assembly import compile_assembly
+from compile_assembly import compile_assembly, check_assembly
 
 with open("../example_assembly_program.txt", "r", encoding="utf-8") as f:
     example_assembly_program = f.read()
 
-def test_example_program():
+def test_check_example_program():
+    assert check_assembly(example_assembly_program)
+
+def test_assemble_example_program():
     """Test compile_assembly() with the example assembly program."""
     user_written_code = example_assembly_program
 
@@ -154,3 +157,4 @@ def test_invalid_label():
     user_written_code = "1nvalidlabel HLT" # begins with number so should throw error
     with pytest.raises(ValueError):
         compile_assembly(user_written_code)
+    assert check_assembly(user_written_code) == False
