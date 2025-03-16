@@ -247,5 +247,5 @@ export function loadExampleProgram() {
 	) {
 		return;
 	}
-	uncompiledAssemblyTextarea.value = `%%EXAMPLE_ASSEMBLY_PROGRAM%%`;  // this will get replaced by prebuild.js
+	uncompiledAssemblyTextarea.value = `%%EXAMPLE_ASSEMBLY_PROGRAM%%`; // this will get replaced by prebuild.js
 }
