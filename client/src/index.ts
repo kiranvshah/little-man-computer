@@ -6,6 +6,7 @@ import {
 	assembleCode,
 	step,
 	run,
+	loadExampleProgram,
 } from "./buttonResponders.js";
 import {
 	animationsAreSwitchedOn,
@@ -52,6 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		"click",
 		run,
 	);
+	(
+		document.getElementById("loadExampleProgramButton") as HTMLButtonElement
+	).addEventListener("click", loadExampleProgram);
 
 	const animationsSwitch = document.getElementById(
 		"animationsSwitch",

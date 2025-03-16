@@ -12,7 +12,7 @@ import { animateTransfer } from "./animations.js";
 import { memoryContentsSpans } from "./memoryPopulation.js";
 import { Transfer } from "./transferInterface.js";
 
-const SERVER_URL = "%%SERVER_URL%%"; // this will get replaced in prebuild.js
+const SERVER_URL = "http://localhost:5000"; // this will get replaced in prebuild.js
 
 const getUncompiledCode = () =>
 	(document.getElementById("uncompiledAssemblyTextarea") as HTMLTextAreaElement)
@@ -233,4 +233,42 @@ export async function run() {
 	} else {
 		alert("Bad response from server");
 	}
+}
+
+export function loadExampleProgram() {
+	const uncompiledAssemblyTextarea = document.getElementById(
+		"uncompiledAssemblyTextarea",
+	) as HTMLTextAreaElement;
+	if (
+		uncompiledAssemblyTextarea.value &&
+		!confirm(
+			"Caution: loading example program will overwrite contents of editor. Continue?",
+		)
+	) {
+		return;
+	}
+	uncompiledAssemblyTextarea.value = `// get user input (num)
+// if 0<=num<800, output num + 200
+// if num=800, output 002
+// if num>800, output 003
+
+INP
+ADD twohundred
+// store result in "result" variable
+STA result 
+
+BRZ acciszero // if num+200=1000
+BRP carryisone // if num+200>1000
+BRA finally // else
+acciszero LDA two
+BRA finally
+carryisone LDA three
+BRA finally
+finally OUT
+HLT
+
+twohundred dat 200
+result dat 999
+two dat 002
+three dat 003`;
 }
