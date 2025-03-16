@@ -12,3 +12,5 @@
 | 902    | OUT      | 0              | **Output** the value from the accumulator to the user.                                                                                                                                                                                             |
 | 000    | HLT      | 0              | **Halt** execution of the program.                                                                                                                                                                                                                 |
 |        | DAT      | 3              | **Data**. Store the value (0-999) in the operand to a memory location. Useful with labels in order to declare variables.                                                                                                                           |
+
+`//` denotes a comment. Any text on a line following `//` is ignored.
