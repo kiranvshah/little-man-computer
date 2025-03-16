@@ -3,66 +3,55 @@
 import pytest
 from compile_assembly import compile_assembly
 
-def test_subtraction_program():
-    """Test compile_assembly() with a program that subtracts two numbers."""
-    user_written_code = """// store an input
-// at position first
-INP
-STA first
-// store an input at
-// position second
-INP
-STA second
-// load the first value
-LDA first
-// subtract the
-// second
-SUB second
-// output the difference
-// and halt execution
-OUT
-HLT
+with open("../example_assembly_program.txt", "r", encoding="utf-8") as f:
+    example_assembly_program = f.read()
 
-// use the DAT instruction to create two 'variables' called first and second, and set them both to 0
-first DAT 000
-second DAT 000"""
+def test_example_program():
+    """Test compile_assembly() with the example assembly program."""
+    user_written_code = example_assembly_program
 
     expected_result = {
         "object_code": [ 
             "00 INP",
-            "01 STA 08",
-            "02 INP",
-            "03 STA 09",
-            "04 LDA 08",
-            "05 SUB 09",
-            "06 OUT",
-            "07 HLT",
-            "08 DAT 000",
-            "09 DAT 000",
+            "01 ADD 12",
+            "02 STA 13",
+            "03 BRZ 06",
+            "04 BRP 08",
+            "05 BRA 10",
+            "06 LDA 14",
+            "07 BRA 10",
+            "08 LDA 15",
+            "09 BRA 10",
+            "10 OUT",
+            "11 HLT",
+            "12 DAT 200",
+            "13 DAT 999",
+            "14 DAT 002",
+            "15 DAT 003",
         ],
         "memory_and_registers": {
             "memory": {
                 # entire program compiled into memory
                 "00": "901",
-                "01": "308",
-                "02": "901",
-                "03": "309",
-                "04": "508",
-                "05": "209",
-                "06": "902",
-                "07": "000", # note the code for HLT is 000
+                "01": "112",
+                "02": "313",
+                "03": "706",
+                "04": "808",
+                "05": "610",
+                "06": "514",
+                "07": "610",
+                "08": "515",
+                "09": "610",
+                "10": "902",
+                "11": "000", # note the code for HLT is 000
 
                 # variables (created with DAT):
-                "08": "000", # this is the `first` variable
-                "09": "000", # this is the `second` variable
+                "12": "200",
+                "13": "999",
+                "14": "002",
+                "15": "003",
 
                 # remaining memory locations: all start at 000
-                "10": "000",
-                "11": "000",
-                "12": "000",
-                "13": "000",
-                "14": "000",
-                "15": "000",
                 "16": "000",
                 "17": "000",
                 "18": "000",
@@ -162,6 +151,6 @@ second DAT 000"""
     assert compile_assembly(user_written_code) == expected_result
 
 def test_invalid_label():
-    user_written_code = "1nvalidlabel HLT"
+    user_written_code = "1nvalidlabel HLT" # begins with number so should throw error
     with pytest.raises(ValueError):
         compile_assembly(user_written_code)
