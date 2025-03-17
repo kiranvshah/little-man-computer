@@ -127,6 +127,9 @@ export function clearCode() {
 	).value = "";
 }
 
+/**
+ * Runs when the "Save" button is pressed. Updates the URL to encode the current program and copies URL to clipboard.
+ */
 export async function saveCode() {
 	const codeToSave = getUncompiledCode();
 	window.history.replaceState(
@@ -149,6 +152,9 @@ export async function saveCode() {
 	}
 }
 
+/**
+ * Runs when the "Assemble" button is pressed. Assembles user-written code into object code and machine code, and loads these into the LMC.
+ */
 export async function assembleCode() {
 	const compiledCodeTextarea = document.getElementById(
 		"compiledAssemblyTextarea",
@@ -189,6 +195,10 @@ export async function assembleCode() {
 	}
 }
 
+/**
+ * Runs after response from server for one fetch-decode-execute cycle is receieved.
+ * @param {StepResult} resJson The response object from the server representing one FDE cycle
+ */
 async function processStepResult(resJson: StepResult) {
 	for (const transfer of resJson.transfers) {
 		await animateTransfer(transfer, memoryContentsSpans);
@@ -230,6 +240,10 @@ async function processStepResult(resJson: StepResult) {
 		}
 	}
 }
+
+/**
+ * Runs after the "Step" button is pressed. Sends the state of the LMC to the server and handles response.
+ */
 export async function step() {
 	// call /api/step
 	const response = await fetch(`${SERVER_URL}/api/step`, {
@@ -246,6 +260,10 @@ export async function step() {
 		alert(`Bad response from server: ${await response.text()}`);
 	}
 }
+
+/**
+ * Runs after the "Run" button is pressed. Sends the state of the LMC to the server and handles response.
+ */
 export async function run() {
 	// call /api/run
 	const response = await fetch(`${SERVER_URL}/api/run`, {
@@ -268,6 +286,9 @@ export async function run() {
 	}
 }
 
+/**
+ * Runs when the "Load example program" button is pressed. Loads the example assembly program into the editor.
+ */
 export function loadExampleProgram() {
 	const uncompiledAssemblyTextarea = document.getElementById(
 		"uncompiledAssemblyTextarea",

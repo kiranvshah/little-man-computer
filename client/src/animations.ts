@@ -4,6 +4,12 @@ import {
 } from "./registerAndMemoryUtilities.js";
 import { Transfer } from "./transferInterface.js";
 
+/**
+ * Runs the animation of a transfer between two elements.
+ * @param {HTMLElement} elementToTranslate the HTML element of the dot that needs to be animated. It should already be at the starting location.
+ * @param {HTMLElement} destination a HTML element at the destination location of the dot
+ * @returns {Promise<void>} promise is resolved once animation is complete
+ */
 async function animateTranslation(
 	elementToTranslate: HTMLElement,
 	destination: HTMLElement,
@@ -38,8 +44,13 @@ async function animateTranslation(
 	});
 }
 
-async function animateStationary(elementToTranslate: HTMLElement) {
-	const dot = elementToTranslate;
+/**
+ * Animates a dot in-place to demonstrate a change that doesn't involve movement (e.g. incrementing the program counter)
+ * @param {HTMLElement} elementToAnimate the HTML element of the dot that needs animating. It should already be at the right location.
+ * @returns {Promise<void>} promise is resolved once animation is complete
+ */
+async function animateStationary(elementToAnimate: HTMLElement) {
+	const dot = elementToAnimate;
 	dot.classList.add("stationary-animating");
 
 	return new Promise<void>(resolve => {
@@ -50,6 +61,13 @@ async function animateStationary(elementToTranslate: HTMLElement) {
 	});
 }
 
+/**
+ * Creates an animation from A to B (A can equal B)
+ * @param {string} dotInnerText text to display inside the dot being animated 
+ * @param {HTMLElement} start the HTML element to begin the animation at 
+ * @param {HTMLElement} end the HTML element to end the animation at 
+ * @returns {Promise<void>} promise is resolved once animation is complete
+ */
 async function createDotAndAnimate(
 	dotInnerText: string,
 	start: HTMLElement,
@@ -75,6 +93,12 @@ async function createDotAndAnimate(
 	});
 }
 
+/**
+ * Displays an appropriate animation for one transfer
+ * @param {Transfer} transfer the transfer object containing information about the animation 
+ * @param {HTMLSpanElement[]} memoryContentsSpans the array of <span> elements that contain the memory contents
+ * @returns {Promise<void>} promise is resolved once animation is complete
+ */
 export async function animateTransfer(
 	transfer: Transfer,
 	memoryContentsSpans: HTMLSpanElement[],
@@ -103,15 +127,24 @@ export async function animateTransfer(
 	await createDotAndAnimate(transfer.value, start, end);
 }
 
+/**
+ * Checks whether animations have been switched on or off by the user
+ * @returns {boolean} true if animations are on, false if they're off
+ */
 export function animationsAreSwitchedOn() {
 	return localStorage.getItem("animationsToggle") != "off";
 }
 
+/**
+ * Turns animations on and stores this in localStorage
+ */
 export function turnOnAnimations() {
-	console.log("animations turned on");
 	localStorage.setItem("animationsToggle", "on");
 }
 
+/**
+ * Turns animations off and stores this in localStorage
+ */
 export function turnOffAnimations() {
 	console.log("animations turned off");
 	localStorage.setItem("animationsToggle", "off");

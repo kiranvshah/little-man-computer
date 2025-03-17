@@ -11,6 +11,9 @@ export function getMemoryLocationValueSpan(
 	return memoryContentsSpans[Number(address)];
 }
 
+/**
+ * A 2-5 letter long code representing a register in the CPU.
+ */
 export type RegisterCode = "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY";
 
 /**
