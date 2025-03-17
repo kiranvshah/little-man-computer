@@ -1,3 +1,9 @@
+/**
+ * Returns the HTML span element of a memory location given its address.
+ * @param {string} address The address of the memory location (0-99).
+ * @param {HTMLSpanElement[]} memoryContentsSpans The array of <span> elements that contain the memory contents.
+ * @returns {HTMLSpanElement} The HTML span element of the relevant memory address.
+ */
 export function getMemoryLocationValueSpan(
 	address: string,
 	memoryContentsSpans: HTMLSpanElement[],
@@ -5,9 +11,14 @@ export function getMemoryLocationValueSpan(
 	return memoryContentsSpans[Number(address)];
 }
 
-export function getRegisterValueSpan(
-	code: "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY",
-) {
+export type RegisterCode = "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY";
+
+/**
+ * Returns the HTML span element of a register given its code.
+ * @param {RegisterCode} code The 2-5 character long code representing the register.
+ * @returns {HTMLSpanElement} The HTML span element of the relevant register.
+ */
+export function getRegisterValueSpan(code: RegisterCode) {
 	return document.getElementById(
 		{
 			PC: "programCounterValueSpan",
@@ -37,13 +48,10 @@ export function updateMemoryLocation(
 
 /**
  * Updates the value displayed in a given register.
- * @param {string} code The 2-5 character long code representing the register.
+ * @param {RegisterCode} code The 2-5 character long code representing the register.
  * @param {string} value The value to update the register to.
  */
-export function updateRegisterByCode(
-	code: "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY",
-	value: string,
-) {
+export function updateRegisterByCode(code: RegisterCode, value: string) {
 	({
 		PC: updateProgramCounter,
 		ACC: updateAccumulator,

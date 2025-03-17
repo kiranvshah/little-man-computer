@@ -7,6 +7,7 @@ import {
 	updateCarryFlag,
 	updateMemoryLocation,
 	updateRegisterByCode,
+	RegisterCode,
 } from "./registerAndMemoryUtilities.js";
 import { animateTransfer } from "./animations.js";
 import { memoryContentsSpans } from "./memoryPopulation.js";
@@ -163,10 +164,7 @@ async function processStepResult(resJson: StepResult) {
 				memoryContentsSpans,
 			);
 		} else {
-			updateRegisterByCode(
-				transfer.end_reg as "PC" | "ACC" | "IR" | "MAR" | "MDR" | "CARRY",
-				transfer.value,
-			);
+			updateRegisterByCode(transfer.end_reg as RegisterCode, transfer.value);
 		}
 	}
 
