@@ -32,31 +32,19 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	// add event listeners to buttons
-	// todo: use a dictionary?
-	(document.getElementById("saveButton") as HTMLButtonElement).addEventListener(
-		"click",
-		saveCode,
-	);
-	(
-		document.getElementById("checkButton") as HTMLButtonElement
-	).addEventListener("click", checkCode);
-	(
-		document.getElementById("clearButton") as HTMLButtonElement
-	).addEventListener("click", clearCode);
-	(
-		document.getElementById("assembleButton") as HTMLButtonElement
-	).addEventListener("click", assembleCode);
-	(document.getElementById("stepButton") as HTMLButtonElement).addEventListener(
-		"click",
-		step,
-	);
-	(document.getElementById("runButton") as HTMLButtonElement).addEventListener(
-		"click",
-		run,
-	);
-	(
-		document.getElementById("loadExampleProgramButton") as HTMLButtonElement
-	).addEventListener("click", loadExampleProgram);
+	Object.entries({
+		saveButton: saveCode,
+		checkButton: checkCode,
+		assembleButton: assembleCode,
+		stepButton: step,
+		runButton: run,
+		loadExampleProgramButton: loadExampleProgram,
+	}).forEach(([buttonId, listenerFunction]) => {
+		(document.getElementById(buttonId) as HTMLButtonElement).addEventListener(
+			"click",
+			listenerFunction,
+		);
+	});
 
 	const animationsSwitch = document.getElementById(
 		"animationsSwitch",
