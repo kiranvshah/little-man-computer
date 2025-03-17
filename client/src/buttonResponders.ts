@@ -1,10 +1,4 @@
 import {
-	updateProgramCounter,
-	updateAccumulator,
-	updateMar,
-	updateMdr,
-	updateIr,
-	updateCarryFlag,
 	updateMemoryLocation,
 	updateRegisterByCode,
 	RegisterCode,
@@ -175,13 +169,10 @@ export async function assembleCode() {
 			compiledCodeTextarea.value = (result.object_code as String[]).join("\n");
 
 			// populate registers
-			// todo: make more concise. then dont need to export specific register updaters
-			updateProgramCounter(result.memory_and_registers.registers.PC);
-			updateAccumulator(result.memory_and_registers.registers.ACC);
-			updateMar(result.memory_and_registers.registers.MAR);
-			updateMdr(result.memory_and_registers.registers.MDR);
-			updateIr(result.memory_and_registers.registers.IR);
-			updateCarryFlag(result.memory_and_registers.registers.CARRY);
+			Object.entries(result.memory_and_registers.registers).forEach(
+				([code, value]) =>
+					updateRegisterByCode(code as RegisterCode, value as string),
+			);
 
 			// populate memory
 			for (const [location, contents] of Object.entries(
