@@ -21,7 +21,7 @@ document
 
 // add event listeners
 document.addEventListener("DOMContentLoaded", () => {
-	// load code if saved in URL query string
+	// load assembly code if saved in URL query string
 	const savedCode = new URLSearchParams(window.location.search).get("code");
 	if (savedCode) {
 		(
@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	// add event listeners to buttons
+	// todo: use a dictionary?
 	(document.getElementById("saveButton") as HTMLButtonElement).addEventListener(
 		"click",
 		saveCode,

@@ -1,8 +1,9 @@
-// populate memoryTable
 const memoryTableBody = document.getElementById(
 	"memoryTbody",
 ) as HTMLTableElement;
 export const memoryContentsSpans: HTMLSpanElement[] = [];
+
+// populate memory table with initial values (addresses and 000 for all values)
 for (let rowNumber = 0; rowNumber < 10; rowNumber++) {
 	const row = document.createElement("tr");
 	for (let colNumber = 0; colNumber < 10; colNumber++) {

@@ -15,20 +15,36 @@ import { Transfer } from "./transferInterface.js";
 
 const SERVER_URL = "%%SERVER_URL%%"; // this will get replaced by prebuild.js
 
-const getUncompiledCode = () =>
-	(document.getElementById("uncompiledAssemblyTextarea") as HTMLTextAreaElement)
-		.value;
-const reportAssemblyCompilationError = (responseJson: {
+/**
+ * Gets the user-written assembly code that is in textarea.
+ * @returns {string} the user-written assembly code
+ */
+function getUncompiledCode() {
+	return (
+		document.getElementById("uncompiledAssemblyTextarea") as HTMLTextAreaElement
+	).value;
+}
+
+/**
+ * Alerts the user that there was an error trying to assemble the code.
+ * @param responseJson An object containing the reason for the error and the line number it occurred.
+ */
+function reportAssemblyCompilationError(responseJson: {
 	reason: string;
 	line_number: string;
-}) => {
+}) {
 	alert(
 		`Code was not valid:\n${responseJson.reason}` +
 			(responseJson.line_number === "unknown"
 				? ""
 				: `\nError occured on line ${responseJson.line_number} of assembly.`),
 	);
-};
+}
+
+/**
+ * Gets the current state of the Little Man Computer.
+ * @returns An object containing the current contents of the memory and registers.
+ */
 function getMemoryAndRegistersJson() {
 	const memory = memoryContentsSpans.reduce(
 		(res, span, index) => {
@@ -55,6 +71,10 @@ function getMemoryAndRegistersJson() {
 		registers: registerContents,
 	};
 }
+
+/**
+ * The response from the server for one fetch-decode-execute cycle.
+ */
 interface StepResult {
 	memory_and_registers: {
 		memory: { [key: string]: string };
@@ -65,6 +85,11 @@ interface StepResult {
 	reached_INP: boolean;
 	output: string;
 }
+
+/**
+ * Gets the user to input a three-digit number
+ * @returns {string} The number (0-999) that the user inputted.
+ */
 function getUserInput() {
 	let input = prompt(
 		"INP reached. Please enter your input (a number 0-999) here:",
@@ -74,6 +99,10 @@ function getUserInput() {
 	}
 	return input;
 }
+
+/**
+ * Runs when the "Check" button is pressed. Checks that the user-written assembly code is valid and alerts the user to the result.
+ */
 export async function checkCode() {
 	const uncompiledCode = getUncompiledCode();
 	const response = await fetch(`${SERVER_URL}/api/check`, {
@@ -88,11 +117,16 @@ export async function checkCode() {
 		alert("Code was valid :)"); // todo: is there a bootstrap way of making these alerts look nicer?
 	} else reportAssemblyCompilationError(resJson);
 }
+
+/**
+ * Runs when the "Clear" button is pressed. Clears the contents of the user-written assembly code textarea.
+ */
 export function clearCode() {
 	(
 		document.getElementById("uncompiledAssemblyTextarea") as HTMLTextAreaElement
 	).value = "";
 }
+
 export async function saveCode() {
 	const codeToSave = getUncompiledCode();
 	window.history.replaceState(
@@ -114,6 +148,7 @@ export async function saveCode() {
 		);
 	}
 }
+
 export async function assembleCode() {
 	const compiledCodeTextarea = document.getElementById(
 		"compiledAssemblyTextarea",
