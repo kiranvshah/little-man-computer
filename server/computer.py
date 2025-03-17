@@ -14,7 +14,7 @@ class Computer:
 
         Returns
         -------
-        list[Transfer] # todo
+        list[Transfer]
             A list of transfer dictionaries.
         """
         transfers = []
@@ -74,7 +74,7 @@ class Computer:
 
         Returns
         -------
-        list[Transfer] # todo: define Transfer
+        list[Transfer]
             A list of transfer dictionaries.
         """
         transfers = []
@@ -99,7 +99,7 @@ class Computer:
 
         Returns
         -------
-        set(bool, bool, list[Transfer]) # todo: define Transfer
+        set(bool, bool, list[Transfer])
             First boolean: whether HLT was called and program needs to stop execution.
             Second boolean: whether INP was called and user input needs to be collected.
             Finally: A list of transfer dictionaries
@@ -131,8 +131,8 @@ class Computer:
             # we are using the value in the MDR to modify the value in the ACC
 
             argument = self.memory_and_registers["registers"]["MDR"]
-            # todo: does this need a better name? it is the contents of the memory location referred
-            # to by the operand, and will be the argument passed to the instruction
+            # this is the contents of the memory location referred to by
+            # the operand, and will be the argument passed to the instruction
 
             # execute instruction
             match opcode:
@@ -209,7 +209,6 @@ class Computer:
                     # set PC to operand
                     self.memory_and_registers["registers"]["PC"] = operand
                     transfers.append({
-                        # todo: transfer coming from actual operand
                         "end_reg": "PC",
                         "value": self.memory_and_registers["registers"]["PC"],
                     })
@@ -220,7 +219,6 @@ class Computer:
                         # set IR to operand
                         self.memory_and_registers["registers"]["PC"] = operand
                         transfers.append({
-                            # todo: transfer coming from actual operand
                             "end_reg": "PC",
                             "value": self.memory_and_registers["registers"]["PC"],
                         })
@@ -230,7 +228,6 @@ class Computer:
                     if self.memory_and_registers["registers"]["CARRY"] == "1":
                         self.memory_and_registers["registers"]["PC"] = operand
                         transfers.append({
-                            # todo: transfer coming from actual operand
                             "end_reg": "PC",
                             "value": self.memory_and_registers["registers"]["PC"],
                         })
@@ -281,11 +278,9 @@ class Computer:
         dict
             One transfer object describing the action to be taken as a result of this input.
         """
-        # todo: should input value be validated here? maybe think about this once more structure
         # put input value into accumulator
         self.memory_and_registers["registers"]["ACC"] = input_value.zfill(3)
         transfer = {
-            # todo: start location: from input?
             "end_reg": "ACC",
             "value": input_value,
         }

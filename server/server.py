@@ -38,7 +38,6 @@ def post_compile():
     Receives user-written assembly and compiles it to object code and machine code."""
     if request.is_json:
         req_body = request.get_json()
-        # todo: ALL RESPONSES SHOULD BE JSON
 
         if "uncompiledCode" not in req_body:
             return "Could not find uncompiledCode", 400
