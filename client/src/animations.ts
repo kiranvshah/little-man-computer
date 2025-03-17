@@ -63,9 +63,9 @@ async function animateStationary(elementToAnimate: HTMLElement) {
 
 /**
  * Creates an animation from A to B (A can equal B)
- * @param {string} dotInnerText text to display inside the dot being animated 
- * @param {HTMLElement} start the HTML element to begin the animation at 
- * @param {HTMLElement} end the HTML element to end the animation at 
+ * @param {string} dotInnerText text to display inside the dot being animated
+ * @param {HTMLElement} start the HTML element to begin the animation at
+ * @param {HTMLElement} end the HTML element to end the animation at
  * @returns {Promise<void>} promise is resolved once animation is complete
  */
 async function createDotAndAnimate(
@@ -95,7 +95,7 @@ async function createDotAndAnimate(
 
 /**
  * Displays an appropriate animation for one transfer
- * @param {Transfer} transfer the transfer object containing information about the animation 
+ * @param {Transfer} transfer the transfer object containing information about the animation
  * @param {HTMLSpanElement[]} memoryContentsSpans the array of <span> elements that contain the memory contents
  * @returns {Promise<void>} promise is resolved once animation is complete
  */
