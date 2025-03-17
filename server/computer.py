@@ -14,7 +14,7 @@ class Computer:
 
         Returns
         -------
-        _type_ # todo
+        list[Transfer] # todo
             A list of transfer dictionaries.
         """
         transfers = []
@@ -40,13 +40,14 @@ class Computer:
 
         # increment program counter by 1
         pc_value = self.memory_and_registers["registers"]["PC"]
+        if pc_value == "99":
+            raise OverflowError("Can't increment PC to a value above 99.")
         self.memory_and_registers["registers"]["PC"] = str(int(pc_value) + 1).zfill(2)
         transfers.append({
             "start_reg": "PC",
             "end_reg": "PC",
             "value": self.memory_and_registers["registers"]["PC"],
         })
-        # todo: raise error if trying to increment to 100
 
         # copy assembly instruction from MDR to IR and MAR
         mdr_value = self.memory_and_registers["registers"]["MDR"]
@@ -240,7 +241,7 @@ class Computer:
         """Runs one FDE cycle and returns new memory/registers and list of transfers (changes)
 
         Returns:
-            _type_: _description_
+            dict: A dictionary containing a list of transfers and the new state of the LMC
         """
         return_obj = {
             "memory_and_registers": None,
@@ -268,8 +269,18 @@ class Computer:
         return return_obj
 
     def finish_after_input(self, input_value: str):
-        # todo: param/return detail in docstring
-        """Finishes one FDE cycle after an input value has been retrieved from the user."""
+        """Finishes one FDE cycle after an input value has been retrieved from the user.
+
+        Parameters
+        ----------
+        input_value : str
+            The number inputted by the user
+
+        Returns
+        -------
+        dict
+            One transfer object describing the action to be taken as a result of this input.
+        """
         # todo: should input value be validated here? maybe think about this once more structure
         # put input value into accumulator
         self.memory_and_registers["registers"]["ACC"] = input_value.zfill(3)
