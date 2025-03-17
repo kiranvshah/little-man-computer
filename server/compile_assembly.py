@@ -197,34 +197,23 @@ def compile_assembly(user_written_code: str):
         line_in_memory = ""
 
         # add opcode to line_in_memory
-        # todo: use dictionary of functions instead of match case? use functools.partial for all but DAT to have function with arg for num to put in memory.
-        match line["operation"]:
-            case "ADD":
-                line_in_memory += "1"
-            case "SUB":
-                line_in_memory += "2"
-            case "STA":
-                line_in_memory += "3"
-            case "LDA":
-                line_in_memory += "5"
-            case "BRA":
-                line_in_memory += "6"
-            case "BRZ":
-                line_in_memory += "7"
-            case "BRP":
-                line_in_memory += "8"
-            case "INP":
-                line_in_memory += "901"
-            case "OUT":
-                line_in_memory += "902"
-            case "HLT":
-                line_in_memory += "000"
-            case "DAT":
-                val = line["value"] if "value" in line else "000"
-                line_in_memory += val
-                cleaned_up_line += " " + val
-            case _:
-                pass
+        if line["operation"] == "DAT":
+            val = line["value"] if "value" in line else "000"
+            line_in_memory += val
+            cleaned_up_line += " " + val
+        else:
+            line_in_memory += {
+                "ADD": "1",
+                "SUB": "2",
+                "STA": "3",
+                "LDA": "5",
+                "BRA": "6",
+                "BRZ": "7",
+                "BRP": "8",
+                "INP": "901",
+                "OUT": "902",
+                "HLT": "000",
+            }[line["operation"]]
 
         if "uses_label" in line:
             used_label_loc = created_labels[line["uses_label"]]
