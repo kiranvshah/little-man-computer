@@ -133,6 +133,7 @@ def compile_assembly(user_written_code: str):
                     "value": arg.zfill(3),
                 })
             else:
+                # line has structure <label being created> <operation> <label being used as opcode>
                 lines.append({
                     "create_label": label,
                     "operation": words[1],
