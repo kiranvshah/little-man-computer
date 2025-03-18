@@ -153,7 +153,7 @@ def compile_assembly(user_written_code: str):
         if "uses_label" in line:
             if line["uses_label"] not in created_labels:
                 raise ValueError(
-                    f"Label \"{line["uses_label"]}\" used without being created.\
+                    f"Label \"{line['uses_label']}\" used without being created.\
  Create labels by putting a label name at start of line.",
                 )
 
@@ -191,7 +191,7 @@ def compile_assembly(user_written_code: str):
 
     # loop through lines to populate result
     for line in lines:
-        cleaned_up_line = f"{line["memory_address"]} {line["operation"]}"
+        cleaned_up_line = f"{line['memory_address']} {line['operation']}"
         line_in_memory = ""
 
         # add opcode to line_in_memory
