@@ -50,8 +50,8 @@ def post_compile():
         except ValueError as error:
             return jsonify({
                 "valid": False,
-                "reason": error.args[1],
-                "line_number": error.args[0] or "unknown"
+                "reason": error.args[0],
+                "line_number": error.args[1] or "unknown"
             })
     return "Expected JSON request", 415 # Unsupported Media Type
 
