@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	// add event listeners to buttons
 	Object.entries({
 		saveButton: saveCode,
+		clearButton: clearCode,
 		checkButton: checkCode,
 		assembleButton: assembleCode,
 		stepButton: step,
