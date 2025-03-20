@@ -52,7 +52,7 @@ def post_compile():
             return jsonify({
                 "valid": False,
                 "reason": error.args[0],
-                "line_number": error.args[1] or "unknown"
+                "line_number": error.args[1] if len(error.args) > 1 else "unknown"
             })
     return "Expected JSON request", 415 # Unsupported Media Type
 
