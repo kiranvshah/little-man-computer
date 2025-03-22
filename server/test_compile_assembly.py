@@ -155,8 +155,19 @@ def test_assemble_example_program():
     assert compile_assembly(user_written_code) == expected_result
 
 def test_invalid_label():
-    """Test check_assembly() and compile_assembly() with a program that has an invalid label name."""
+    """Test check_assembly() and compile_assembly() with a program that has an invalid label
+    name."""
     user_written_code = "1nvalidlabel HLT" # begins with number so should throw error
+    with pytest.raises(ValueError):
+        compile_assembly(user_written_code)
+    assert check_assembly(user_written_code) is False
+
+def test_invalid_instruction():
+    """Test check_assembly() and compile_assembly() with a program that has an invalid
+    instruction mnenomic."""
+    user_written_code = """INP
+    OUT
+    ABC"""
     with pytest.raises(ValueError):
         compile_assembly(user_written_code)
     assert check_assembly(user_written_code) is False
