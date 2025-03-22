@@ -83,3 +83,30 @@ def test_computer_finish_after_input_bad_input(computer, invalid_input):
     computer.step()
     with pytest.raises(ValueError):
         computer.finish_after_input(invalid_input)
+
+def test_computer_run_addition_program_full():
+    """Test Computer.run() with the full execution of a program that adds ten to an input."""
+    assembly_program = """INP
+    ADD ten
+    STA sum
+    OUT
+    HLT
+    ten DAT 010
+    sum DAT 00"""
+    computer = Computer(compile_assembly(assembly_program)["memory_and_registers"])
+
+    run_result_1 = computer.run()
+    # check INP reached
+    assert run_result_1[-1]["reached_INP"] is True
+    assert run_result_1[-1]["reached_HLT"] is False
+
+    computer.finish_after_input("123")
+    run_result_2 = computer.run()
+
+    # check "sum" variable memory location is 133
+    assert run_result_2[-1]["memory_and_registers"]["memory"]["06"] == "133"
+    # check output is given
+    assert run_result_2[-2]["output"] == "133"
+    # check HLT reached
+    assert run_result_2[-1]["reached_INP"] is False
+    assert run_result_2[-1]["reached_HLT"] is True
