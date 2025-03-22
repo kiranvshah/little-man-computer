@@ -41,7 +41,7 @@ class Computer:
         # increment program counter by 1
         pc_value = self.memory_and_registers["registers"]["PC"]
         if pc_value == "99":
-            raise OverflowError("Can't increment PC to a value above 99.")
+            raise RuntimeError("Can't increment PC to a value above 99.")
         self.memory_and_registers["registers"]["PC"] = str(int(pc_value) + 1).zfill(2)
         transfers.append({
             "start_reg": "PC",
@@ -103,11 +103,6 @@ class Computer:
             First boolean: whether HLT was called and program needs to stop execution.
             Second boolean: whether INP was called and user input needs to be collected.
             Finally: A list of transfer dictionaries
-
-        Raises
-        ------
-        ValueError
-            _description_
         """
         reached_hlt = False
         reached_inp = False
@@ -126,7 +121,7 @@ class Computer:
                 # OUT
                 output = self.memory_and_registers["registers"]["ACC"]
             else:
-                raise ValueError("Invalid instruction beginning in 0 or 9")
+                raise RuntimeError("Invalid instruction beginning in 0 or 9")
         elif opcode in ("1", "2", "5"):
             # we are using the value in the MDR to modify the value in the ACC
 
@@ -298,10 +293,17 @@ class Computer:
         # store list of results from every FDE cycle (step call) we do, and return all
         all_results = []
 
-        while not any((reached_hlt, reached_inp)):
+        while not (
+            reached_hlt # if HLT is reached we should stop
+            or reached_inp # if INP is reached we should stop
+            or len(all_results) > 100 # timeout due to possibility of infinite loop
+        ):
             result = self.step()
             reached_hlt = result["reached_HLT"]
             reached_inp = result["reached_INP"]
             all_results.append(result)
+
+        if len(all_results) > 100:
+            raise RuntimeError("Timed out due to too many fetch-decode-execute cycles.")
 
         return all_results

@@ -65,7 +65,7 @@ def post_step():
             computer = computer_module.Computer(req_body)
             response = jsonify(computer.step())
             return response
-        except ValueError as err:
+        except RuntimeError as err:
             return f"Error when trying to step: {err.args[0]}", 500
     return "Expected JSON request", 415
 
@@ -92,7 +92,7 @@ def post_run():
         try:
             computer = computer_module.Computer(req_body)
             response = jsonify(computer.run())
-        except ValueError as err:
+        except RuntimeError as err:
             return f"Error when trying to run: {err.args[0]}", 500
         return response
     return "Expected JSON request", 415
