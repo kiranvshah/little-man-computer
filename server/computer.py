@@ -3,6 +3,8 @@ entire LMC in a specific state, and has step and run methods which are triggered
 Classes:
     Computer"""
 
+import re
+
 class Computer:
     """A `Computer` object is instantiated with memory and register contents every time the client
     asks to step or run."""
@@ -273,6 +275,10 @@ class Computer:
         dict
             One transfer object describing the action to be taken as a result of this input.
         """
+        # check input value is valid
+        # this validation is also done client-side, but server shouldn't be broken by bad requests
+        if not re.fullmatch(r"/^\d{1,3}$/", input_value):
+            raise ValueError("Invalid input value. Must be an integer 0-999.")
         # put input value into accumulator
         self.memory_and_registers["registers"]["ACC"] = input_value.zfill(3)
         transfer = {

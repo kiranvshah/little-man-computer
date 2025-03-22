@@ -77,9 +77,12 @@ def post_after_input():
         req_body = request.get_json()
         if not (req_body["input"] and req_body["state"]):
             return "Invalid request body. Need input and state.", 400
-        computer = computer_module.Computer(req_body["state"])
-        response = jsonify(computer.finish_after_input(req_body["input"]))
-        return response
+        try:
+            computer = computer_module.Computer(req_body["state"])
+            response = jsonify(computer.finish_after_input(req_body["input"]))
+            return response
+        except ValueError as err:
+            return f"Error trying to process input: {err.args[0]}", 500
     return "Expected JSON request", 415
 
 
