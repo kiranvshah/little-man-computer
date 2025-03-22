@@ -277,7 +277,8 @@ class Computer:
         """
         # check input value is valid
         # this validation is also done client-side, but server shouldn't be broken by bad requests
-        if not re.fullmatch(r"/^\d{1,3}$/", input_value):
+        input_is_invalid = re.fullmatch(r"^\d{1,3}$", input_value) is None
+        if input_is_invalid:
             raise ValueError("Invalid input value. Must be an integer 0-999.")
         # put input value into accumulator
         self.memory_and_registers["registers"]["ACC"] = input_value.zfill(3)
