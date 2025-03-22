@@ -157,4 +157,4 @@ def test_invalid_label():
     user_written_code = "1nvalidlabel HLT" # begins with number so should throw error
     with pytest.raises(ValueError):
         compile_assembly(user_written_code)
-    assert check_assembly(user_written_code) == False
+    assert check_assembly(user_written_code) is False
