@@ -7,6 +7,7 @@ with open("../example_assembly_program.txt", "r", encoding="utf-8") as f:
     example_assembly_program = f.read()
 
 def test_check_example_program():
+    """Test check_assembly() with the example assembly program."""
     assert check_assembly(example_assembly_program)
 
 def test_assemble_example_program():
@@ -154,6 +155,7 @@ def test_assemble_example_program():
     assert compile_assembly(user_written_code) == expected_result
 
 def test_invalid_label():
+    """Test check_assembly() and compile_assembly() with a program that has an invalid label name."""
     user_written_code = "1nvalidlabel HLT" # begins with number so should throw error
     with pytest.raises(ValueError):
         compile_assembly(user_written_code)
