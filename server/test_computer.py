@@ -75,3 +75,11 @@ def test_computer_run(computer):
     # other assertions
     assert run_result_2[-1]["reached_HLT"] is True
     assert run_result_2[-1]["reached_INP"] is False
+
+# test Computer.finish_after_input() with multiple invalid inputs
+@pytest.mark.parametrize("invalid_input", ["1000", "-4", "some text"])
+def test_computer_finish_after_input_bad_input(computer, invalid_input):
+    """Test the Computer.finish_after_input() method when given an invalid input."""
+    computer.step()
+    with pytest.raises(ValueError):
+        computer.finish_after_input(invalid_input)
