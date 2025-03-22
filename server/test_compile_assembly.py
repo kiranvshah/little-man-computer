@@ -166,8 +166,17 @@ def test_invalid_instruction():
     """Test check_assembly() and compile_assembly() with a program that has an invalid
     instruction mnenomic."""
     user_written_code = """INP
-    OUT
-    ABC"""
+OUT
+ABC"""
+    with pytest.raises(ValueError):
+        compile_assembly(user_written_code)
+    assert check_assembly(user_written_code) is False
+
+def test_missing_label():
+    """Test check_assembly() and compile_assembly() with a program that uses a label that's
+    not created"""
+    user_written_code = """BRA labelname
+anotherlabel DAT 123"""
     with pytest.raises(ValueError):
         compile_assembly(user_written_code)
     assert check_assembly(user_written_code) is False
