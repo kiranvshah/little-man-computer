@@ -228,6 +228,8 @@ async function processStepResult(resJson: StepResult) {
 			// update changed register location
 			console.assert(resJson.end_reg === "ACC");
 			updateRegisterByCode("ACC", resJson.value);
+		} else {
+			alert(`Bad response from server: ${await response.text()}`);
 		}
 	}
 }
@@ -273,7 +275,7 @@ export async function run() {
 			await run();
 		}
 	} else {
-		alert("Bad response from server");
+		alert(`Bad response from server: ${await response.text()}`);
 	}
 }
 
